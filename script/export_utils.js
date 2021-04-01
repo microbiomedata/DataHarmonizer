@@ -11,7 +11,7 @@
 const getFieldNameMap = (fields) => {
   const fieldNameMap = {};
   for (const [fieldIndex, field] of fields.entries()) {
-    fieldNameMap[field.fieldName] = fieldIndex;
+    fieldNameMap[field.name] = fieldIndex;
   }
   return fieldNameMap;
 }
@@ -68,8 +68,8 @@ const getHeaderMap = (exportHeaders, fields, prefix) => {
 						if (!sources)
 							console.log('Malformed export.js exportHeader field:', target.field)
 						// If given field isn't already mapped, add it.
-						if (sources.indexOf(field.fieldName) == -1) {
-							sources.push(field.fieldName);
+						if (sources.indexOf(field.name) == -1) {
+							sources.push(field.name);
 						};
 						exportHeaders.set(target.field, sources);
 					}
@@ -86,8 +86,8 @@ const getHeaderMap = (exportHeaders, fields, prefix) => {
 						}
 						sources = exportHeaders[headerMap[target.field]][1];
 						// As above
-						if (sources.indexOf(field.fieldName) == -1) {
-							sources.push(field.fieldName);
+						if (sources.indexOf(field.name) == -1) {
+							sources.push(field.name);
 						};
 						exportHeaders[headerMap[target.field]][1] = sources;
 					};
@@ -128,10 +128,10 @@ const getMappedField = (sourceRow, sourceFieldNames, sourceFields, fieldNameMap,
 			mappedCellVal = nullOptionsMap.get(mappedCellVal);
 		};
 		let field = sourceFields[fieldNameMap[fieldName]];
-		if (field.datatype === 'select') {
+		if (field.dataType === 'select') {
 			mappedCell.push( getTransformedField(mappedCellVal, field, prefix));
 		}
-		else if (field.datatype === 'multiple') {
+		else if (field.dataType === 'multiple') {
 			// ISSUE: relying on semicolon delimiter in input
 			for (let cellVal of mappedCellVal.split(';')) {
 				mappedCell.push( getTransformedField(cellVal.trim(), field, prefix));

@@ -77,9 +77,9 @@ const processData = (data) => {
   const flatVocabularies = {};
   const fields = getFields(data);
   for (const field of fields) {
-    if ('schema:ItemList' in field) {
-      flatVocabularies[field.fieldName] =
-          stringifyNestedVocabulary(field['schema:ItemList']);
+    if ('itemList' in field) {
+      flatVocabularies[field.name] =
+          stringifyNestedVocabulary(field['itemList']);
     }
   }
 
@@ -87,13 +87,13 @@ const processData = (data) => {
   for (const parent of data) {
     // parent.children is list of fields
     for (const child of parent.children) {
-      if ('schema:ItemList' in child) {
-        child.flatVocabulary = flatVocabularies[child.fieldName];
+      if ('itemList' in child) {
+        child.flatVocabulary = flatVocabularies[child.name];
 
-        if (child.source) {
+        if (child.isBasedOn) {
           // Duplicate vocabulary from other source field
           child.flatVocabulary =
-              [...child.flatVocabulary, ...flatVocabularies[child.source]];
+              [...child.flatVocabulary, ...flatVocabularies[child.isBasedOn]];
         }
 
         // Change case as needed
@@ -221,12 +221,12 @@ const getNestedHeaders = (data) => {
   const rows = [[], []];
   for (const parent of data) {
     rows[0].push({
-      label: `<h5 class="pt-2 pl-1">${parent.fieldName}</h5>`,
+      label: `<h5 class="pt-2 pl-1">${parent.name}</h5>`,
       colspan: parent.children.length
     });
     for (const child of parent.children) {
-      const req = child.requirement;
-      const name = child.fieldName;
+      const req = child.valueRequired;
+      const name = child.name;
       rows[1].push(`<div class="secondary-header-text ${req}">${name}</div>`);
     }
   }
@@ -242,9 +242,9 @@ const getNestedHeaders = (data) => {
 const getFlatHeaders = (data) => {
   const rows = [[], []];
   for (const parent of data) {
-    rows[0].push(parent.fieldName);
+    rows[0].push(parent.name);
     rows[0].push(...Array(parent.children.length - 1).fill(''));
-    rows[1].push(...parent.children.map(child => child.fieldName));
+    rows[1].push(...parent.children.map(child => child.name));
   }
   return rows;
 };
@@ -260,10 +260,10 @@ const getColumns = (data) => {
   let ret = [];
   for (const field of getFields(data)) {
     const col = {};
-    if (field.requirement) {
-      col.requirement = field.requirement;
+    if (field.valueRequired) {
+      col.valueRequired = field.valueRequired;
     }
-    switch (field.datatype) {
+    switch (field.dataType) {
       case 'xs:date': 
         col.type = 'date';
         // This controls calendar popup date format, default is mm/dd/yyyy
@@ -276,22 +276,22 @@ const getColumns = (data) => {
         break;
       case 'select':
         col.type = 'autocomplete';
-        col.source = field.flatVocabulary;
-        if (field.dataStatus) col.source.push(...field.dataStatus);
+        col.isBasedOn = field.flatVocabulary;
+        if (field.statusEnumeration) col.isBasedOn.push(...field.statusEnumeration);
         col.trimDropdown = false;
         break;
       case 'xs:nonNegativeInteger':
       case 'xs:decimal':
-        if (field.dataStatus) {
+        if (field.statusEnumeration) {
           col.type = 'autocomplete';
-          col.source = field.dataStatus;
+          col.isBasedOn = field.statusEnumeration;
         }
         break;
       case 'multiple':
         // TODO: we need to find a better way to enable multi-selection
         col.editor = 'text';
         col.renderer = 'autocomplete';
-        col.source = field.flatVocabulary;
+        col.isBasedOn = field.flatVocabulary;
         break;
     }
     ret.push(col);
@@ -314,8 +314,8 @@ const stringifyNestedVocabulary = (vocab_list, level=0) => {
   for (const val of Object.keys(vocab_list)) {
     //if (val != 'exportField') { // Ignore field map values used for export.
     ret.push('  '.repeat(level) + val);
-    if ('schema:ItemList' in vocab_list[val]) {
-      ret = ret.concat(stringifyNestedVocabulary(vocab_list[val]['schema:ItemList'], level+1));
+    if ('itemList' in vocab_list[val]) {
+      ret = ret.concat(stringifyNestedVocabulary(vocab_list[val]['itemList'], level+1));
     }
   }
   return ret;
@@ -333,7 +333,7 @@ const enableMultiSelection = (hot, data) => {
   const fields = getFields(data);
   hot.updateSettings({
     afterBeginEditing: function(row, col) {
-      if (fields[col].datatype === 'multiple') {
+      if (fields[col].dataType === 'multiple') {
         const value = this.getDataAtCell(row, col);
         let selections = value && value.split(';') || [];
         selections = selections.map(x => x.trim());
@@ -349,7 +349,7 @@ const enableMultiSelection = (hot, data) => {
           content += `<option value="${field_trim}" ${selected}'>${field}</option>`;
         })
 
-        $('#field-description-text').html(`${fields[col].fieldName}<select multiple class="multiselect" rows="15">${content}</select>`);
+        $('#field-description-text').html(`${fields[col].name}<select multiple class="multiselect" rows="15">${content}</select>`);
         $('#field-description-modal').modal('show');
         $('#field-description-text .multiselect')
           .chosen() // must be rendered when html is visible
@@ -678,17 +678,17 @@ const matrixFieldChangeRules = (matrix, hot, data) => {
 
     // Rules that require a column or two following current one.
     if (fields.length > col+1) {
-      const nextFieldName = fields[col+1].fieldName;
+      const nextFieldName = fields[col+1].name;
 
       // Rule: for any "x bin" field label, following a "x" field,
       // find and set appropriate bin selection.
-      if (nextFieldName === field.fieldName + ' bin') {
+      if (nextFieldName === field.name + ' bin') {
         binChangeTest(matrix, 0, col, fields, 1, triggered_changes);
       }
       // Rule: for any [x], [x unit], [x bin] series of fields
       else
-        if (nextFieldName === field.fieldName + ' unit') {
-          if (fields[col].datatype === 'xs:date') {
+        if (nextFieldName === field.name + ' unit') {
+          if (fields[col].dataType === 'xs:date') {
             //Validate 
             for (let row=0; row < matrix.length; row++) {
               if (!matrix[row][col]) continue;
@@ -746,13 +746,13 @@ const fieldChangeRules = (change, fields, triggered_changes) => {
     matrix[0] = {}; // Essential for creating sparse array.
     matrix[0][col] = change[3]; // prime changed value
 
-    const prevName = (col > 0) ? fields[col-1].fieldName : null;
-    const nextName = (fields.length > col+1) ? fields[col+1].fieldName : null;
+    const prevName = (col > 0) ? fields[col-1].name : null;
+    const nextName = (fields.length > col+1) ? fields[col+1].name : null;
 
     // Match <field>[field unit]
-    if (nextName === field.fieldName + ' unit') {
+    if (nextName === field.name + ' unit') {
 
-      if (field.datatype === 'xs:date') {
+      if (field.dataType === 'xs:date') {
 
         // Transform ISO 8601 date to bin year / month granularity.
         // "day" granularity is taken care of by regular date validation.
@@ -766,8 +766,8 @@ const fieldChangeRules = (change, fields, triggered_changes) => {
       }
 
       // Match <field>[field unit][field bin]
-      const nextNextName = (fields.length > col+2) ? fields[col+2].fieldName : null;
-      if (nextNextName === field.fieldName + ' bin') {
+      const nextNextName = (fields.length > col+2) ? fields[col+2].name : null;
+      if (nextNextName === field.name + ' bin') {
         matrix[0][col+1] = window.HOT.getDataAtCell(row, col+1); //prime unit
         binChangeTest(matrix, row, col, fields, 2, triggered_changes);
         return;
@@ -775,13 +775,13 @@ const fieldChangeRules = (change, fields, triggered_changes) => {
     }
 
     // Match <field>[field bin]
-    if (nextName === field.fieldName + ' bin') {
+    if (nextName === field.name + ' bin') {
       binChangeTest(matrix, row, col, fields, 1, triggered_changes);
       return;
     }
 
     // Match [field]<field unit>
-    if (field.fieldName === prevName + ' unit') {
+    if (field.name === prevName + ' unit') {
 
       // Match [field]<field unit>[field bin]
       if (prevName + ' bin' === nextName) {
@@ -795,7 +795,7 @@ const fieldChangeRules = (change, fields, triggered_changes) => {
       // Match previous field as date field
       // A change from month to year or day to month/year triggers new 
       // date value 
-      if (fields[col-1].datatype === 'xs:date' && (change[3] === 'year' || change[3] === 'month') ) {
+      if (fields[col-1].dataType === 'xs:date' && (change[3] === 'year' || change[3] === 'month') ) {
 
         let dateString = window.HOT.getDataAtCell(row, col-1);
         // If there is a date entered, adjust it
@@ -854,8 +854,8 @@ const setDateChange = (dateGranularity, dateString, dateBlank='__') => {
  */
 const fieldUnitBinTest = (fields, col) => {
   return ((fields.length > col+2) 
-    && (fields[col+1].fieldName == fields[col].fieldName + ' unit') 
-    && (fields[col+2].fieldName == fields[col].fieldName + ' bin'));
+    && (fields[col+1].name == fields[col].name + ' unit') 
+    && (fields[col+2].name == fields[col].name + ' bin'));
 }
 
 /**
@@ -929,7 +929,7 @@ const changeColVisibility = (id, data, hot) => {
   const hiddenColumns = [];
   if (id === 'show-required-cols-dropdown-item') {
     getFields(data).forEach(function(field, i) {
-      if (field.requirement !== 'required') hiddenColumns.push(i);
+      if (field.valueRequired !== 'required') hiddenColumns.push(i);
     });
   }
   hiddenColsPlugin.hideColumns(hiddenColumns);
@@ -979,7 +979,7 @@ const changeRowVisibility = (id, invalidCells, hot) => {
 const getFieldYCoordinates = (data) => {
   const ret = {};
   for (const [i, field] of getFields(data).entries()) {
-    ret[field.fieldName] = i;
+    ret[field.name] = i;
   }
   return ret;
 };
@@ -1016,7 +1016,7 @@ const getInvalidCells = (hot, data) => {
 
     for (let col=0; col<fields.length; col++) {
       const cellVal = hot.getDataAtCell(row, col);
-      const datatype = fields[col].datatype;
+      const datatype = fields[col].dataType;
       let valid = true;
       // TODO we could have messages for all types of invalidation, and add
       //  them as tooltips
@@ -1028,7 +1028,7 @@ const getInvalidCells = (hot, data) => {
         checkProvenance(cellVal, hot, row, col);
       };
       if (!cellVal) {
-        valid = fields[col].requirement !== 'required';
+        valid = fields[col].valueRequired !== 'required';
         msg = 'Required cells cannot be empty'
       } 
       else switch (datatype) {
@@ -1056,8 +1056,8 @@ const getInvalidCells = (hot, data) => {
          
       }
 
-      if (!valid && fields[col].dataStatus) {
-        valid = validateValAgainstVocab(cellVal, fields[col].dataStatus);
+      if (!valid && fields[col].statusEnumeration) {
+        valid = validateValAgainstVocab(cellVal, fields[col].statusEnumeration);
       }
 
       if (!valid) {
@@ -1108,13 +1108,13 @@ const checkProvenance = (cellVal, hot, row, col) => {
  */
 const testNumericRange = (number, field) => {
 
-  if (field['xs:minInclusive'] !== '') {
-    if (number < field['xs:minInclusive']) {
+  if (field['minValue'] !== '') {
+    if (number < field['minValue']) {
       return false
     }
   }
-  if (field['xs:maxInclusive'] !== '') {
-    if (number > field['xs:maxInclusive']) 
+  if (field['maxValue'] !== '') {
+    if (number > field['maxValue']) 
       return false
   }
   return true
@@ -1157,12 +1157,12 @@ const validateValsAgainstVocab = (valsCsv, source) => {
  * @return {String} HTML string describing field.
  */
 const getComment = (field) => {
-  let ret = `<p><strong>Label</strong>: ${field.fieldName}</p>
+  let ret = `<p><strong>Label</strong>: ${field.name}</p>
 <p><strong>Description</strong>: ${field.description}</p>
 <p><strong>Guidance</strong>: ${field.guidance}</p>
 <p><strong>Examples</strong>: ${field.examples}</p>`;
-  if (field.dataStatus) {
-    ret += `<p><strong>Null values</strong>: ${field.dataStatus}</p>`;
+  if (field.statusEnumeration) {
+    ret += `<p><strong>Null values</strong>: ${field.statusEnumeration}</p>`;
   }
   return ret;
 };
@@ -1380,7 +1380,7 @@ const setupTriggers = () => {
   $('#grid').on('dblclick', '.secondary-header-cell', (e) => {
     const innerText = e.target.innerText;
     const field =
-        getFields(DATA).filter(field => field.fieldName === innerText)[0];
+        getFields(DATA).filter(field => field.name === innerText)[0];
     $('#field-description-text').html(getComment(field));
     $('#field-description-modal').modal('show');
   });

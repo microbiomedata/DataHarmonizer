@@ -53,7 +53,7 @@ def export_fields (EXPORT_FORMAT, field, row, as_field = False):
 		for export_field in EXPORT_FORMAT:
 			prefix = export_field[7:]; # Get rid of "EXPORT_" part.
 			if row[export_field] == None:
-				print ('Error: ', export_field, 'not found in row with label [',row['label'], ']. Malformed text in row?');
+				print ('Error: ', export_field, 'not found in row with label [',row['name'], ']. Malformed text in row?');
 				continue;
 
 			# An export field may have one or more [field name]:[field value] transforms, separated by ";"
@@ -98,7 +98,7 @@ with open(r_filename) as tsvfile:
 
 	EXPORT_FORMAT = [];
 	firstrow = True;
-    # Row has keys 'Ontology ID' 'parent class' 'label' 'datatype' 'requirement' ...	
+    # Row has keys 'identifier' 'parent class' 'name' 'dataType' 'requirement' ...	
 	for row in reader:
 
 		# Get list of exportable fields, each of which has "EXPORT_" prefixed into it.
@@ -109,42 +109,66 @@ with open(r_filename) as tsvfile:
 					EXPORT_FORMAT.append(key);
 
 		# Skip second row (a robot directive row)
-		if len(row['Ontology ID']) == 0 or row['Ontology ID'] != 'ID':
-			label = row['label'].strip();
+		if len(row['identifier']) == 0 or row['identifier'] != 'ID':
+			label = row['name'].strip();
 			if label > '':
 				if row['parent class'] == '': 
 					# Define a section of fields
-					section = {'fieldName': label, 'children': []}
+					section = {'name': label, 'children': []}
 					DATA.append(section);
 					reference_html += '''
 						<tr class="section">
-							<td colspan="5"><h3>{fieldName}</h3></td>
+							<td colspan="5"><h3>{name}</h3></td>
 						</tr>
 						'''.format(**section);
 
 				else:
 					# Find parent class in DATA or in index of its fields
 					parent_label = row['parent class'].strip();
-					section = next((x for x in DATA if x['fieldName'].strip() == parent_label), None);
+					section = next((x for x in DATA if x['name'].strip() == parent_label), None);
 					if section:
 						# Convert data status into array of values.
-						if len(row['data status'])>0:
-							dataStatus = list(map(lambda x: x.strip(), row['data status'].split(';')));
+						if len(row['statusEnumeration'])>0:
+							statusEnumeration = list(map(lambda x: x.strip(), row['statusEnumeration'].split(';')));
 						else:
-							dataStatus = None;
+							statusEnumeration = None;
 
+
+						# context= "https://json-ld.org/contexts/person.jsonld"
+
+						context = {
+							'version':		'http://schema.org/version', # Property
+							'identifier': 	'http://schema.org/identifier', # Property
+							'name': 		'http://schema.org/name', 		# Property
+							'description':	'http://schema.org/description', # Property
+							'dataType':		'http://schema.org/DataType', 	# Data Type
+							'minValue':		'http://schema.org/minValue',	# Property
+							'maxValue':		'http://schema.org/maxValue',	# Property
+							'statusEnumeration': 'https://schema.org/StatusEnumeration', # Intangible
+							'isBasedOn':	'https://schema.org/isBasedOn',	# Property
+							'itemList':		'https://schema.org/ItemList',	# Intangible
+							'valueRequired':'https://schema.org/valueRequired', # Property
+
+							#Custom fields
+							'exportField':		'https://schema.org/ItemList',	# Intangible
+
+							#'':			'https://schema.org/codeValue',
+
+						}
+						# A schema:propertyValueSpecification
 						field = {
-							'fieldName':   		label, 			# schema:name
-							#'schema:codeValue':	label,
+							'identifier': 		row['identifier'],	# was ontology_id
+							'name':   			label, 				# was fieldName
+							'dataType':			row['dataType'], 	# was datatype
+							'isBasedOn': 		row['isBasedOn'],	# was source
+							'statusEnumeration': statusEnumeration,	# was dataStatus
+							'minValue': 		row['minValue'],	# was xs:minInclusive
+							'maxValue': 		row['maxValue'],	# was xs:maxInclusive 
+							'description': 		row['description'],
+							'valueRequired': 	row['valueRequired'], # was requirement
+
+							# These are not schema.org terms
 							'capitalize': 		row['capitalize'],
-							'ontology_id': 		row['Ontology ID'],
-							'datatype':			row['datatype'], 	# schema:DataType
-							'source': 			row['source'],
-							'dataStatus': 		dataStatus,
-							'xs:minInclusive': 	row['min value'],
-							'xs:maxInclusive': 	row['max value'],
-							'requirement': 		row['requirement'],
-							'description': 		row['description'], # schema:description
 							'guidance':			row['guidance'],
 							'examples':			row['examples']
 						}
@@ -153,20 +177,20 @@ with open(r_filename) as tsvfile:
 
 						reference_html += '''
 						<tr>
-							<td class="label">{fieldName}</td>
+							<td class="label">{name}</td>
 							<td>{description}</td>
 							<td>{guidance}</td>
 							<td>{examples}</td>
-							<td>{dataStatus}</td>
+							<td>{statusEnumeration}</td>
 						</tr>\n
 						'''.format(**field);
 
-						if row['datatype'] == 'select' or row['datatype'] == 'multiple':
+						if row['dataType'] == 'select' or row['dataType'] == 'multiple':
 							# Use ordered dict to keeps additions in order:
 							choice = collections.OrderedDict(); 
 							# Top level case-sensitive field index, curators must be exact
 							CHOICE_INDEX[label] = choice; 
-							field['schema:ItemList'] = choice;
+							field['itemList'] = choice;
 
 						section['children'].append(field)
 						FIELD_INDEX[label.lower()] = field;
@@ -184,12 +208,12 @@ with open(r_filename) as tsvfile:
 								search_root = parent_label;
 								print ('vocabulary field:', parent_label);
 
-							if not 'schema:ItemList' in FIELD_INDEX[parent_label_lc]:
+							if not 'itemList' in FIELD_INDEX[parent_label_lc]:
 								print ("error: field ",parent_label, "not marked as select or multiple but it has child term", label);
 							else:
 								# Basically top-level entries in field_map:
 								choice = collections.OrderedDict();
-								FIELD_INDEX[parent_label_lc]['schema:ItemList'][label] = choice;
+								FIELD_INDEX[parent_label_lc]['itemList'][label] = choice;
 	
 								# Parent_label is top level field name:
 								CHOICE_INDEX[parent_label][label] = choice;
@@ -204,9 +228,9 @@ with open(r_filename) as tsvfile:
 							try:
 								result = dpath.util.get(CHOICE_INDEX, '/' + search_root +'/**/' + parent_label.replace('/','?'), separator='/');
 								choice = collections.OrderedDict(); # new child {}
-								if not 'schema:ItemList' in result:
-									result['schema:ItemList'] = {};
-								result['schema:ItemList'][label] = choice; 
+								if not 'itemList' in result:
+									result['itemList'] = {};
+								result['itemList'][label] = choice; 
 								export_fields(EXPORT_FORMAT, choice, row);
 							except:
 								print ("Error: parent class ", parent_label, "doesn't exist as section or field for term. Make sure parent term is trimmed of whitespace.", label);

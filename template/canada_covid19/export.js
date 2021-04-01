@@ -153,7 +153,7 @@ var exportGISAID = (baseName, hot, data, xlsx, fileType) => {
         const field = sourceFields[sourceFieldIndex]
         const standardizedCellVal = mappedCellVal.toLowerCase().trim();
 
-        if (field.fieldName === 'specimen processing') {
+        if (field.name === 'specimen processing') {
           // Specimen processing is a multi-select field
           const standardizedCellValArr = standardizedCellVal.split(';');
           if (!standardizedCellValArr.includes('virus passage')) continue;
@@ -162,9 +162,9 @@ var exportGISAID = (baseName, hot, data, xlsx, fileType) => {
         }
 
         // All null values should be converted to "Unknown"
-        if (field.dataStatus) {
+        if (field.statusEnumeration) {
           const standardizedDataStatus =
-              field.dataStatus.map(val => val.toLowerCase().trim());
+              field.statusEnumeration.map(val => val.toLowerCase().trim());
           if (standardizedDataStatus.includes(standardizedCellVal)) {
             // Don't push "Unknown" to fields with multi, concat mapped values
             if (sources.length > 1) continue;
@@ -174,7 +174,7 @@ var exportGISAID = (baseName, hot, data, xlsx, fileType) => {
         }
 
         // Add 'passage number ' prefix to number.
-        if (field.fieldName === 'passage number') {
+        if (field.name === 'passage number') {
           mappedCellVal = 'passage number ' + mappedCellVal;
         }
 
@@ -298,7 +298,7 @@ var exportLASER = (baseName, hot, data, xlsx, fileType) => {
       // yes/no calculated field
       if (headerName === 'Patient Symptomatic') {
         // Note: if this field eventually gets null values, then must do 
-        // field.dataStatus check.
+        // field.statusEnumeration check.
         const value = inputRow[sourceFieldNameMap['signs and symptoms']] || '';
         outputRow.push( value ? 'yes' : 'no' );
         continue;
@@ -324,7 +324,7 @@ var exportLASER = (baseName, hot, data, xlsx, fileType) => {
       // yes/no field calculated from long conglomerated travel fields +
       // travel history
       if (headerName === 'Patient Travelled') {
-        // as above for field.dataStatus check.
+        // as above for field.statusEnumeration check.
         const travel_field = 'Country of Travel|Province of Travel|City of Travel|Travel start date|Travel End Date';
         const travel_index = outputMatrix[0].indexOf(travel_field);
         // Look for any content besides bar separators        
@@ -358,7 +358,7 @@ var exportLASER = (baseName, hot, data, xlsx, fileType) => {
           const value = inputRow[sourceFieldNameMap[fieldName]];
 
           // Ignore all null value types
-          if (!value || field.dataStatus.indexOf(value) >= 0) {
+          if (!value || field.statusEnumeration.indexOf(value) >= 0) {
             continue;
           }
           if (fieldName === 'host (scientific name)' || fieldName === 'host (common name)') {
@@ -480,7 +480,7 @@ var exportNML_LIMS = (baseName, hot, data, xlsx, fileType) => {
       // yes/no calculated field
       if (headerName === 'VE_SYMP_AVAIL') {
         // Note: if this field eventually gets null values, then must do 
-        // field.dataStatus check.
+        // field.statusEnumeration check.
         const value = inputRow[sourceFieldNameMap['signs and symptoms']] || '';
         outputRow.push( value ? 'Y' : 'N' );
         continue;
@@ -509,7 +509,7 @@ var exportNML_LIMS = (baseName, hot, data, xlsx, fileType) => {
           const value = inputRow[sourceFieldNameMap[fieldName]];
 
           // Ignore all null value types
-          if (!value || field.dataStatus.indexOf(value) >= 0) {
+          if (!value || field.statusEnumeration.indexOf(value) >= 0) {
             continue;
           }
           if (fieldName === 'host (scientific name)' || fieldName === 'host (common name)') {
