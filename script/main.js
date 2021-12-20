@@ -1360,7 +1360,7 @@ $(document).ready(() => {
     let params = new URLSearchParams(location.search);
     template_folder = params.get('template') || template_folder;
     if (params.get('minified') || false) {
-      $('#header-row').remove();
+      $('#header-row').css('display', 'none');
     }
   }
   else {//low-tech way:
@@ -1765,6 +1765,10 @@ const setupMessageInterface = () => {
     switch(event.data.type) {
       case 'setupTemplate':
         setupTemplate(event.data.folder);
+        break;
+
+      case 'open':
+        $('#open-dropdown-item').trigger('click');
         break;
 
       case 'validate':
