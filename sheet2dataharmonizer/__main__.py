@@ -1,80 +1,40 @@
-import linkml.generators.yamlgen as yg
-import linkml_round_trips.modular_gd as mgd
-from linkml_runtime.linkml_model import Prefix, SlotDefinition, Example
+import re
+import sheet2dataharmonizer.converters.sheet2linkml as mgd
+
+from linkml_runtime.linkml_model import SlotDefinition, Example
 from linkml_runtime.dumpers import yaml_dumper
 
-sheet_id = '1pSmxX6XGOxmoA7S7rKyj5OaEl3PmAl4jAOlROuNHrU0'
-client_secret_json = "local/client_secret.apps.googleusercontent.com.json"
+def wrap_schema(client_secret_json, sheet_id, tasks, constructed_class_name, new_schema):
+    for title, task in tasks.items():
+        pysqldf_slot_list = mgd.subset_slots_from_sheet(client_secret_json, sheet_id, task['title'], task['query'])
+        # # pysqldf_slot_list.sort()
+        new_schema = mgd.wrapper(task['yaml'], title, task['focus_class'], pysqldf_slot_list, new_schema,
+                                constructed_class_name)
 
-constructed_schema_name = "soil_biosample"
-constructed_schema_id = "http://example.com/soil_biosample"
-constructed_class_name = "soil_biosample"
+    return new_schema
 
-additional_prefixes = {"prov": "http://www.w3.org/ns/prov#", "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-                       "schema": "http://schema.org/", "xsd": "http://www.w3.org/2001/XMLSchema#",
-                       "UO": "http://purl.obolibrary.org/obo/UO_"}
+def add_emsl_schema(emsl_dict, new_schema):
+    for i in emsl_dict:
+        if i['slot'] in new_schema.slots:
+            print(f"slot {i['slot']} already in destination schema")
+        else:
+            new_slot = SlotDefinition(name=i['slot'], slot_uri="emsl:" + i['slot'], title=i['name'],
+                                    string_serialization=i['syntax'])
+            if i['requirement status'] == "required":
+                new_slot.required = True
+            if i['requirement status'] == "recommended":
+                new_slot.recommended = True
+            if i['example'] != "" and i['example'] is not None:
+                temp_example = Example(i['example'])
+                new_slot.examples.append(temp_example)
+            if i['definition'] != "" and i['definition'] is not None:
+                new_slot.description = i['definition']
+            if i['guidance'] != "" and i['guidance'] is not None:
+                new_slot.comments.append(i['guidance'])
+            new_schema.slots[i['slot']] = new_slot
+            new_schema.classes[constructed_class_name].slots.append(i['slot'])
 
-new_schema = mgd.construct_schema(constructed_schema_name, constructed_schema_id, constructed_class_name,
-                                  additional_prefixes)
-
-# nmdc-schema/src/schema/nmdc.yaml
-# mixs-source/model/schema/mixs.yaml
-# target/nmdc_generated.yaml
-# target/mixs_generated.yaml
-# target/mixs_generated_no_imports.yaml
-# target/nmdc_generated_no_imports.yaml
-
-tasks = {"nmdc": {"yaml": "target/nmdc_generated_no_imports.yaml", "title": "nmdc_biosample_slots",
-                  "focus_class": "biosample",
-                  "query": """
-SELECT
-    name as slot
-FROM
-    gsheet_frame
-where
-    from_schema != 'https://microbiomedata/schema/mixs'
-    and disposition != 'skip';
-"""}, "mixs": {"yaml": "target/mixs_generated_no_imports.yaml", "title": "mixs_packages_x_slots", "focus_class": "soil",
-               "query": """
-SELECT
-    slot as slot
-FROM
-    gsheet_frame
-where
-    package = 'soil'
-    and (
-    disposition = 'use as-is' or disposition = 'borrowed as-is'
-    )
-"""}, }
-
-for title, task in tasks.items():
-    pysqldf_slot_list = mgd.subset_slots_from_sheet(client_secret_json, sheet_id, task['title'], task['query'])
-    # # pysqldf_slot_list.sort()
-    new_schema = mgd.wrapper(task['yaml'], title, task['focus_class'], pysqldf_slot_list, new_schema,
-                             constructed_class_name)
-
-emsl_sheet = mgd.get_gsheet_frame(client_secret_json, sheet_id, 'EMSL_sample_slots')
-emsl_dict = emsl_sheet.to_dict(orient='records')
-
-for i in emsl_dict:
-    if i['slot'] in new_schema.slots:
-        print(f"slot {i['slot']} already in destination schema")
-    else:
-        new_slot = SlotDefinition(name=i['slot'], slot_uri="emsl:" + i['slot'], title=i['name'],
-                                  string_serialization=i['syntax'])
-        if i['requirement status'] == "required":
-            new_slot.required = True
-        if i['requirement status'] == "recommended":
-            new_slot.recommended = True
-        if i['example'] != "" and i['example'] is not None:
-            temp_example = Example(i['example'])
-            new_slot.examples.append(temp_example)
-        if i['definition'] != "" and i['definition'] is not None:
-            new_slot.description = i['definition']
-        if i['guidance'] != "" and i['guidance'] is not None:
-            new_slot.comments.append(i['guidance'])
-        new_schema.slots[i['slot']] = new_slot
-        new_schema.classes[constructed_class_name].slots.append(i['slot'])
+    return new_schema
 
 # SlotDefinition(name='replicate_number', id_prefixes=[], definition_uri=None, aliases=[], local_names={},
 #                conforms_to=None, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[],
@@ -106,6 +66,61 @@ for i in emsl_dict:
 # file = open("use_modular_gd.yaml", "w")
 # yaml.safe_dump(serialized, file)
 
-dumped = yaml_dumper.dumps(new_schema)
+def main(constructed_schema_name, constructed_schema_id, constructed_class_name, additional_prefixes, client_secret_json, sheet_id, tasks):
+    new_schema = mgd.construct_schema(constructed_schema_name, constructed_schema_id, constructed_class_name,
+                                  additional_prefixes)
 
-print(dumped)
+    new_schema = wrap_schema(client_secret_json, sheet_id, tasks, constructed_class_name, new_schema)
+
+    emsl_sheet = mgd.get_gsheet_frame(client_secret_json, sheet_id, 'EMSL_sample_slots')
+    emsl_dict = emsl_sheet.to_dict(orient='records')
+
+    new_schema = add_emsl_schema(emsl_dict, new_schema)
+
+    dumped = yaml_dumper.dumps(new_schema)
+
+    print(dumped)
+
+if __name__ == "__main__":
+    sheet_id = '1pSmxX6XGOxmoA7S7rKyj5OaEl3PmAl4jAOlROuNHrU0'
+    client_secret_json = "local/sheets.googleapis.com-python.json"
+
+    constructed_schema_name = "soil_biosample"
+    constructed_schema_id = "http://example.com/soil_biosample"
+    constructed_class_name = "soil_biosample"
+
+    additional_prefixes = {"prov": "http://www.w3.org/ns/prov#", "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+                        "schema": "http://schema.org/", "xsd": "http://www.w3.org/2001/XMLSchema#",
+                        "UO": "http://purl.obolibrary.org/obo/UO_"}
+
+    # nmdc-schema/src/schema/nmdc.yaml
+    # mixs-source/model/schema/mixs.yaml
+    # target/nmdc_generated.yaml
+    # target/mixs_generated.yaml
+    # target/mixs_generated_no_imports.yaml
+    # target/nmdc_generated_no_imports.yaml
+
+    tasks = {"nmdc": {"yaml": "target/nmdc_generated_no_imports.yaml", "title": "nmdc_biosample_slots",
+                    "focus_class": "biosample",
+                    "query": """
+    SELECT
+        name as slot
+    FROM
+        gsheet_frame
+    where
+        from_schema != 'https://microbiomedata/schema/mixs'
+        and disposition != 'skip';
+    """}, "mixs": {"yaml": "target/mixs_generated_no_imports.yaml", "title": "mixs_packages_x_slots", "focus_class": "soil",
+                "query": """
+    SELECT
+        slot as slot
+    FROM
+        gsheet_frame
+    where
+        package = 'soil'
+        and (
+        disposition = 'use as-is' or disposition = 'borrowed as-is'
+        )
+    """}, }
+
+    main(constructed_schema_name, constructed_schema_id, constructed_class_name, additional_prefixes, client_secret_json, sheet_id, tasks)
