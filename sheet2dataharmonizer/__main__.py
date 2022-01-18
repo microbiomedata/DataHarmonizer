@@ -1,17 +1,16 @@
-import os
 import logging
+
+import click
 
 import sheet2dataharmonizer.converters.sheet2linkml as mgd
 
-from linkml_runtime.linkml_model import SlotDefinition, Example
+from linkml_runtime.linkml_model import SlotDefinition, Example, EnumDefinition
 from linkml_runtime.dumpers import yaml_dumper
-
-ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..'))
 
 logger = logging.getLogger(__name__)
 
 
-def wrap_schema(
+def _wrap_schema(
     client_secret_json, sheet_id, tasks, constructed_class_name, new_schema
 ):
     """TODO: Decide on more appropriate name and fill in docstring."""
@@ -31,17 +30,41 @@ def wrap_schema(
     return new_schema
 
 
-def add_emsl_schema(emsl_dict, new_schema):
+def _inject_supplementary(
+    secret,
+    supplementary_id,
+    enum_sheet,
+    supplementary_tab_title,
+    schema,
+    prefix,
+    class_name,
+    rule_col=None,
+    rule_val=None,
+    overwrite=False,
+):
     """TODO: Decide on more appropriate name and fill in docstring."""
-    for i in emsl_dict:
-        if i["slot"] in new_schema.slots:
-            logger.info(f"slot {i['slot']} already in destination schema")
+    current_sheet = mgd.get_gsheet_frame(
+        secret, supplementary_id, supplementary_tab_title
+    )
+    if (
+        rule_col != ""
+        and rule_col is not None
+        and rule_val != ""
+        and rule_val is not None
+    ):
+        logger.info(f"requiring {rule_col} to equal {rule_val}")
+
+        current_sheet = current_sheet.loc[current_sheet[rule_col].eq(rule_val)]
+
+    current_dict = current_sheet.to_dict(orient="records")
+
+    for i in current_dict:
+        i_s = i["slot"]
+        if i_s in schema.slots and not overwrite:
+            exit
         else:
             new_slot = SlotDefinition(
-                name=i["slot"],
-                slot_uri="emsl:" + i["slot"],
-                title=i["name"],
-                string_serialization=i["syntax"],
+                name=i_s, slot_uri=prefix + ":" + i_s, title=i["name"]
             )
             if i["requirement status"] == "required":
                 new_slot.required = True
@@ -54,55 +77,85 @@ def add_emsl_schema(emsl_dict, new_schema):
                 new_slot.description = i["definition"]
             if i["guidance"] != "" and i["guidance"] is not None:
                 new_slot.comments.append(i["guidance"])
-            new_schema.slots[i["slot"]] = new_slot
-            new_schema.classes[constructed_class_name].slots.append(i["slot"])
+            if i["min"] != "" and i["min"] is not None:
+                new_slot.minimum_value = i["min"]
+            if i["max"] != "" and i["max"] is not None:
+                new_slot.maximum_value = i["max"]
+            # todo force these to be booleans
+            if i["multivalued"] != "" and i["multivalued"] is not None:
+                new_slot.multivalued = bool(i["multivalued"])
+            if i["identifier"] != "" and i["identifier"] is not None:
+                new_slot.identifier = bool(i["identifier"])
+            if i["syntax"] != "" and i["syntax"] is not None:
+                new_slot.string_serialization = i["syntax"]
+                # try to standardize where "enumeration" is expressed... expected value comment/guidance?
+                if i["syntax"] == "enumeration":
+                    if i_s in enum_sheet.columns:
+                        raw_pvs = list(set(list(enum_sheet[i_s])))
+                        raw_pvs = [i for i in raw_pvs if i]
+                        if len(raw_pvs) > 0:
+                            te_name = i_s + "_enum"
+                            temp_enum = EnumDefinition(name=te_name)
+                            raw_pvs.sort()
+                            for pv in raw_pvs:
+                                temp_enum.permissible_values[pv] = pv
+                            new_slot.range = te_name
+                            schema.enums[te_name] = temp_enum
 
-    return new_schema
+            schema.slots[i_s] = new_slot
+            schema.classes[class_name].slots.append(i_s)
+
+    return schema
 
 
+@click.command()
+@click.option(
+    "--sheet_id",
+    default="1pSmxX6XGOxmoA7S7rKyj5OaEl3PmAl4jAOlROuNHrU0",
+    help="id for Soil-NMDC-Template_CompiledGoogle Sheet.",
+    show_default=True,
+)
+@click.option(
+    "--client_secret_json",
+    default="local/client_secret.apps.googleusercontent.com.json",
+    show_default=True,
+    help="location of Google Sheets authentication file.",
+    type=click.Path(exists=True),
+)
+@click.option(
+    "--constructed_schema_name",
+    default="soil_biosample",
+    show_default=True,
+    help="what should the combined schema be called?",
+)
+@click.option(
+    "--constructed_schema_id",
+    default="http://example.com/soil_biosample",
+    show_default=True,
+    help='URL "id" for combined schema?',
+)
+@click.option(
+    "--constructed_class_name",
+    default="soil_biosample",
+    show_default=True,
+    help="name for combined class within combined schema?",
+)
+@click.option("--inc_emsl/--no_emsl", default=False, show_default=True)
+@click.option(
+    "--jgi",
+    type=click.Choice(["metagenomics", "metatranscriptomics", "omit"]),
+    default="omit",
+    show_default=True,
+)
 def main(
     constructed_schema_name,
     constructed_schema_id,
     constructed_class_name,
-    additional_prefixes,
     client_secret_json,
     sheet_id,
-    tasks,
+    inc_emsl,
+    jgi,
 ):
-    new_schema = mgd.construct_schema(
-        constructed_schema_name,
-        constructed_schema_id,
-        constructed_class_name,
-        additional_prefixes,
-    )
-
-    new_schema = wrap_schema(
-        client_secret_json, sheet_id, tasks, constructed_class_name, new_schema
-    )
-
-    emsl_sheet = mgd.get_gsheet_frame(client_secret_json, sheet_id, "EMSL_sample_slots")
-    emsl_dict = emsl_sheet.to_dict(orient="records")
-
-    new_schema = add_emsl_schema(emsl_dict, new_schema)
-
-    # can be executed in runtime
-    # consider moving into __name__ == "__main__"
-    dumped = yaml_dumper.dumps(new_schema)
-
-    logger.info(dumped)
-
-
-if __name__ == "__main__":
-    # TODO: rename variables with more semantic names
-    sheet_id = "1pSmxX6XGOxmoA7S7rKyj5OaEl3PmAl4jAOlROuNHrU0"
-    client_secret_path = os.path.join(
-        ROOT_DIR, "local/sheets.googleapis.com-python.json"
-    )
-
-    constructed_schema_name = "soil_biosample"
-    constructed_schema_id = "http://example.com/soil_biosample"
-    constructed_class_name = "soil_biosample"
-
     additional_prefixes = {
         "prov": "http://www.w3.org/ns/prov#",
         "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
@@ -110,6 +163,13 @@ if __name__ == "__main__":
         "xsd": "http://www.w3.org/2001/XMLSchema#",
         "UO": "http://purl.obolibrary.org/obo/UO_",
     }
+
+    new_schema = mgd.construct_schema(
+        constructed_schema_name,
+        constructed_schema_id,
+        constructed_class_name,
+        additional_prefixes,
+    )
 
     tasks = {
         "nmdc": {
@@ -144,12 +204,78 @@ if __name__ == "__main__":
         },
     }
 
-    main(
-        constructed_schema_name,
-        constructed_schema_id,
-        constructed_class_name,
-        additional_prefixes,
-        client_secret_path,
-        sheet_id,
-        tasks,
+    new_schema = _wrap_schema(
+        client_secret_json, sheet_id, tasks, constructed_class_name, new_schema
     )
+
+    enum_sheet = mgd.get_gsheet_frame(client_secret_json, sheet_id, "enumerations")
+
+    # override for depth
+    new_schema = _inject_supplementary(
+        client_secret_json,
+        sheet_id,
+        enum_sheet,
+        "mixs_modified_slots",
+        new_schema,
+        "mixs_modified",
+        constructed_class_name,
+        overwrite=True,
+    )
+    # override for env_package
+    new_schema = _inject_supplementary(
+        client_secret_json,
+        sheet_id,
+        enum_sheet,
+        "biosample_identification_slots",
+        new_schema,
+        "samp_id",
+        constructed_class_name,
+        overwrite=True,
+    )
+    # haven't documented whether anything else comes along with those overrides yet
+
+    if inc_emsl:
+        logger.info("including EMSL terms")
+        new_schema = _inject_supplementary(
+            client_secret_json,
+            sheet_id,
+            "EMSL_sample_slots",
+            new_schema,
+            "emsl",
+            constructed_class_name,
+        )
+
+    if jgi == "metagenomics":
+        logger.info("would extract JGI metagenomics terms")
+        new_schema = _inject_supplementary(
+            client_secret_json,
+            sheet_id,
+            "JGI_sample_slots",
+            new_schema,
+            "jgi_gen",
+            constructed_class_name,
+            rule_col="analyte type",
+            rule_val="metagenomics",
+        )
+    elif jgi == "metatranscriptomics":
+        logger.info("would extract JGI metatranscriptomics terms")
+        new_schema = _inject_supplementary(
+            client_secret_json,
+            sheet_id,
+            "JGI_sample_slots",
+            new_schema,
+            "jgi_gen",
+            constructed_class_name,
+            rule_col="analyte type",
+            rule_val="metatranscriptomics",
+        )
+    elif jgi == "omit":
+        logger.info("would skip JGI terms")
+    else:
+        logger.info("unexpected JGI processing option")
+
+    # can be executed in runtime
+    # consider moving into __name__ == "__main__"
+    dumped = yaml_dumper.dumps(new_schema)
+
+    logger.info(dumped)
