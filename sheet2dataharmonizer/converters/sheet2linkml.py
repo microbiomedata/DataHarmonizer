@@ -15,7 +15,7 @@ class Sheet2LinkML:
 
     @staticmethod
     def get_gsheet_frame(
-        self, gauth_file_path: str, sheet_id: str, title: str
+        gauth_file_path: str, sheet_id: str, title: str
     ) -> pd.DataFrame:
         gc = pygsheets.authorize(client_secret=gauth_file_path)
         gsheet = gc.open_by_key(sheet_id)
@@ -65,7 +65,6 @@ class Sheet2LinkML:
 
     @staticmethod
     def construct_schema(
-        self,
         schema_name: str,
         schema_id: str,
         class_name: str,

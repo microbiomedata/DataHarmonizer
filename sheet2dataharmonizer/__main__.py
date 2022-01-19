@@ -21,7 +21,6 @@ def _wrap_schema(
 
         sheet2linkml = Sheet2LinkML(task["yaml"])
         new_schema = sheet2linkml.wrapper(
-            task["yaml"],
             title,
             task["focus_class"],
             pysqldf_slot_list,
@@ -119,7 +118,7 @@ def _inject_supplementary(
 )
 @click.option(
     "--client_secret_json",
-    default="local/client_secret.apps.googleusercontent.com.json",
+    default="local/client_secret_fresh-sheet2linkml.apps.googleusercontent.com.json",
     show_default=True,
     help="location of Google Sheets authentication file.",
     type=click.Path(exists=True),
@@ -281,5 +280,3 @@ def main(
     dumped = yaml_dumper.dumps(new_schema)
 
     logger.info(dumped)
-
-    print("Hey")
