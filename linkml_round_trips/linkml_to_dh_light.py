@@ -11,14 +11,6 @@ logger = logging.getLogger(__name__)
 click_log.basic_config(logger)
 
 
-# model_file = "target/soil_biosample_interleaved.yaml"
-# selected_class = "soil_biosample_class"
-# default_section = "default"
-# default_source = ""  # for reuse of enums?
-# default_capitalize = ""
-# default_data_status = ""
-# output_file = "target/data.tsv"
-
 @click.command()
 @click_log.simple_verbosity_option(logger)
 @click.option('--model_file', type=click.Path(exists=True), required=True)
@@ -26,7 +18,8 @@ click_log.basic_config(logger)
 @click.option('--default_section', default="default", show_default=True)
 @click.option('--default_source', default="", show_default=True)
 @click.option('--default_capitalize', default="", show_default=True)
-@click.option('--default_data_status', default="default", show_default=True)
+# @click.option('--default_data_status', default="default", show_default=True)
+@click.option('--default_data_status', default="", show_default=True)
 @click.option('--output_file', type=click.Path(), default="target/data.tsv", show_default=True)
 def linkml_to_dh_light(model_file, selected_class, default_section, default_source, default_capitalize,
                        default_data_status, output_file):
@@ -34,8 +27,19 @@ def linkml_to_dh_light(model_file, selected_class, default_section, default_sour
                         "requirement", "examples", "source", "capitalize", "data status", "max value", "min value",
                         "EXPORT_dev"]
 
+    # see https://github.com/microbiomedata/DataHarmonizer/issues/24
+    #   for snapshots of tally results
     # wrap in ^ and $?
-    q_val_pattern = "\d+[.\d+] \S+"
+    range_data_types = {"date": "xs:date", "timestamp value": "date", "string": "xs:token"}
+    # "{timestamp}": "xs:date" is a very approximate mapping
+    #   we need to work on time and date constrains in general
+    string_ser_data_types = {"{integer}": "xs:nonNegativeInteger", "{timestamp}": "xs:date",
+                             "{float}": "xs:decimal"}
+
+    range_regexes = {"quantity value": r"[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+"}
+    string_ser_regexes = {"{float} {unit}": r"[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+",
+                          "{text};{float} {unit}": r"\S*;[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+",
+                          "{termLabel} {[termID]}": r".* \[ENVO:\d+\]", "{text}:{text}": r"[^\:\n\r]+\:[^\:\n\r]+"}
 
     model_sv = SchemaView(model_file)
 
@@ -68,21 +72,22 @@ def linkml_to_dh_light(model_file, selected_class, default_section, default_sour
     model_enum_names.sort()
 
     blank_row = {i: "" for i in dht_column_order}
-    # logger.info(blank_row)
 
     isa_set = set()
     isa_dict = {}
     relevant_slots = model_sv.class_induced_slots(selected_class)
     rs_names = [i.name for i in relevant_slots]
     rs_dict = dict(zip(rs_names, relevant_slots))
+    prefix_tally = []
     for i in relevant_slots:
-        # slotname = i.name
+        prefix_portion = ""
         if i.slot_uri is None or i.slot_uri == "":
-            section_prefix = ""
+            # section_prefix = ""
+            pass
         else:
             # what if the slot uri is a full uri, not a curie?
             prefix_portion = i.slot_uri.split(":")[0] + ":"
-            logger.info(f"saw the prefix {prefix_portion}")
+            prefix_tally.append(prefix_portion)
         if i.is_a is None:
             relevant_isa = prefix_portion + default_section
         else:
@@ -101,6 +106,7 @@ def linkml_to_dh_light(model_file, selected_class, default_section, default_sour
         section_list.append(current_row)
 
     range_tally = []
+    string_ser_tally = []
 
     term_names = list(isa_dict.keys())
     term_names.sort()
@@ -135,6 +141,7 @@ def linkml_to_dh_light(model_file, selected_class, default_section, default_sour
         #   Damion's latest LinkML -> JS approach lays the comments and examples out nicer
         current_row["guidance"] = " | ".join(current_sd.comments)
         # todo refactor
+        current_row["datatype"] = "xs:token"
         if current_sd.pattern is not None and current_sd.pattern != "":
             if current_row["guidance"] is not None and current_row["guidance"] != "":
                 current_row["guidance"] = current_row[
@@ -143,25 +150,33 @@ def linkml_to_dh_light(model_file, selected_class, default_section, default_sour
                 current_row["guidance"] = "pattern as regular expression: " + current_sd.pattern
         if current_sd.string_serialization is not None and current_sd.string_serialization != "":
             if current_row["guidance"] is not None and current_row["guidance"] != "":
-                current_row["guidance"] = current_row["guidance"] + " | pattern generalization: " + current_sd.string_serialization
+                current_row["guidance"] = current_row[
+                                              "guidance"] + " | pattern generalization: " + current_sd.string_serialization
             else:
                 current_row["guidance"] = "pattern generalization: " + current_sd.string_serialization
+            # if current_sd.string_serialization == '{float}':
+            #     current_row["datatype"] = "xs:decimal"
         # todo map types
         # don't forget selects and multis
         # map selects to terms and indent
         range_tally.append(current_sd.range)
-        current_row["datatype"] = "xs:token"
-        if current_sd.identifier:
-            current_row["datatype"] = "xs:unique"
-            current_row["requirement"] = "required"
-        if current_sd.range == "timestamp value" or current_sd.range == "date":
-            current_row["datatype"] = "xs:date"
+        if current_sd.string_serialization is not None and current_sd.string_serialization != "":
+            string_ser_tally.append(current_sd.string_serialization[0:99])
+        else:
+            string_ser_tally.append("<none>")
+        # if current_sd.range == "timestamp value" or current_sd.range == "date":
+        #     current_row["datatype"] = "xs:date"
         # other ways to infer pattern (mappings from range?) or string serialization
         # exclude any that reiterate an enum
         # select, multiple, xs:nonNegativeInteger, xs:decimal
         current_row["pattern"] = current_sd.pattern
-        if (current_sd.pattern is None or current_sd.pattern == "") and current_sd.range == "quantity value":
-            current_row["pattern"] = q_val_pattern
+        # if (current_sd.pattern is None or current_sd.pattern == "") and current_sd.range == "quantity value":
+        #     current_row["pattern"] = q_val_pattern
+        # todo check for numeric but don't force float when int will do?
+        if current_sd.minimum_value is not None and current_sd.minimum_value != "":
+            current_row["min value"] = current_sd.minimum_value
+        if current_sd.maximum_value is not None and current_sd.maximum_value != "":
+            current_row["max value"] = current_sd.maximum_value
         if current_sd.range in model_enum_names:
             # anything else to clear?
             current_row["pattern"] = ""
@@ -175,20 +190,16 @@ def linkml_to_dh_light(model_file, selected_class, default_section, default_sour
             pv_keys = list(pvs_obj.keys())
             pv_keys.sort()
             for pvk in pv_keys:
-                # logger.info(pvk)
                 pv_row = blank_row.copy()
                 pv_row["label"] = pvk
                 pv_row["parent class"] = current_sd.title
                 # use term meaning as ontology ID if possible
                 pv_row["Ontology ID"] = pvs_obj[pvk].meaning
                 pv_list.append(pv_row)
-        # seeing fewer required than I expected
-        # current_row["requirement"] = ""
         if current_sd.recommended or current_sd.name in rec_from_usage:
             current_row["requirement"] = "recommended"
         elif current_sd.required or current_sd.name in req_from_usage:
             current_row["requirement"] = "required"
-        # --- examples
         example_list = []
         for exmpl in current_sd.examples:
             # ignoring description which always seems to be None
@@ -204,6 +215,20 @@ def linkml_to_dh_light(model_file, selected_class, default_section, default_sour
         current_row["min value"] = current_sd.minimum_value
         # old issue... export menu saves a file but not with the briefer LinkML names (as opposed to titles)
         current_row["EXPORT_dev"] = current_sd.name
+
+        if current_sd.range in range_data_types:
+            current_row["datatype"] = range_data_types[current_sd.range]
+        elif current_sd.string_serialization in string_ser_data_types:
+            current_row["datatype"] = string_ser_data_types[current_sd.string_serialization]
+
+        if current_sd.range in range_regexes:
+            current_row["pattern"] = range_regexes[current_sd.range]
+        elif current_sd.string_serialization in string_ser_regexes:
+            current_row["pattern"] = string_ser_regexes[current_sd.string_serialization]
+
+        if current_sd.identifier:
+            current_row["datatype"] = "xs:unique"
+            current_row["requirement"] = "required"
 
         term_list.append(current_row)
     logger.info("\n")
@@ -232,27 +257,14 @@ def linkml_to_dh_light(model_file, selected_class, default_section, default_sour
     reunited = reunited.append(coc_leftovers)
     reunited = reunited.append(nr_leftovers)
 
-    logger.info(f"TABULATION OF SLOT RANGES, for prioritizing range->regex conversion")
-    logger.info(pd.Series(range_tally).value_counts())
-
-    # todo also include source (slot URI prefix?) in sectio0n names?
-
-    # todo make a similar table with the string serialization for each slot
+    log_tally(prefix_tally, "TABULATION OF TERM PREFIXES, for prioritizing range->regex conversion")
+    log_tally(range_tally, "TABULATION OF SLOT RANGES, for prioritizing range->regex conversion")
+    log_tally(string_ser_tally, "TABULATION OF STRING SERIALIZATIONS, for prioritizing serialization->regex conversion")
 
     reunited.to_csv(output_file, sep="\t", index=False)
 
-# # soil biosample
-# ranges that could be interpreted as datatypes or patterns
-# I already did quantity value
-# I have the following rules for any range that is defined as an enum...???
-# string                   39
-# quantity value           16
-# external identifier       3
-# date                      3
-# cur_land_use_enum         1
-# drainage_class_enum       1
-# fao_class_enum            1
-# double                    1
-# profile_position_enum     1
-# soil_horizon_enum         1
-# tillage_enum              1
+
+def log_tally(tally, message):
+    logger.info(message)
+    logger.info(pd.Series(tally).value_counts())
+    logger.info("\n")
