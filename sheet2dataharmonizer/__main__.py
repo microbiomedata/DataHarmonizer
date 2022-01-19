@@ -252,6 +252,7 @@ def main(
         new_schema = _inject_supplementary(
             client_secret_json,
             sheet_id,
+            enum_sheet,
             "JGI_sample_slots",
             new_schema,
             "jgi_gen",
