@@ -50,7 +50,7 @@ class Sheet2LinkML:
 
     @staticmethod
     def get_slot_provenance(
-        self, slot_list: List[str], helped_schema: Dict[str, List[str]]
+        slot_list: List[str], helped_schema: Dict[str, List[str]]
     ) -> Dict[str, List[str]]:
         provenance_dict = {"class_induced": [], "schema_other": [], "non_schema": []}
         for current_slot in slot_list:
