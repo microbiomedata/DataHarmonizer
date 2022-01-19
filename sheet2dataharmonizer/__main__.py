@@ -2,7 +2,7 @@ import logging
 
 import click
 
-import sheet2dataharmonizer.converters.sheet2linkml as mgd
+from sheet2dataharmonizer.converters.sheet2linkml import Sheet2LinkML
 
 from linkml_runtime.linkml_model import SlotDefinition, Example, EnumDefinition
 from linkml_runtime.dumpers import yaml_dumper
@@ -15,10 +15,12 @@ def _wrap_schema(
 ):
     """TODO: Decide on more appropriate name and fill in docstring."""
     for title, task in tasks.items():
-        pysqldf_slot_list = mgd.subset_slots_from_sheet(
+        pysqldf_slot_list = Sheet2LinkML.subset_slots_from_sheet(
             client_secret_json, sheet_id, task["title"], task["query"]
         )
-        new_schema = mgd.wrapper(
+
+        sheet2linkml = Sheet2LinkML(task["yaml"])
+        new_schema = sheet2linkml.wrapper(
             task["yaml"],
             title,
             task["focus_class"],
@@ -43,7 +45,7 @@ def _inject_supplementary(
     overwrite=False,
 ):
     """TODO: Decide on more appropriate name and fill in docstring."""
-    current_sheet = mgd.get_gsheet_frame(
+    current_sheet = Sheet2LinkML.get_gsheet_frame(
         secret, supplementary_id, supplementary_tab_title
     )
     if (
@@ -164,7 +166,7 @@ def main(
         "UO": "http://purl.obolibrary.org/obo/UO_",
     }
 
-    new_schema = mgd.construct_schema(
+    new_schema = Sheet2LinkML.construct_schema(
         constructed_schema_name,
         constructed_schema_id,
         constructed_class_name,
@@ -208,7 +210,7 @@ def main(
         client_secret_json, sheet_id, tasks, constructed_class_name, new_schema
     )
 
-    enum_sheet = mgd.get_gsheet_frame(client_secret_json, sheet_id, "enumerations")
+    enum_sheet = Sheet2LinkML.get_gsheet_frame(client_secret_json, sheet_id, "enumerations")
 
     # override for depth
     new_schema = _inject_supplementary(
@@ -279,3 +281,5 @@ def main(
     dumped = yaml_dumper.dumps(new_schema)
 
     logger.info(dumped)
+
+    print("Hey")
