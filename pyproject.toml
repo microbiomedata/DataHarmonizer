@@ -37,4 +37,4 @@ interleave_mergeds = "linkml_round_trips.old.interleave_mergeds:interleave_merge
 linkml_to_dh_light = "linkml_round_trips.linkml_to_dh_light:linkml_to_dh_light"
 linkml2dataharmonizer = "sheet2dataharmonizer.converters.commands:linkml2dataharmonizer"
 mixs_package_classes = "linkml_round_trips.old.mixs_package_classes:mixs_package_classes"
-sheet2dataharmonizer = "sheet2dataharmonizer.__main__:main"
+sheet2linkml = "sheet2dataharmonizer.__main__:main"
