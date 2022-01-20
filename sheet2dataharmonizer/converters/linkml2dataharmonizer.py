@@ -27,15 +27,12 @@ class LinkML2DataHarmonizer:
     def __init__(self, linkml_model_path: str) -> None:
         self.model_sv = SchemaView(linkml_model_path)
 
-    @staticmethod
     def classes(self) -> Any:
         return self.model_sv.all_classes()
 
-    @staticmethod
     def enums(self) -> Any:
         return self.model_sv.all_enums()
 
-    @staticmethod
     def table_columns(self) -> List[str]:
         return [
             "Ontology ID",
@@ -60,10 +57,11 @@ class LinkML2DataHarmonizer:
         reqs_from_usage = []
 
         classes = self.classes()
-        class_names = list(classes.keys().sort())
+        class_names = list(classes.keys())
+        class_names.sort()
 
         for cc in class_names:
-            current_class = self.classes[cc]
+            current_class = classes[cc]
             ccsu = current_class.slot_usage
             ccsu_names = list(ccsu.keys())
             ccsu_names.sort()
@@ -146,8 +144,6 @@ class LinkML2DataHarmonizer:
         default_data_status: str,
     ):
         blank_row = {i: "" for i in self.table_columns()}
-
-        self._get_is_a_struct()
 
         isa_dict = self._get_is_a_struct(selected_class, default_section)
 
