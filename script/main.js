@@ -1344,6 +1344,27 @@ const templateOptions = () =>  {
   }
 };
 
+/**
+ * Handle new file upload.
+ */
+const processFileChange = function (file) {
+  const ext = file.name.split('.').pop();
+  const acceptedExts = ['xlsx', 'xls', 'tsv', 'csv'];
+  if (!acceptedExts.includes(ext)) {
+    const errMsg = `Only ${acceptedExts.join(', ')} files are supported`;
+    $('#open-err-msg').text(errMsg);
+    $('#open-error-modal').modal('show');
+  } else {
+    window.INVALID_CELLS = {};
+    runBehindLoadingScreen(openFile, [file, HOT, DATA, XLSX]);
+  }
+  // Allow consecutive uploads of the same file
+  $('#open-file-input')[0].value = '';
+
+  $('#next-error-button,#no-error-button').hide();
+  window.CURRENT_SELECTION = [null, null, null, null];
+}
+
 /************************** APPLICATION LAUNCH ********************/
 
 $(document).ready(() => {
@@ -1418,27 +1439,11 @@ const setupTriggers = () => {
   });
 
   // File -> Open
-  const $fileInput = $('#open-file-input');
-
-  $fileInput.change(() => {
-    const file = $fileInput[0].files[0];
-    const ext = file.name.split('.').pop();
-    const acceptedExts = ['xlsx', 'xls', 'tsv', 'csv'];
-    if (!acceptedExts.includes(ext)) {
-      const errMsg = `Only ${acceptedExts.join(', ')} files are supported`;
-      $('#open-err-msg').text(errMsg);
-      $('#open-error-modal').modal('show');
-    } else {
-      window.INVALID_CELLS = {};
-      runBehindLoadingScreen(openFile, [file, HOT, DATA, XLSX]);
-    }
-    // Allow consecutive uploads of the same file
-    $fileInput[0].value = '';
-
-    $('#next-error-button,#no-error-button').hide();
-    window.CURRENT_SELECTION = [null,null,null,null];
-
+  $('#open-file-input').change(() => {
+    const file = $('#open-file-input')[0].files[0];
+    processFileChange(file);
   });
+
   // Reset specify header modal values when the modal is closed
   $('#specify-headers-modal').on('hidden.bs.modal', () => {
     $('#expected-headers-div').empty();
@@ -1754,13 +1759,13 @@ const launch = (template_folder, DATA) => {
 /************ Messaging interface ******************** */
 
 const updateParentState = (fieldYCoordinates, INVALID_CELLS) => {
-  window.parent.postMessage({ type: 'update', fieldYCoordinates, INVALID_CELLS });
+  window.parent.postMessage({ type: 'update', fieldYCoordinates, INVALID_CELLS }, "*");
 };
 
 
 const setupMessageInterface = () => {
   console.log("Setting up message interface");
-  window.addEventListener("message", (event) => {
+  window.addEventListener("message", async (event) => {
     console.log('child received event', event.data.type);
     const fieldYCoordinates = getFieldYCoordinates(DATA);
     switch(event.data.type) {
@@ -1769,7 +1774,7 @@ const setupMessageInterface = () => {
         break;
 
       case 'open':
-        $('#open-dropdown-item').trigger('click');
+        processFileChange(event.data.files);
         break;
 
       case 'validate':
@@ -1783,7 +1788,7 @@ const setupMessageInterface = () => {
           }
           else
             $('#next-error-button').hide();
-          console.log('Sendint messsaged');
+
           updateParentState(fieldYCoordinates, window.INVALID_CELLS);
         });
         break;
@@ -1795,8 +1800,21 @@ const setupMessageInterface = () => {
       case 'jumpToRowCol':
         scrollTo(event.data.row, event.data.column, DATA, HOT);
         break;
+      case 'changeVisibility':
+        changeColVisibility(`show-${event.data.value}-cols-dropdown-item`, DATA, HOT);
+        break;
+      case 'exportJson':
+        const value = getTrimmedData(HOT)
+        window.parent.postMessage({ type: 'exportJson', value }, "*");
+        break;
+      case 'loadData':
+        while (!window.HOT) {
+          await new Promise((resolve) => window.setTimeout(resolve, 100));
+        }
+        HOT.loadData(event.data.data);
+        break;
       default:
-        console.log('Unknown Type ', event.data.type);
+        console.log('Unknown Type', event.data.type);
     }
   });
 }
