@@ -14,7 +14,7 @@ var DATA = [
         "requirement": "required",
         "description": "260/280 measurement of sample purity",
         "guidance": "Recommended value is between 1 and 3. | pattern generalization: {float}",
-        "examples": "",
+        "examples": "2.02",
         "exportField": {
           "dev": [
             {
@@ -35,7 +35,7 @@ var DATA = [
         "requirement": "required",
         "description": "260/230 measurement of sample purity",
         "guidance": "Recommended value is between 1 and 3. | pattern generalization: {float}",
-        "examples": "",
+        "examples": "2.02",
         "exportField": {
           "dev": [
             {
@@ -69,14 +69,14 @@ var DATA = [
         "fieldName": "DNA Concentration",
         "capitalize": "",
         "ontology_id": "jgi_gen:dna_concentration",
-        "datatype": "xs:token",
+        "datatype": "xs:decimal",
         "source": "",
         "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
+        "xs:minInclusive": "0",
+        "xs:maxInclusive": "2000",
         "requirement": "required",
         "description": "Must be calculated using a fluorometric method; value >0 and <2000.",
-        "guidance": "Units should be in ng/uL | pattern generalization: {float} ng/uL",
+        "guidance": "Units should be in ng/uL | pattern generalization: {float}",
         "examples": "100",
         "exportField": {
           "dev": [
@@ -383,14 +383,14 @@ var DATA = [
         "fieldName": "DNA Volume",
         "capitalize": "",
         "ontology_id": "jgi_gen:dna_volume",
-        "datatype": "xs:token",
+        "datatype": "xs:decimal",
         "source": "",
         "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
+        "xs:minInclusive": "0",
+        "xs:maxInclusive": "1000",
         "requirement": "required",
         "description": "Value must be >0 and <1000 (values <25 by special permission only).",
-        "guidance": "Units should be in uL | pattern generalization: {float} uL",
+        "guidance": "Units should be in uL | pattern generalization: {float}",
         "examples": "25",
         "exportField": {
           "dev": [
@@ -1176,7 +1176,7 @@ var DATA = [
         "fieldName": "pH",
         "capitalize": "",
         "ontology_id": "MIXS:0001001",
-        "datatype": "xs:token",
+        "datatype": "xs:decimal",
         "source": "",
         "dataStatus": null,
         "xs:minInclusive": "",
@@ -1840,6 +1840,7 @@ var DATA = [
         "description": "The geographical origin of the sample as defined by latitude and longitude. The values should be reported in decimal degrees and in WGS84 system",
         "guidance": "Expected value: decimal degrees,  limit to 8 decimal points | pattern generalization: {float} {float}",
         "examples": "50.586825 6.408977",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+ [-+]?[0-9]*\\.?[0-9]+",
         "exportField": {
           "dev": [
             {
@@ -1879,14 +1880,14 @@ var DATA = [
         "fieldName": "EMSL Sample Storage Temperature",
         "capitalize": "",
         "ontology_id": "emsl:EMSL_store_temp",
-        "datatype": "xs:token",
+        "datatype": "xs:decimal",
         "source": "",
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "Temperature at which the sample sent to EMSL should be stored",
-        "guidance": "pattern generalization: {float} C",
+        "guidance": "Enter a temperature in celsius. Numeric portion only. | pattern generalization: {float}",
         "examples": "-80",
         "exportField": {
           "dev": [
@@ -2066,6 +2067,7 @@ var DATA = [
         "description": "The time of sampling, either as an instance (single point) or interval.",
         "guidance": "Time should be formatted as HH:MM:SS | pattern generalization: HH:MM:SS",
         "examples": "Time should be reported in GMT (LINK)",
+        "pattern": "^((?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d$)",
         "exportField": {
           "dev": [
             {
@@ -2087,6 +2089,7 @@ var DATA = [
         "description": "The vertical distance below local surface, e.g. For sediment or soil samples depth is measured from sediment or soil surface, respectively. Depth can be reported as an interval for subsurface samples.",
         "guidance": "All depths should be reported in meters | pattern generalization: {float}; {float}-{float}",
         "examples": "0-0.1 OR 1",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+; [-+]?[0-9]*\\.?[0-9]+-[-+]?[0-9]*\\.?[0-9]+$",
         "exportField": {
           "dev": [
             {
