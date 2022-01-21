@@ -41,7 +41,7 @@ use_modular: clean  post_clone_submodule_steps serializastion_vs_pattern
 modular_templating_handoff: use_modular
 	cp target/data.tsv template/dev/
 	cd template/dev && poetry run python ../../script/make_data.py && cd -
-	cp -r images docs
+	#cp -r images docs
 	cp -r libraries docs
 	cp -r script docs
 	cp -r template docs

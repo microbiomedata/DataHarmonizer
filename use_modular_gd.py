@@ -138,11 +138,11 @@ def combine_schemas(sheet_id, client_secret_json, constructed_schema_name, const
                                           constructed_class_name)
 
     if jgi == "metagenomics":
-        logger.info("would extract JGI metagenomics terms")
+        logger.info("including JGI metagenomics terms")
         new_schema = inject_supplementary(client_secret_json, sheet_id, 'JGI_sample_slots', new_schema, "jgi_gen",
                                           constructed_class_name, rule_col="analyte type", rule_val="metagenomics")
     elif jgi == "metatranscriptomics":
-        logger.info("would extract JGI metatranscriptomics terms")
+        logger.info("including JGI metatranscriptomics terms")
         new_schema = inject_supplementary(client_secret_json, sheet_id, 'JGI_sample_slots', new_schema, "jgi_gen",
                                           constructed_class_name, rule_col="analyte type",
                                           rule_val="metatranscriptomics")
