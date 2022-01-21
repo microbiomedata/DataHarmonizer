@@ -59,7 +59,8 @@ clean:
 
 # avoiding tests in submodules
 test:
-	poetry run pytest -rsvv tests/
+	#poetry run pytest -rsvv tests/
+	poetry run pytest -rP tests/
 
 # turbomam's mixs-source
 #   moves "patterns" to string serializastions
