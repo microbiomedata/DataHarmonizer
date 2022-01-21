@@ -1,6 +1,5 @@
 # from itertools import dropwhile
 import re
-
 import pandas as pd
 import pygsheets
 import pytest
@@ -12,6 +11,8 @@ from linkml_runtime.utils.schemaview import SchemaView
 # import linkml_round_trips.old.just_exacts as je
 
 import pprint
+
+# test for no gaps and no repeats in column orders
 
 # ---
 

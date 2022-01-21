@@ -1840,6 +1840,7 @@ var DATA = [
         "description": "The geographical origin of the sample as defined by latitude and longitude. The values should be reported in decimal degrees and in WGS84 system",
         "guidance": "Expected value: decimal degrees,  limit to 8 decimal points | pattern generalization: {float} {float}",
         "examples": "50.586825 6.408977",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+ [-+]?[0-9]*\\.?[0-9]+",
         "exportField": {
           "dev": [
             {

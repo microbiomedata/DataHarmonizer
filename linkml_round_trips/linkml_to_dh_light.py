@@ -29,17 +29,60 @@ def linkml_to_dh_light(model_file, selected_class, default_section, default_sour
 
     # see https://github.com/microbiomedata/DataHarmonizer/issues/24
     #   for snapshots of tally results
-    # wrap in ^ and $?
-    range_data_types = {"date": "xs:date", "timestamp value": "date", "string": "xs:token"}
-    # "{timestamp}": "xs:date" is a very approximate mapping
-    #   we need to work on time and date constrains in general
-    string_ser_data_types = {"{integer}": "xs:nonNegativeInteger", "{timestamp}": "xs:date",
-                             "{float}": "xs:decimal"}
 
-    range_regexes = {"quantity value": r"[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+"}
-    string_ser_regexes = {"{float} {unit}": r"[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+",
-                          "{text};{float} {unit}": r"\S*;[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+",
-                          "{termLabel} {[termID]}": r".* \[ENVO:\d+\]", "{text}:{text}": r"[^\:\n\r]+\:[^\:\n\r]+"}
+    # wrap in ^ and $?
+
+    # todo
+    # could any of these types correspod to a multivalued slot?
+    # if so, the regex will probably NOT tolerate pipe catting
+    # {PMID}|{DOI}|{URL}                             20
+    # need some cleanup methods, for not including enumerations in the double click help
+    # enumeration                                    10
+    # {PMID}|{DOI}|{URL}|{text}                       1
+    # {boolean};{Rn/start_time/end_time/duration}     1
+    # where will the user see what temperature is expected?
+    # {float} C                                       1
+    # {float} ng/uL                                   1
+    # {float} uL                                      1
+    # {termLabel} {[termID]}; {timestamp}             1
+    # {termLabel} {[termID]}|{text}                   1
+    # {term}: {term}, {text}                          1
+    # {text};{float} {unit};{timestamp}               1
+    # {text};{timestamp}                              1
+    # {{text}|{float} {unit}};{float} {unit}          1
+
+    range_data_types = {
+        "date": "xs:date",
+        "double": "xs:decimal",
+        "string": "xs:token",
+        "timestamp value": "date"
+    }
+
+    #   we need to work on time and date constrains in general
+    string_ser_data_types = {
+        # "{timestamp}": "xs:date" is a very approximate mapping
+        "{float}": "xs:decimal",
+        # what about negative integers
+        "{integer}": "xs:nonNegativeInteger",
+        "{timestamp}": "xs:date",
+    }
+
+    range_regexes = {
+        "quantity value": r"[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+"
+    }
+    string_ser_regexes = {
+        # geographic location (latitude and longitude) uses the string serialization below
+        # but shouldn't the regex follow this?
+        # https://stackoverflow.com/a/31408260
+        "{float} {float}": "[-+]?[0-9]*\.?[0-9]+ [-+]?[0-9]*\.?[0-9]+",
+        "{float}; {float}-{float}":
+            "^[-+]?[0-9]*\.?[0-9]+; [-+]?[0-9]*\.?[0-9]+-[-+]?[0-9]*\.?[0-9]+$",
+        "{float} {unit}": r"[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+",
+        "HH:MM:SS": "^((?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d$)",
+        "{termLabel} {[termID]}": r".* \[ENVO:\d+\]",
+        "{text};{float} {unit}": r"\S*;[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+",
+        "{text}:{text}": r"[^\:\n\r]+\:[^\:\n\r]+"
+    }
 
     model_sv = SchemaView(model_file)
 
