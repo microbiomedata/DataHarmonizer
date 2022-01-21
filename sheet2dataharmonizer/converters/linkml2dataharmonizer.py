@@ -3,8 +3,6 @@ import logging
 
 from typing import Any, Dict, List
 
-import click
-import click_log
 import pandas as pd
 
 from linkml_runtime.utils.schemaview import SchemaView
@@ -26,6 +24,9 @@ class LinkML2DataHarmonizer:
 
     def __init__(self, linkml_model_path: str) -> None:
         self.model_sv = SchemaView(linkml_model_path)
+        self.prefix_tally = []
+        self.range_tally = []
+        self.string_ser_tally = []
 
     def classes(self) -> Any:
         return self.model_sv.all_classes()
@@ -51,6 +52,26 @@ class LinkML2DataHarmonizer:
             "min value",
             "EXPORT_dev",
         ]
+
+    def range_data_types(self) -> Dict[str, str]:
+        return {"date": "xs:date", "timestamp value": "date", "string": "xs:token"}
+
+    def str_ser_data_types(self) -> Dict[str, str]:
+        return {"{integer}": "xs:nonNegativeInteger", "{timestamp}": "xs:date",
+                             "{float}": "xs:decimal"}
+
+    def range_regexes(self) -> Dict[str, str]:
+        return {"quantity value": r"[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+"}
+
+    def str_ser_regexes(self) -> Dict[str, str]:
+        return {"{float} {unit}": r"[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+",
+                          "{text};{float} {unit}": r"\S*;[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+",
+                          "{termLabel} {[termID]}": r".* \[ENVO:\d+\]", "{text}:{text}": r"[^\:\n\r]+\:[^\:\n\r]+"}
+
+    def log_tally(self, tally: List[str], message: str) -> None:
+        logger.info(message)
+        logger.info(pd.Series(tally).value_counts())
+        logger.info("\n")
 
     def _req_rec_from_slot_usage(self) -> Dict[str, List[str]]:
         """Get Dictionary of required and recommended properties from slot usage."""
@@ -93,28 +114,29 @@ class LinkML2DataHarmonizer:
     def _get_is_a_struct(
         self, selected_class: str, default_section: str, as_a: str = "dictionary"
     ):
-        isa_dict = {}
         relevant_slots = self.model_sv.class_induced_slots(selected_class)
+        isa_dict = {}
+        isa_set = set()
 
         for i in relevant_slots:
-            # slotname = i.name
+            prefix_portion = ""
             if i.slot_uri is None or i.slot_uri == "":
                 section_prefix = ""
             else:
                 # what if the slot uri is a full uri, not a curie?
                 prefix_portion = i.slot_uri.split(":")[0] + ":"
                 logger.info(f"saw the prefix {prefix_portion}")
+                self.prefix_tally.append(prefix_portion)
+            
             if i.is_a is None:
                 relevant_isa = prefix_portion + default_section
             else:
                 relevant_isa = prefix_portion + i.is_a
-
+            
             isa_dict[i.name] = relevant_isa
-
-        if as_a == "set":
-            isa_set = set()
             isa_set.add(relevant_isa)
 
+        if as_a == "set":
             return isa_set
 
         return isa_dict
@@ -147,7 +169,7 @@ class LinkML2DataHarmonizer:
 
         isa_dict = self._get_is_a_struct(selected_class, default_section)
 
-        range_tally = []
+        self.string_ser_tally = []
 
         # wrap in ^ and $?
         q_val_pattern = "\d+[.\d+] \S+"
@@ -193,6 +215,7 @@ class LinkML2DataHarmonizer:
             #   Damion's latest LinkML -> JS approach lays the comments and examples out nicer
             current_row["guidance"] = " | ".join(current_sd.comments)
             # todo refactor
+            current_row["datatype"] = "xs:token"
             if current_sd.pattern is not None and current_sd.pattern != "":
                 if (
                     current_row["guidance"] is not None
@@ -207,6 +230,7 @@ class LinkML2DataHarmonizer:
                     current_row["guidance"] = (
                         "pattern as regular expression: " + current_sd.pattern
                     )
+
             if (
                 current_sd.string_serialization is not None
                 and current_sd.string_serialization != ""
@@ -224,24 +248,28 @@ class LinkML2DataHarmonizer:
                     current_row["guidance"] = (
                         "pattern generalization: " + current_sd.string_serialization
                     )
+                # if current_sd.string_serialization == '{float}':
+                #     current_row["datatype"] = "xs:decimal"
             # todo map types
             # don't forget selects and multis
             # map selects to terms and indent
-            range_tally.append(current_sd.range)
-            current_row["datatype"] = "xs:token"
-            if current_sd.identifier:
-                current_row["datatype"] = "xs:unique"
-                current_row["requirement"] = "required"
-            if current_sd.range == "timestamp value" or current_sd.range == "date":
-                current_row["datatype"] = "xs:date"
-            # other ways to infer pattern (mappings from range?) or string serialization
-            # exclude any that reiterate an enum
-            # select, multiple, xs:nonNegativeInteger, xs:decimal
+            self.range_tally.append(current_sd.range)
+            
+            if current_sd.string_serialization is not None and current_sd.string_serialization != "":
+                self.string_ser_tally.append(current_sd.string_serialization[0:99])
+            else:
+                self.string_ser_tally.append("<none>")
+
             current_row["pattern"] = current_sd.pattern
-            if (
-                current_sd.pattern is None or current_sd.pattern == ""
-            ) and current_sd.range == "quantity value":
-                current_row["pattern"] = q_val_pattern
+            # if (current_sd.pattern is None or current_sd.pattern == "") and current_sd.range == "quantity value":
+            #     current_row["pattern"] = q_val_pattern
+            # todo check for numeric but don't force float when int will do?
+            if current_sd.minimum_value is not None and current_sd.minimum_value != "":
+                current_row["min value"] = current_sd.minimum_value
+                
+            if current_sd.maximum_value is not None and current_sd.maximum_value != "":
+                current_row["max value"] = current_sd.maximum_value
+
             if current_sd.range in model_enum_names:
                 # anything else to clear?
                 current_row["pattern"] = ""
@@ -257,15 +285,12 @@ class LinkML2DataHarmonizer:
                 pv_keys = list(pvs_obj.keys())
                 pv_keys.sort()
                 for pvk in pv_keys:
-                    # logger.info(pvk)
                     pv_row = blank_row.copy()
                     pv_row["label"] = pvk
                     pv_row["parent class"] = current_sd.title
                     # use term meaning as ontology ID if possible
                     pv_row["Ontology ID"] = pvs_obj[pvk].meaning
                     pv_list.append(pv_row)
-            # seeing fewer required than I expected
-            # current_row["requirement"] = ""
 
             req_rec_dict = self._req_rec_from_slot_usage()
 
@@ -290,13 +315,27 @@ class LinkML2DataHarmonizer:
             # old issue... export menu saves a file but not with the briefer LinkML names (as opposed to titles)
             current_row["EXPORT_dev"] = current_sd.name
 
+            range_data_types = self.range_data_types()
+            str_ser_data_types = self.str_ser_data_types()
+            range_regexes = self.range_regexes()
+            str_ser_regexes = self.str_ser_regexes()
+
+            if current_sd.range in range_data_types:
+                current_row["datatype"] = range_data_types[current_sd.range]
+            elif current_sd.string_serialization in str_ser_data_types:
+                current_row["datatype"] = str_ser_data_types[current_sd.string_serialization]
+
+            if current_sd.range in range_regexes:
+                current_row["pattern"] = range_regexes[current_sd.range]
+            elif current_sd.string_serialization in str_ser_regexes:
+                current_row["pattern"] = str_ser_regexes[current_sd.string_serialization]
+
+            if current_sd.identifier:
+                current_row["datatype"] = "xs:unique"
+                current_row["requirement"] = "required"
+
             term_list.append(current_row)
         logger.info("\n")
-
-        logger.info(
-            f"TABULATION OF SLOT RANGES, for prioritizing range->regex conversion"
-        )
-        logger.info(pd.Series(range_tally).value_counts())
 
         return {"term": term_list, "pv": pv_list}
 
@@ -344,6 +383,10 @@ class LinkML2DataHarmonizer:
         reunited = stolen_label_rows.append(cream_of_crop)
         reunited = reunited.append(coc_leftovers)
         reunited = reunited.append(nr_leftovers)
+
+        self.log_tally(self.prefix_tally, "TABULATION OF TERM PREFIXES, for prioritizing range->regex conversion")
+        self.log_tally(self.range_tally, "TABULATION OF SLOT RANGES, for prioritizing range->regex conversion")
+        self.log_tally(self.string_ser_tally, "TABULATION OF STRING SERIALIZATIONS, for prioritizing serialization->regex conversion")
 
         return reunited
 
