@@ -570,6 +570,27 @@ var DATA = [
         }
       },
       {
+        "fieldName": "air temperature regimen",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000551",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Information about treatment involving an exposure to varying temperatures; should include the temperature, treatment regimen including how many times the treatment was repeated, how long each treatment lasted, and the start and end time of the entire treatment; can include different temperature regimens",
+        "guidance": "Expected value: temperature value;treatment interval and duration | Preferred unit: meter | pattern generalization: {float} {unit};{Rn/start_time/end_time/duration}",
+        "examples": "25 degree Celsius;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M",
+        "exportField": {
+          "dev": [
+            {
+              "field": "air_temp_regm"
+            }
+          ]
+        }
+      },
+      {
         "fieldName": "extreme_unusual_properties/Al saturation",
         "capitalize": "",
         "ontology_id": "MIXS:0000607",
@@ -652,6 +673,91 @@ var DATA = [
           "dev": [
             {
               "field": "annual_temp"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "biotic regimen",
+        "capitalize": "",
+        "ontology_id": "MIXS:0001038",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Information about treatment(s) involving use of biotic factors, such as bacteria, viruses or fungi.",
+        "guidance": "Expected value: free text | pattern generalization: {text}",
+        "examples": "sample inoculated with Rhizobium spp. Culture",
+        "exportField": {
+          "dev": [
+            {
+              "field": "biotic_regm"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "carbon/nitrogen ratio",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000310",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Ratio of amount or concentrations of carbon to nitrogen",
+        "guidance": "Expected value: measurement value",
+        "examples": "0.417361111",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "carb_nitro_ratio"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "chemical administration",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000751",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "List of chemical compounds administered to the host or site where sampling occurred, and when (e.g. Antibiotics, n fertilizer, air filter); can include multiple compounds. For chemical entities of biological interest ontology (chebi) (v 163), http://purl.bioontology.org/ontology/chebi",
+        "guidance": "Expected value: CHEBI;timestamp | pattern generalization: {termLabel} {[termID]};{timestamp}",
+        "examples": "agar [CHEBI:2509];2018-05-11T20:00Z",
+        "exportField": {
+          "dev": [
+            {
+              "field": "chem_administration"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "climate environment",
+        "capitalize": "",
+        "ontology_id": "MIXS:0001040",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Treatment involving an exposure to a particular climate; treatment regimen including how many times the treatment was repeated, how long each treatment lasted, and the start and end time of the entire treatment; can include multiple climates",
+        "guidance": "Expected value: climate name;treatment interval and duration | pattern generalization: {text};{Rn/start_time/end_time/duration}",
+        "examples": "tropical climate;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M",
+        "exportField": {
+          "dev": [
+            {
+              "field": "climate_environment"
             }
           ]
         }
@@ -960,6 +1066,27 @@ var DATA = [
         }
       },
       {
+        "fieldName": "gaseous environment",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000558",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Use of conditions with differing gaseous environments; should include the name of gaseous compound, amount administered, treatment duration, interval and total experimental duration; can include multiple gaseous environment regimens",
+        "guidance": "Expected value: gaseous compound name;gaseous compound amount;treatment interval and duration | Preferred unit: micromole per liter | pattern generalization: {text};{float} {unit};{Rn/start_time/end_time/duration}",
+        "examples": "nitric oxide;0.5 micromole per liter;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M",
+        "exportField": {
+          "dev": [
+            {
+              "field": "gaseous_environment"
+            }
+          ]
+        }
+      },
+      {
         "fieldName": "extreme_unusual_properties/heavy metals",
         "capitalize": "",
         "ontology_id": "MIXS:0000652",
@@ -1019,6 +1146,48 @@ var DATA = [
           "dev": [
             {
               "field": "horizon_meth"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "humidity regimen",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000568",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Information about treatment involving an exposure to varying degree of humidity; information about treatment involving use of growth hormones; should include amount of humidity administered, treatment regimen including how many times the treatment was repeated, how long each treatment lasted, and the start and end time of the entire treatment; can include multiple regimens",
+        "guidance": "Expected value: humidity value;treatment interval and duration | Preferred unit: gram per cubic meter | pattern generalization: {float} {unit};{Rn/start_time/end_time/duration}",
+        "examples": "25 gram per cubic meter;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M",
+        "exportField": {
+          "dev": [
+            {
+              "field": "humidity_regm"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "light regimen",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000569",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Information about treatment(s) involving exposure to light, including both light intensity and quality.",
+        "guidance": "Expected value: exposure type;light intensity;light quality | Preferred unit: lux; micrometer, nanometer, angstrom | pattern generalization: {text};{float} {unit};{float} {unit}",
+        "examples": "incandescant light;10 lux;450 nanometer",
+        "exportField": {
+          "dev": [
+            {
+              "field": "light_regm"
             }
           ]
         }
@@ -1173,6 +1342,76 @@ var DATA = [
         }
       },
       {
+        "fieldName": "organic matter",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000204",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Concentration of organic matter",
+        "guidance": "Expected value: measurement value | Preferred unit: microgram per liter",
+        "examples": "1.75 milligram per cubic meter",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "org_matter"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "organic nitrogen",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000205",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Concentration of organic nitrogen",
+        "guidance": "Expected value: measurement value | Preferred unit: microgram per liter",
+        "examples": "4 micromole per liter",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "org_nitro"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "oxygenation status of sample",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000753",
+        "datatype": "select",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Oxygenation status of sample",
+        "guidance": "Expected value: enumeration",
+        "examples": "aerobic",
+        "exportField": {
+          "dev": [
+            {
+              "field": "oxy_stat_samp"
+            }
+          ]
+        },
+        "schema:ItemList": {
+          "aerobic": {},
+          "anaerobic": {},
+          "other": {}
+        }
+      },
+      {
         "fieldName": "pH",
         "capitalize": "",
         "ontology_id": "MIXS:0001001",
@@ -1210,6 +1449,28 @@ var DATA = [
           "dev": [
             {
               "field": "ph_meth"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "phosphate",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000505",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Concentration of phosphate",
+        "guidance": "Expected value: measurement value | Preferred unit: micromole per liter",
+        "examples": "0.7 micromole per liter",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "phosphate"
             }
           ]
         }
@@ -1285,6 +1546,28 @@ var DATA = [
         }
       },
       {
+        "fieldName": "salinity",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000183",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "The total concentration of all dissolved salts in a liquid or solid sample. While salinity can be measured by a complete chemical analysis, this method is difficult and time consuming. More often, it is instead derived from the conductivity measurement. This is known as practical salinity. These derivations compare the specific conductance of the sample to a salinity standard such as seawater.",
+        "guidance": "Expected value: measurement value | Preferred unit: practical salinity unit, percentage",
+        "examples": "25 practical salinity unit",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "salinity"
+            }
+          ]
+        }
+      },
+      {
         "fieldName": "salinity method",
         "capitalize": "",
         "ontology_id": "MIXS:0000341",
@@ -1301,6 +1584,28 @@ var DATA = [
           "dev": [
             {
               "field": "salinity_meth"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "sample storage temperature",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000110",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Temperature at which sample was stored, e.g. -80 degree Celsius",
+        "guidance": "Expected value: measurement value | Preferred unit: degree Celsius",
+        "examples": "-80 degree Celsius",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "samp_store_temp"
             }
           ]
         }
@@ -1366,6 +1671,50 @@ var DATA = [
           "dev": [
             {
               "field": "sieving"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "size-fraction lower threshold",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000735",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Refers to the mesh/pore size used to pre-filter/pre-sort the sample. Materials larger than the size threshold are excluded from the sample",
+        "guidance": "Expected value: value | Preferred unit: micrometer",
+        "examples": "0.2 micrometer",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "size_frac_low"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "size-fraction upper threshold",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000736",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Refers to the mesh/pore size used to retain the sample. Materials smaller than the size threshold are excluded from the sample",
+        "guidance": "Expected value: value | Preferred unit: micrometer",
+        "examples": "20 micrometer",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "size_frac_up"
             }
           ]
         }
@@ -1563,6 +1912,28 @@ var DATA = [
         }
       },
       {
+        "fieldName": "total carbon",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000525",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Total carbon content",
+        "guidance": "Expected value: measurement value | Preferred unit: microgram per liter",
+        "examples": "",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "tot_carb"
+            }
+          ]
+        }
+      },
+      {
         "fieldName": "total nitrogen content method",
         "capitalize": "",
         "ontology_id": "MIXS:0000338",
@@ -1649,6 +2020,28 @@ var DATA = [
         }
       },
       {
+        "fieldName": "total phosphorus",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000117",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Total phosphorus concentration in the sample, calculated by: total phosphorus = total dissolved phosphorus + particulate phosphorus",
+        "guidance": "Expected value: measurement value | Preferred unit: micromole per liter, milligram per liter, parts per million",
+        "examples": "0.03 milligram per liter",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "tot_phosp"
+            }
+          ]
+        }
+      },
+      {
         "fieldName": "water content method",
         "capitalize": "",
         "ontology_id": "MIXS:0000323",
@@ -1687,6 +2080,27 @@ var DATA = [
           "dev": [
             {
               "field": "water_content"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "watering regimen",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000591",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Information about treatment involving an exposure to watering frequencies, treatment regimen including how many times the treatment was repeated, how long each treatment lasted, and the start and end time of the entire treatment; can include multiple regimens",
+        "guidance": "Expected value: measurement value;treatment interval and duration | Preferred unit: milliliter, liter | pattern generalization: {float} {unit};{Rn/start_time/end_time/duration}",
+        "examples": "1 liter;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M",
+        "exportField": {
+          "dev": [
+            {
+              "field": "watering_regm"
             }
           ]
         }
@@ -1867,6 +2281,32 @@ var DATA = [
           "dev": [
             {
               "field": "temp"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "fieldName": "MIXS:investigation field",
+    "children": [
+      {
+        "fieldName": "experimental factor",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000008",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Experimental factors are essentially the variable aspects of an experiment design which can be used to describe an experiment, or set of experiments, in an increasingly detailed manner. This field accepts ontology terms from Experimental Factor Ontology (EFO) and/or Ontology for Biomedical Investigations (OBI). For a browser of EFO (v 2.95) terms, please see http://purl.bioontology.org/ontology/EFO; for a browser of OBI (v 2018-02-12) terms please see http://purl.bioontology.org/ontology/OBI",
+        "guidance": "Expected value: text or EFO and/or OBI | pattern generalization: {termLabel} {[termID]}|{text}",
+        "examples": "time series design [EFO:EFO_0001779]",
+        "exportField": {
+          "dev": [
+            {
+              "field": "experimental_factor"
             }
           ]
         }
