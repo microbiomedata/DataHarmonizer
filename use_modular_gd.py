@@ -1,111 +1,165 @@
-import linkml.generators.yamlgen as yg
 import linkml_round_trips.modular_gd as mgd
-from linkml_runtime.linkml_model import Prefix, SlotDefinition, Example
+from linkml_runtime.linkml_model import SlotDefinition, Example, EnumDefinition
 from linkml_runtime.dumpers import yaml_dumper
 
-sheet_id = '1pSmxX6XGOxmoA7S7rKyj5OaEl3PmAl4jAOlROuNHrU0'
-client_secret_json = "local/client_secret.apps.googleusercontent.com.json"
+import click
 
-constructed_schema_name = "soil_biosample"
-constructed_schema_id = "http://example.com/soil_biosample"
-constructed_class_name = "soil_biosample"
+import logging
+import click_log
 
-additional_prefixes = {"prov": "http://www.w3.org/ns/prov#", "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-                       "schema": "http://schema.org/", "xsd": "http://www.w3.org/2001/XMLSchema#",
-                       "UO": "http://purl.obolibrary.org/obo/UO_"}
+logger = logging.getLogger(__name__)
+click_log.basic_config(logger)
 
-new_schema = mgd.construct_schema(constructed_schema_name, constructed_schema_id, constructed_class_name,
-                                  additional_prefixes)
 
-# nmdc-schema/src/schema/nmdc.yaml
-# mixs-source/model/schema/mixs.yaml
-# target/nmdc_generated.yaml
-# target/mixs_generated.yaml
-# target/mixs_generated_no_imports.yaml
-# target/nmdc_generated_no_imports.yaml
+# place in __main__ in root of package
 
-tasks = {"nmdc": {"yaml": "target/nmdc_generated_no_imports.yaml", "title": "nmdc_biosample_slots",
-                  "focus_class": "biosample",
-                  "query": """
-SELECT
-    name as slot
-FROM
-    gsheet_frame
-where
-    from_schema != 'https://microbiomedata/schema/mixs'
-    and disposition != 'skip';
-"""}, "mixs": {"yaml": "target/mixs_generated_no_imports.yaml", "title": "mixs_packages_x_slots", "focus_class": "soil",
-               "query": """
-SELECT
-    slot as slot
-FROM
-    gsheet_frame
-where
-    package = 'soil'
-    and (
-    disposition = 'use as-is' or disposition = 'borrowed as-is'
-    )
-"""}, }
+@click.command()
+@click_log.simple_verbosity_option()
+@click.option('--sheet_id', default='1pSmxX6XGOxmoA7S7rKyj5OaEl3PmAl4jAOlROuNHrU0',
+              help='id for Soil-NMDC-Template_CompiledGoogle Sheet.', show_default=True)
+@click.option('--client_secret_json', default='local/client_secret.apps.googleusercontent.com.json', show_default=True,
+              help='location of Google Sheets authentication file.', type=click.Path(exists=True))
+@click.option('--constructed_schema_name', default='soil_biosample', show_default=True,
+              help='what should the combined schema be called?')
+@click.option('--constructed_schema_id', default='http://example.com/soil_biosample', show_default=True,
+              help='URL "id" for combined schema?')
+@click.option('--constructed_class_name', default='soil_biosample', show_default=True,
+              help='name for combined class within combined schema?')
+@click.option('--inc_emsl/--no_emsl', default=False, show_default=True)
+@click.option('--jgi', type=click.Choice(['metagenomics', 'metatranscriptomics', 'omit']), default='omit',
+              show_default=True)
+def combine_schemas(sheet_id, client_secret_json, constructed_schema_name, constructed_schema_id,
+                    constructed_class_name, inc_emsl, jgi):
+    additional_prefixes = {"prov": "http://www.w3.org/ns/prov#", "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+                           "schema": "http://schema.org/", "xsd": "http://www.w3.org/2001/XMLSchema#",
+                           "UO": "http://purl.obolibrary.org/obo/UO_"}
 
-for title, task in tasks.items():
-    pysqldf_slot_list = mgd.subset_slots_from_sheet(client_secret_json, sheet_id, task['title'], task['query'])
-    # # pysqldf_slot_list.sort()
-    new_schema = mgd.wrapper(task['yaml'], title, task['focus_class'], pysqldf_slot_list, new_schema,
-                             constructed_class_name)
+    new_schema = mgd.construct_schema(constructed_schema_name, constructed_schema_id, constructed_class_name,
+                                      additional_prefixes)
 
-emsl_sheet = mgd.get_gsheet_frame(client_secret_json, sheet_id, 'EMSL_sample_slots')
-emsl_dict = emsl_sheet.to_dict(orient='records')
+    tasks = {"nmdc": {"yaml": "target/nmdc_generated_no_imports.yaml", "title": "nmdc_biosample_slots",
+                      "focus_class": "biosample",
+                      "query": """
+                            SELECT
+                                name as slot
+                            FROM
+                                gsheet_frame
+                            where
+                                from_schema != 'https://microbiomedata/schema/mixs'
+                                and disposition != 'skip';
+    """},
+             "mixs": {"yaml": "target/mixs_generated_no_imports.yaml", "title": "mixs_packages_x_slots",
+                      "focus_class": "soil",
+                      "query": """
+                            SELECT
+                                slot as slot
+                            FROM
+                                gsheet_frame
+                            where
+                                package = 'soil'
+                                and (
+                                disposition = 'use as-is' or disposition = 'borrowed as-is'
+                                )
+    """}, }
 
-for i in emsl_dict:
-    if i['slot'] in new_schema.slots:
-        print(f"slot {i['slot']} already in destination schema")
+    for title, task in tasks.items():
+        pysqldf_slot_list = mgd.subset_slots_from_sheet(client_secret_json, sheet_id, task['title'], task['query'])
+        # # pysqldf_slot_list.sort()
+        new_schema = mgd.wrapper(task['yaml'], title, task['focus_class'], pysqldf_slot_list, new_schema,
+                                 constructed_class_name)
+
+    # todo refactor
+    enum_sheet = mgd.get_gsheet_frame(client_secret_json, sheet_id, 'enumerations')
+
+    def inject_supplementary(secret, supplementary_id, supplementary_tab_title, schema, prefix, class_name,
+                             rule_col=None, rule_val=None, overwrite=False):
+        current_sheet = mgd.get_gsheet_frame(secret, supplementary_id, supplementary_tab_title)
+        if rule_col != "" and rule_col is not None and rule_val != "" and rule_val is not None:
+            logger.info(f"requiring {rule_col} to equal {rule_val}")
+            current_sheet = current_sheet.loc[current_sheet[rule_col].eq(rule_val)]
+        current_dict = current_sheet.to_dict(orient='records')
+        for i in current_dict:
+            i_s = i['slot']
+            if i_s in schema.slots and not overwrite:
+                exit
+            else:
+                new_slot = SlotDefinition(name=i_s, slot_uri=prefix + ":" + i_s, title=i['name'])
+                if i['requirement status'] == "required":
+                    new_slot.required = True
+                if i['requirement status'] == "recommended":
+                    new_slot.recommended = True
+                if i['example'] != "" and i['example'] is not None:
+                    temp_example = Example(i['example'])
+                    new_slot.examples.append(temp_example)
+                if i['definition'] != "" and i['definition'] is not None:
+                    new_slot.description = i['definition']
+                if i['guidance'] != "" and i['guidance'] is not None:
+                    new_slot.comments.append(i['guidance'])
+                if i['min'] != "" and i['min'] is not None:
+                    new_slot.minimum_value = i['min']
+                if i['max'] != "" and i['max'] is not None:
+                    new_slot.maximum_value = i['max']
+                # todo force these to be booleans
+                if i['multivalued'] != "" and i['multivalued'] is not None:
+                    new_slot.multivalued = bool(i['multivalued'])
+                if i['identifier'] != "" and i['identifier'] is not None:
+                    new_slot.identifier = bool(i['identifier'])
+                if i['syntax'] != "" and i['syntax'] is not None:
+                    new_slot.string_serialization = i['syntax']
+                    # try to standardize where "enumeration" is expressed... expected value comment/guidance?
+                    if i['syntax'] == "enumeration":
+                        if i_s in enum_sheet.columns:
+                            raw_pvs = list(set(list(enum_sheet[i_s])))
+                            raw_pvs = [i for i in raw_pvs if i]
+                            if len(raw_pvs) > 0:
+                                te_name = i_s + "_enum"
+                                temp_enum = EnumDefinition(name=te_name)
+                                raw_pvs.sort()
+                                for pv in raw_pvs:
+                                    temp_enum.permissible_values[pv] = pv
+                                new_slot.range = te_name
+                                schema.enums[te_name] = temp_enum
+                schema.slots[i_s] = new_slot
+                schema.classes[class_name].slots.append(i_s)
+        return schema
+
+    # override for depth
+    new_schema = inject_supplementary(client_secret_json, sheet_id, 'mixs_modified_slots', new_schema, "mixs_modified",
+                                      constructed_class_name, overwrite=True)
+    # override for env_package
+    new_schema = inject_supplementary(client_secret_json, sheet_id, 'biosample_identification_slots', new_schema,
+                                      "samp_id",
+                                      constructed_class_name, overwrite=True)
+    # haven't documented whether anything else comes along with those overrides yet
+
+    if inc_emsl:
+        logger.info("including EMSL terms")
+        new_schema = inject_supplementary(client_secret_json, sheet_id, 'EMSL_sample_slots', new_schema, "emsl",
+                                          constructed_class_name)
+
+    if jgi == "metagenomics":
+        logger.info("including JGI metagenomics terms")
+        new_schema = inject_supplementary(client_secret_json, sheet_id, 'JGI_sample_slots', new_schema, "jgi_gen",
+                                          constructed_class_name, rule_col="analyte type", rule_val="metagenomics")
+    elif jgi == "metatranscriptomics":
+        logger.info("including JGI metatranscriptomics terms")
+        new_schema = inject_supplementary(client_secret_json, sheet_id, 'JGI_sample_slots', new_schema, "jgi_gen",
+                                          constructed_class_name, rule_col="analyte type",
+                                          rule_val="metatranscriptomics")
+    elif jgi == "omit":
+        logger.info("would skip JGI terms")
     else:
-        new_slot = SlotDefinition(name=i['slot'], slot_uri="emsl:" + i['slot'], title=i['name'],
-                                  string_serialization=i['syntax'])
-        if i['requirement status'] == "required":
-            new_slot.required = True
-        if i['requirement status'] == "recommended":
-            new_slot.recommended = True
-        if i['example'] != "" and i['example'] is not None:
-            temp_example = Example(i['example'])
-            new_slot.examples.append(temp_example)
-        if i['definition'] != "" and i['definition'] is not None:
-            new_slot.description = i['definition']
-        if i['guidance'] != "" and i['guidance'] is not None:
-            new_slot.comments.append(i['guidance'])
-        new_schema.slots[i['slot']] = new_slot
-        new_schema.classes[constructed_class_name].slots.append(i['slot'])
+        logger.info("unexpected JGI processing option")
 
-# SlotDefinition(name='replicate_number', id_prefixes=[], definition_uri=None, aliases=[], local_names={},
-#                conforms_to=None, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[],
-#                narrow_mappings=[], broad_mappings=[], extensions={}, annotations={},
-#                description='If sending biological replicates, indicate the rep number here.', alt_descriptions={},
-#                title='Replicate Number', deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[],
-#                from_schema=None, imported_from=None, see_also=[], deprecated_element_has_exact_replacement=None,
-#                deprecated_element_has_possible_replacement=None, is_a=None, abstract=None, mixin=None, mixins=[],
-#                apply_to=[], values_from=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None,
-#                status=None, string_serialization=None, singular_name=None, domain=None,
-#                slot_uri='emsl:replicate_number', multivalued=None, inherited=None, readonly=None, ifabsent=None,
-#                inlined=None, inlined_as_list=None, key=None, identifier=None, designates_type=None, alias=None,
-#                owner=None, domain_of=[], subproperty_of=None, symmetric=None, inverse=None, is_class_field=None,
-#                role=None, is_usage_slot=None, usage_slot_name=None, range=None, range_expression=None, required=None,
-#                recommended=None, minimum_value=None, maximum_value=None, pattern=None, equals_string=None,
-#                equals_string_in=[], equals_number=None, equals_expression=None, minimum_cardinality=None,
-#                maximum_cardinality=None, has_member=None, all_members={}, none_of=[], exactly_one_of=[], any_of=[],
-#                all_of=[])
+    # gen-yaml raises these concerns
+    #   1 WARNING:Namespaces:MIXS namespace is already mapped to https://w3id.org/gensc/ - Mapping to https://w3id.org/mixs/terms/ ignored
+    # 276 WARNING:YAMLGenerator:File "<file>" Prefix case mismatch - supplied: MIXS expected: mixs
+    #   1 WARNING:YAMLGenerator:Overlapping subset and class names: soil
 
-# generated = yg.YAMLGenerator(new_schema)
+    dumped = yaml_dumper.dumps(new_schema)
 
-#   1 WARNING:Namespaces:MIXS namespace is already mapped to https://w3id.org/gensc/ - Mapping to https://w3id.org/mixs/terms/ ignored
-# 276 WARNING:YAMLGenerator:File "<file>" Prefix case mismatch - supplied: MIXS expected: mixs
-#   1 WARNING:YAMLGenerator:Overlapping subset and class names: soil
+    print(dumped)
 
-# serialized = generated.serialize()
 
-# # todo use the "with" wrapper (if we want to write to a files instead of STDOUT)
-# file = open("use_modular_gd.yaml", "w")
-# yaml.safe_dump(serialized, file)
-
-dumped = yaml_dumper.dumps(new_schema)
-
-print(dumped)
+if __name__ == '__main__':
+    combine_schemas()

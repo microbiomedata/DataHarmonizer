@@ -11,15 +11,11 @@
  * main.html?template=test_template
  *
  */
-const VERSION = '0.14.5';
+const VERSION = '0.15.0';
 const VERSION_TEXT = 'DataHarmonizer provenance: v' + VERSION;
 const TEMPLATES = {
   'MAM NMDC Dev Template': {'folder': 'dev', 'status': 'published'},
-  'CanCOGeN Covid-19': {'folder': 'canada_covid19', 'status': 'published'},
-  'PHAC Dexa (ALPHA)': {'folder': 'phac_dexa', 'status': 'draft'},
-  'GRDI (ALPHA)':      {'folder': 'grdi', 'status': 'draft'},
-  'GISAID (ALPHA)':    {'folder': 'gisaid', 'status': 'draft'},
-  'PHA4GE':    {'folder': 'pha4ge', 'status': 'published'}
+  'CanCOGeN Covid-19': {'folder': 'canada_covid19', 'status': 'published'}
 };
 // Currently selected cell range[row,col,row2,col2]
 CURRENT_SELECTION = [null,null,null,null];
@@ -141,6 +137,8 @@ const createHot = (data) => {
     columns: getColumns(data),
     colHeaders: true,
     rowHeaders: true,
+    manualColumnResize: true,
+    //colWidths: [100], //Just fixes first column width
     contextMenu: ["remove_row","row_above","row_below"],
     minRows: 100,
     minSpareRows: 100,
@@ -964,6 +962,7 @@ const binChangeTest = (matrix, rowOffset, col, fields, binOffset, triggered_chan
 const changeColVisibility = (id = 'show-all-cols-dropdown-item', data, hot) => {
   // Grid becomes sluggish if viewport outside visible grid upon re-rendering
   hot.scrollViewportTo(0, 1);
+  const domEl = $('#' + id);
 
   // Un-hide all currently hidden cols
   const hiddenColsPlugin = hot.getPlugin('hiddenColumns');
@@ -973,9 +972,9 @@ const changeColVisibility = (id = 'show-all-cols-dropdown-item', data, hot) => {
   const hiddenColumns = [];
 
   // If accessed by menu, disable that menu item, and enable the others
-  const showColsSelectors = '#show-all-cols-dropdown-item, #show-required-cols-dropdown-item, #show-recommended-cols-dropdown-item';
-  $(showColsSelectors).removeClass('disabled');
-  $('#'+id).addClass('disabled');
+  $('#show-all-cols-dropdown-item, #show-required-cols-dropdown-item, #show-recommended-cols-dropdown-item, .show-section-dropdown-item')
+    .removeClass('disabled');
+  domEl.addClass('disabled');
 
   //Request may be for only required fields, or required+recommended fields
   const options = (id === 'show-required-cols-dropdown-item') ? ['required'] : (id === 'show-recommended-cols-dropdown-item') ? ['required','recommended'] : null;
@@ -984,9 +983,24 @@ const changeColVisibility = (id = 'show-all-cols-dropdown-item', data, hot) => {
       if (!options.includes(field.requirement)) hiddenColumns.push(i);
     });
   }
+  // prefix of ID indicates if it is a command to show just one section.
+  else if (id.indexOf('show-section-') === 0) {
+    const section_name = domEl.text();
+    let column_ptr = 0;
+    for (section of data) {
+      for (column of section.children) {
+        // First condition ensures first (row identifier) column is not hidden
+        if (column_ptr > 0 && section.fieldName != section_name) {
+          hiddenColumns.push(column_ptr)
+        }
+        column_ptr ++;
+      }
+    };
+  }
   hiddenColsPlugin.hideColumns(hiddenColumns);
   hot.render();
 };
+
 
 /**
  * Modify visibility of rows in grid. This function should only be called
@@ -1033,6 +1047,19 @@ const getFieldYCoordinates = (data) => {
   const ret = {};
   for (const [i, field] of getFields(data).entries()) {
     ret[field.fieldName] = i;
+  }
+  return ret;
+};
+
+const getColumnCoordinates = (data) => {
+  const ret = {};
+  let column_ptr = 0;
+  for (section of data) {
+    ret[section.fieldName] = column_ptr;
+    for (column of section.children) {
+      ret[' . . ' + column.fieldName] = column_ptr;
+      column_ptr ++;
+    }
   }
   return ret;
 };
@@ -1348,10 +1375,8 @@ const templateOptions = () =>  {
 $(document).ready(() => {
 
   setupTriggers();
-  setupMessageInterface();
 
   // Default template
-//  let template_label = 'CanCOGeN Covid-19';
   let template_label = 'MAM NMDC Dev Template';
   let template_folder = TEMPLATES[template_label].folder;
 
@@ -1359,9 +1384,6 @@ $(document).ready(() => {
   if (window.URLSearchParams) {
     let params = new URLSearchParams(location.search);
     template_folder = params.get('template') || template_folder;
-    if (params.get('minified') || false) {
-      $('#header-row').css('display', 'none');
-    }
   }
   else {//low-tech way:
     template_folder = location.search.split("template=")[1] || template_folder;
@@ -1378,6 +1400,7 @@ $(document).ready(() => {
   // Here template not found in TEMPLATES, so it doesn't have a name
   $('#template_name_display').text(template_folder);
   setupTemplate (template_folder);
+
 });
 
 /**
@@ -1531,17 +1554,21 @@ const setupTriggers = () => {
       let value = $fillValueInput.val();
       let colname = $fillColumnInput.val();
       const fieldYCoordinates = getFieldYCoordinates(DATA);
-      let changes = [];
-      for (let row=0; row<HOT.countRows(); row++) {
-        if (!HOT.isEmptyRow(row)) {
-          let col = fieldYCoordinates[colname];
-          if (HOT.getDataAtCell(row, col) !== value)      
-            changes.push([row, col, value]);
+      // ENSURE colname hasn't been tampered with (the autocomplete allows
+      // other text)
+      if (colname in fieldYCoordinates) {
+        let changes = [];
+        for (let row=0; row<HOT.countRows(); row++) {
+          if (!HOT.isEmptyRow(row)) {
+            let col = fieldYCoordinates[colname];
+            if (HOT.getDataAtCell(row, col) !== value)      
+              changes.push([row, col, value]);
+          }
         }
-      }
-      if (changes.length > 0) {
-        HOT.setDataAtCell(changes);
-        HOT.render();
+        if (changes.length > 0) {
+          HOT.setDataAtCell(changes);
+          HOT.render();
+        }
       }
     });
   });
@@ -1628,15 +1655,7 @@ const setupTriggers = () => {
     });
   });
 
-  // Settings -> Show ... columns
-  const showColsSelectors = [
-      '#show-all-cols-dropdown-item', 
-      '#show-required-cols-dropdown-item',
-      '#show-recommended-cols-dropdown-item',
-      ];
-  $(showColsSelectors.join(',')).click((e) => {
-    runBehindLoadingScreen(changeColVisibility, [e.target.id, DATA, HOT]);
-  });
+
 
   // Settings -> Show ... rows
   const showRowsSelectors = [
@@ -1727,75 +1746,44 @@ const launch = (template_folder, DATA) => {
 
   toggleDropdownVisibility(HOT, INVALID_CELLS);
 
-  const fieldYCoordinates = getFieldYCoordinates(DATA);
-  updateParentState(fieldYCoordinates, INVALID_CELLS);
+  // Allows columnCoordinates to be accessed within select() below.
+  const columnCoordinates = getColumnCoordinates(DATA);
+
+
+  $('#section-menu').empty();
+  section_ptr = 0;
+  for (section of DATA) {
+    $('#section-menu').append(`<div id="show-section-${section_ptr}" class="dropdown-item show-section-dropdown-item">${section.fieldName}</div>`);
+    section_ptr ++;
+  }
+
+  // Settings -> Show ... columns
+  const showColsSelectors = [
+      '#show-all-cols-dropdown-item', 
+      '#show-required-cols-dropdown-item',
+      '#show-recommended-cols-dropdown-item',
+      '.show-section-dropdown-item',
+      ];
+
+    $(showColsSelectors.join(',')).on('click', function(e) {
+    runBehindLoadingScreen(changeColVisibility, [e.target.id, DATA, window.HOT]);
+  });
 
   // Settings -> Jump to...
-  const $jumpToInput = $('#jump-to-input');
-  $jumpToInput.autocomplete({
-    source: Object.keys(fieldYCoordinates),
+  $('#jump-to-input').autocomplete({
+    source: Object.keys(columnCoordinates),
     minLength: 0,
     select: (e, ui) => {
-      const column = fieldYCoordinates[ui.item.label];
-      scrollTo(0, column, DATA, window.HOT);
+      const columnX = columnCoordinates[ui.item.label];
+      scrollTo(0, columnX, DATA, window.HOT);
       $('#jump-to-modal').modal('hide');
     },
   })
 
-  const $fillColumnInput = $('#fill-column-input');
-  $fillColumnInput.autocomplete({
-    source: Object.keys(fieldYCoordinates),
+  $('#fill-column-input').autocomplete({
+    source: getFields(DATA).map(a => a.fieldName),
     minLength: 0
   })
 
 }
 
-/************ Messaging interface ******************** */
-
-const updateParentState = (fieldYCoordinates, INVALID_CELLS) => {
-  window.parent.postMessage({ type: 'update', fieldYCoordinates, INVALID_CELLS });
-};
-
-
-const setupMessageInterface = () => {
-  console.log("Setting up message interface");
-  window.addEventListener("message", (event) => {
-    console.log('child received event', event.data.type);
-    const fieldYCoordinates = getFieldYCoordinates(DATA);
-    switch(event.data.type) {
-      case 'setupTemplate':
-        setupTemplate(event.data.folder);
-        break;
-
-      case 'open':
-        $('#open-dropdown-item').trigger('click');
-        break;
-
-      case 'validate':
-        runBehindLoadingScreen(() => {
-          window.INVALID_CELLS = getInvalidCells(HOT, DATA);
-          HOT.render();
-    
-          // If any rows have error, show this.
-          if (Object.keys(window.INVALID_CELLS).length > 0) {
-            $('#next-error-button').show();
-          }
-          else
-            $('#next-error-button').hide();
-          console.log('Sendint messsaged');
-          updateParentState(fieldYCoordinates, window.INVALID_CELLS);
-        });
-        break;
-
-      case 'jumpTo':
-        const column = fieldYCoordinates[event.data.columnName];
-        scrollTo(0, column, window.DATA, window.HOT);
-        break;
-      case 'jumpToRowCol':
-        scrollTo(event.data.row, event.data.column, DATA, HOT);
-        break;
-      default:
-        console.log('Unknown Type ', event.data.type);
-    }
-  });
-}
