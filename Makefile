@@ -45,7 +45,7 @@ modular_templating_handoff: use_modular
 	cp -r libraries docs
 	cp -r script docs
 	cp -r template docs
-	cp main.css main.html docs
+	cp www/main.css www/main.html docs
 
 
 

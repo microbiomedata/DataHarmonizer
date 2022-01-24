@@ -1,7 +1,7 @@
-@import 'libraries/handsontable.full.min.css';
-@import 'libraries/bootstrap.min.css';
-@import 'libraries/chosen.css';
-@import 'libraries/jquery-ui.min.css';
+@import 'www/assets/libraries/handsontable.full.min.css';
+@import 'www/assets/libraries/bootstrap.min.css';
+@import 'www/assets/libraries/chosen.css';
+@import 'www/assets/libraries/jquery-ui.min.css';
 
 html, body {
     width: 100%;
