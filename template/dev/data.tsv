@@ -141,10 +141,6 @@ MIXS:0000533	total organic carbon	MIXS:core field	Definition for soil: total org
 MIXS:0000117	total phosphorus	MIXS:core field	Total phosphorus concentration in the sample, calculated by: total phosphorus = total dissolved phosphorus + particulate phosphorus	Expected value: measurement value | Preferred unit: micromole per liter, milligram per liter, parts per million	xs:token	[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+		0.03 milligram per liter						tot_phosp
 MIXS:0000323	water content method	MIXS:core field	Reference or method used in determining the water content of soil	Expected value: PMID,DOI or url | pattern generalization: {PMID}|{DOI}|{URL}	xs:token									water_cont_soil_meth
 MIXS:0000185	water content	MIXS:core field	Water content measurement	Expected value: measurement value | Preferred unit: gram per gram or cubic centimeter per cubic centimeter	xs:token	[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+								water_content
-	metabolomics	Analysis/Data Type												
-	metagenomics	Analysis/Data Type												
-	metaproteomics	Analysis/Data Type												
-	metatranscriptomics	Analysis/Data Type												
 MIXS:0000591	watering regimen	MIXS:core field	Information about treatment involving an exposure to watering frequencies, treatment regimen including how many times the treatment was repeated, how long each treatment lasted, and the start and end time of the entire treatment; can include multiple regimens	Expected value: measurement value;treatment interval and duration | Preferred unit: milliliter, liter | pattern generalization: {float} {unit};{Rn/start_time/end_time/duration}	xs:token			1 liter;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M						watering_regm
 	natural organic matter	Analysis/Data Type												
 ENVO:00000127	badlands	current land use												
