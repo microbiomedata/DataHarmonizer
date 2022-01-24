@@ -36,7 +36,8 @@ def combine_schemas(sheet_id, client_secret_json, constructed_schema_name, const
 
     new_schema = mgd.construct_schema(constructed_schema_name, constructed_schema_id, constructed_class_name,
                                       additional_prefixes)
-
+    # todo focus_class value should not be hardcoded
+    # make the current value soil a parameter
     tasks = {"nmdc": {"yaml": "target/nmdc_generated_no_imports.yaml", "title": "nmdc_biosample_slots",
                       "focus_class": "biosample",
                       "query": """
@@ -58,7 +59,7 @@ def combine_schemas(sheet_id, client_secret_json, constructed_schema_name, const
                             where
                                 package = 'soil'
                                 and (
-                                disposition = 'use as-is' or disposition = 'borrowed as-is'
+                                disposition = 'use as-is' or disposition = 'borrowed'
                                 )
     """}, }
 

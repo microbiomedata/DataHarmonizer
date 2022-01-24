@@ -140,6 +140,9 @@ def modular_exhaust_class(dict_to_exhaust, helped_schema):
 
 
 def wrapper(yaml_file, schema_alias, selected_class, selected_slots, dest_schema, dest_class):
+    # process terms directly/as-is from the MIxS or NMDC schemas
+    # mixs_packages_x_slots
+    # nmdc_biosample_slots
     helped = make_view_helper(yaml_file, schema_alias, selected_class)
 
     slot_provenance = get_slot_provenance(selected_slots, helped)
