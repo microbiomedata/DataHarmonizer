@@ -59,7 +59,7 @@ def combine_schemas(sheet_id, client_secret_json, constructed_schema_name, const
                             where
                                 package = 'soil'
                                 and (
-                                disposition = 'use as-is' or disposition = 'borrowed'
+                                disposition = 'use as-is' or disposition = 'borrowed as-is'
                                 )
     """}, }
 
