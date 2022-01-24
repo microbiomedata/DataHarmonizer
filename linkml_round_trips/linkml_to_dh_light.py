@@ -33,7 +33,7 @@ def linkml_to_dh_light(model_file, selected_class, default_section, default_sour
     # wrap in ^ and $?
 
     # todo
-    # could any of these types correspod to a multivalued slot?
+    # could any of these types correspond to a multivalued slot?
     # if so, the regex will probably NOT tolerate pipe catting
     # {PMID}|{DOI}|{URL}                             20
     # need some cleanup methods, for not including enumerations in the double click help
@@ -74,11 +74,11 @@ def linkml_to_dh_light(model_file, selected_class, default_section, default_sour
         # geographic location (latitude and longitude) uses the string serialization below
         # but shouldn't the regex follow this?
         # https://stackoverflow.com/a/31408260
-        "{float} {float}": "[-+]?[0-9]*\.?[0-9]+ [-+]?[0-9]*\.?[0-9]+",
+        "{float} {float}": r"[-+]?[0-9]*\.?[0-9]+ [-+]?[0-9]*\.?[0-9]+",
         "{float}; {float}-{float}":
-            "^[-+]?[0-9]*\.?[0-9]+; [-+]?[0-9]*\.?[0-9]+-[-+]?[0-9]*\.?[0-9]+$",
+            r"^[-+]?[0-9]*\.?[0-9]+; [-+]?[0-9]*\.?[0-9]+-[-+]?[0-9]*\.?[0-9]+$",
         "{float} {unit}": r"[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+",
-        "HH:MM:SS": "^((?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d$)",
+        "HH:MM:SS": r"^((?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d$)",
         "{termLabel} {[termID]}": r".* \[ENVO:\d+\]",
         "{text};{float} {unit}": r"\S*;[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+",
         "{text}:{text}": r"[^\:\n\r]+\:[^\:\n\r]+"

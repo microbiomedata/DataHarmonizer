@@ -1,7 +1,12 @@
 import pygsheets
-from linkml_runtime.linkml_model import SchemaDefinition, ClassDefinition, Prefix
+from linkml_runtime.linkml_model import SchemaDefinition, ClassDefinition, Prefix, SlotDefinition, Example, \
+    EnumDefinition
 from linkml_runtime.utils.schemaview import SchemaView
 from pandasql import sqldf
+
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def get_gsheet_frame(some_google_auth_file, sheet_id_arg, tab_title):
@@ -188,3 +193,56 @@ def subset_slots_from_sheet(secret, id_of_sheet, sheet_title, query):
     pysqldf_res = sqldf(query)
     slot_list = list(pysqldf_res['slot'])
     return slot_list
+
+
+def inject_supplementary(secret, supplementary_id, supplementary_tab_title, schema, prefix, class_name, enum_sheet,
+                         rule_col=None, rule_val=None, overwrite=False):
+    current_sheet = get_gsheet_frame(secret, supplementary_id, supplementary_tab_title)
+    if rule_col != "" and rule_col is not None and rule_val != "" and rule_val is not None:
+        logger.info(f"requiring {rule_col} to equal {rule_val}")
+        current_sheet = current_sheet.loc[current_sheet[rule_col].eq(rule_val)]
+    current_dict = current_sheet.to_dict(orient='records')
+    for i in current_dict:
+        i_s = i['slot']
+        if i_s in schema.slots and not overwrite:
+            exit
+        else:
+            new_slot = SlotDefinition(name=i_s, slot_uri=prefix + ":" + i_s, title=i['name'])
+            if i['requirement status'] == "required":
+                new_slot.required = True
+            if i['requirement status'] == "recommended":
+                new_slot.recommended = True
+            if i['example'] != "" and i['example'] is not None:
+                temp_example = Example(i['example'])
+                new_slot.examples.append(temp_example)
+            if i['definition'] != "" and i['definition'] is not None:
+                new_slot.description = i['definition']
+            if i['guidance'] != "" and i['guidance'] is not None:
+                new_slot.comments.append(i['guidance'])
+            if i['min'] != "" and i['min'] is not None:
+                new_slot.minimum_value = i['min']
+            if i['max'] != "" and i['max'] is not None:
+                new_slot.maximum_value = i['max']
+            # todo force these to be booleans
+            if i['multivalued'] != "" and i['multivalued'] is not None:
+                new_slot.multivalued = bool(i['multivalued'])
+            if i['identifier'] != "" and i['identifier'] is not None:
+                new_slot.identifier = bool(i['identifier'])
+            if i['syntax'] != "" and i['syntax'] is not None:
+                new_slot.string_serialization = i['syntax']
+                # try to standardize where "enumeration" is expressed... expected value comment/guidance?
+                if i['syntax'] == "enumeration":
+                    if i_s in enum_sheet.columns:
+                        raw_pvs = list(set(list(enum_sheet[i_s])))
+                        raw_pvs = [i for i in raw_pvs if i]
+                        if len(raw_pvs) > 0:
+                            te_name = i_s + "_enum"
+                            temp_enum = EnumDefinition(name=te_name)
+                            raw_pvs.sort()
+                            for pv in raw_pvs:
+                                temp_enum.permissible_values[pv] = pv
+                            new_slot.range = te_name
+                            schema.enums[te_name] = temp_enum
+            schema.slots[i_s] = new_slot
+            schema.classes[class_name].slots.append(i_s)
+    return schema
