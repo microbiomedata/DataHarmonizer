@@ -121,10 +121,6 @@ MIXS:0000337	total organic carbon method	MIXS:core field	Reference or method use
 MIXS:0000533	total organic carbon	MIXS:core field	Definition for soil: total organic carbon content of the soil, definition otherwise: total organic carbon content	Expected value: measurement value | Preferred unit: gram Carbon per kilogram sample material	xs:token	[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+								tot_org_carb
 MIXS:0000323	water content method	MIXS:core field	Reference or method used in determining the water content of soil	Expected value: PMID,DOI or url | pattern generalization: {PMID}|{DOI}|{URL}	xs:token									water_cont_soil_meth
 MIXS:0000185	water content	MIXS:core field	Water content measurement	Expected value: measurement value | Preferred unit: gram per gram or cubic centimeter per cubic centimeter	xs:token	[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+								water_content
-	metabolomics	Analysis/Data Type												
-	metagenomics	Analysis/Data Type												
-	metaproteomics	Analysis/Data Type												
-	metatranscriptomics	Analysis/Data Type												
 	natural organic matter	Analysis/Data Type												
 ENVO:00000127	badlands	current land use												
 	cities	current land use												
