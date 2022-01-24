@@ -54,8 +54,6 @@ enum_suffix = "_enum"
 
 expected_tabs = ['SheetIdentification',
                  'Example Use',
-                 'OtherPackages',
-                 'JGI Terms',
                  'mixs_packages_x_slots',
                  'mixs_modified_slots',
                  'biosample_identification_slots',
