@@ -42,7 +42,7 @@ modular_templating_handoff: use_modular
 	cp target/data.tsv template/dev/
 	cd template/dev && poetry run python ../../script/make_data.py && cd -
 	#cp -r images docs
-	cp -r libraries docs
+	cp -r www/assets/libraries docs
 	cp -r script docs
 	cp -r template docs
 	cp www/main.css www/main.html docs
