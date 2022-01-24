@@ -447,10 +447,6 @@ var DATA = [
           ]
         },
         "schema:ItemList": {
-          "metabolomics": {},
-          "metagenomics": {},
-          "metaproteomics": {},
-          "metatranscriptomics": {},
           "natural organic matter": {}
         }
       },
