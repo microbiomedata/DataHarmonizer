@@ -35,7 +35,7 @@ mixs_modified:depth	depth	mixs_modified:default	The vertical distance below loca
 jgi_gen:dna_absorb1	DNA Absorbance 260/280	jgi_gen:default	260/280 measurement of sample purity	Recommended value is between 1 and 3. | pattern generalization: {float}	xs:decimal		required	2.02						dna_absorb1
 jgi_gen:dna_absorb2	DNA Absorbance 260/230	jgi_gen:default	260/230 measurement of sample purity	Recommended value is between 1 and 3. | pattern generalization: {float}	xs:decimal		required	2.02						dna_absorb2
 jgi_gen:dna_collect_site	DNA Collection Site	jgi_gen:default	Provide information on the site your DNA sample was collected from	pattern generalization: {text}	xs:token		required	untreated pond water						dna_collect_site
-jgi_gen:dna_concentration	DNA Concentration	jgi_gen:default	Must be calculated using a fluorometric method; value >0 and <2000.	Units should be in ng/uL | pattern generalization: {float}	xs:decimal		required	100				2000	0	dna_concentration
+jgi_gen:dna_concentration	DNA Concentration	jgi_gen:default	Must be calculated using a fluorometric method; value >0 and <2000.	Units should be in ng/uL | pattern generalization: {float}	xs:decimal		required	100				2000.0	0.0	dna_concentration
 jgi_gen:dna_cont_type	DNA Container Type	jgi_gen:default	tube or plate (96-well)		select		required	plate						dna_cont_type
 jgi_gen:dna_cont_well	DNA Well Number	jgi_gen:default	Corner wells must be blank. For partial plates, fill by columns. Leave blank if the sample will be shipped in a tube.	Required when 'plate' is selected for container type | pattern generalization: {text}	xs:token		required	B2						dna_cont_well
 jgi_gen:dna_container_ID	DNA Container Label	jgi_gen:default	Must be unique across all tubes and plates, and <20 characters. All samples in a plate should have the same plate label.	pattern generalization: {text}	xs:token		required	Pond_MT_041618						dna_container_ID
@@ -49,14 +49,14 @@ jgi_gen:dna_sample_name	DNA Sample Name	jgi_gen:default	Give the DNA sample a na
 jgi_gen:dna_seq_project	DNA Seq Project ID	jgi_gen:default	Prefilled	Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}	xs:token		required	1191234						dna_seq_project
 jgi_gen:dna_seq_project_PI	DNA Seq Project PI	jgi_gen:default	Prefilled	Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}	xs:token		required	Jane Johnson						dna_seq_project_PI
 jgi_gen:dna_seq_project_name	DNA Seq Project Name	jgi_gen:default	Prefilled	Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}	xs:token		required	JGI Pond metagenomics						dna_seq_project_name
-jgi_gen:dna_volume	DNA Volume	jgi_gen:default	Value must be >0 and <1000 (values <25 by special permission only).	Units should be in uL | pattern generalization: {float}	xs:decimal		required	25				1000	0	dna_volume
+jgi_gen:dna_volume	DNA Volume	jgi_gen:default	Value must be >0 and <1000 (values <25 by special permission only).	Units should be in uL | pattern generalization: {float}	xs:decimal		required	25				1000.0	0.0	dna_volume
 MIXS:0001085	drainage classification	MIXS:core field	Drainage classification from a standard system such as the USDA system	Expected value: enumeration	select			well						drainage_class
 nmdc:ecosystem	ecosystem	nmdc:gold_path_field	TODO		xs:token									ecosystem
 nmdc:ecosystem_category	ecosystem_category	nmdc:gold_path_field	TODO		xs:token									ecosystem_category
 nmdc:ecosystem_subtype	ecosystem_subtype	nmdc:gold_path_field	TODO		xs:token									ecosystem_subtype
 nmdc:ecosystem_type	ecosystem_type	nmdc:gold_path_field	TODO		xs:token									ecosystem_type
 MIXS:0000093	elevation	MIXS:environment field	Elevation of the sampling site is its height above a fixed reference point, most commonly the mean sea level. Elevation is mainly used when referring to points on the earth's surface, while altitude is used for points above the surface, such as an aircraft in flight or a spacecraft in orbit.	Expected value: measurement value	xs:token	[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+	required	100 meter						elev
-MIXS:0000012	broad-scale environmental context	MIXS:environment field	Report the major environmental system the sample or specimen came from. The system(s) identified should have a coarse spatial grain, to provide the general environmental context of where the sampling was done (e.g. in the desert or a rainforest). We recommend using subclasses of EnvO’s biome class:  http://purl.obolibrary.org/obo/ENVO_00000428. EnvO documentation about how to use the field: https://github.com/EnvironmentOntology/envo/wiki/Using-ENVO-with-MIxS	Expected value: The major environment type(s) where the sample was collected. Recommend subclasses of biome [ENVO:00000428]. Multiple terms can be separated by one or more pipes. | pattern generalization: {termLabel} {[termID]}	xs:token	.* \[ENVO:\d+\]	required	oceanic epipelagic zone biome [ENVO:01000033] for annotating a water sample from the photic zone in middle of the Atlantic Ocean						env_broad_scale
+MIXS:0000012	broad-scale environmental context	MIXS:environment field	Report the major environmental system the sample or specimen came from. The system(s) identified should have a coarse spatial grain, to provide the general environmental context of where the sampling was done (e.g. in the desert or a rainforest). We recommend using subclasses of EnvO’s biome class:  http://purl.obolibrary.org/obo/ENVO_00000428. EnvO documentation about how to use the field: https://github.com/EnvironmentOntology/envo/wiki/Using-ENVO-with-MIxS	Expected value: The major environment type(s) where the sample was collected. Recommend subclasses of biome [ENVO:00000428]. Multiple terms can be separated by one or more pipes. | pattern generalization: {termLabel} {[termID]}	select		required	oceanic epipelagic zone biome [ENVO:01000033] for annotating a water sample from the photic zone in middle of the Atlantic Ocean						env_broad_scale
 MIXS:0000013	local environmental context	MIXS:environment field	Report the entity or entities which are in the sample or specimen’s local vicinity and which you believe have significant causal influences on your sample or specimen. We recommend using EnvO terms which are of smaller spatial grain than your entry for env_broad_scale. Terms, such as anatomical sites, from other OBO Library ontologies which interoperate with EnvO (e.g. UBERON) are accepted in this field. EnvO documentation about how to use the field: https://github.com/EnvironmentOntology/envo/wiki/Using-ENVO-with-MIxS.	Expected value: Environmental entities having causal influences upon the entity at time of sampling. | pattern generalization: {termLabel} {[termID]}	xs:token	.* \[ENVO:\d+\]	required	litter layer [ENVO:01000338]; Annotating a pooled sample taken from various vegetation layers in a forest consider: canopy [ENVO:00000047]|herb and fern layer [ENVO:01000337]|litter layer [ENVO:01000338]|understory [01000335]|shrub layer [ENVO:01000336].						env_local_scale
 MIXS:0000014	environmental medium	MIXS:environment field	Report the environmental material(s) immediately surrounding the sample or specimen at the time of sampling. We recommend using subclasses of 'environmental material' (http://purl.obolibrary.org/obo/ENVO_00010483). EnvO documentation about how to use the field: https://github.com/EnvironmentOntology/envo/wiki/Using-ENVO-with-MIxS . Terms from other OBO ontologies are permissible as long as they reference mass/volume nouns (e.g. air, water, blood) and not discrete, countable entities (e.g. a tree, a leaf, a table top).	Expected value: The material displaced by the entity at time of sampling. Recommend subclasses of environmental material [ENVO:00010483]. | pattern generalization: {termLabel} {[termID]}	xs:token	.* \[ENVO:\d+\]	required	soil [ENVO:00001998]; Annotating a fish swimming in the upper 100 m of the Atlantic Ocean, consider: ocean water [ENVO:00002151]. Example: Annotating a duck on a pond consider: pond water [ENVO:00002228]|air [ENVO_00002005]						env_medium
 MIXS:0000008	experimental factor	MIXS:investigation field	Experimental factors are essentially the variable aspects of an experiment design which can be used to describe an experiment, or set of experiments, in an increasingly detailed manner. This field accepts ontology terms from Experimental Factor Ontology (EFO) and/or Ontology for Biomedical Investigations (OBI). For a browser of EFO (v 2.95) terms, please see http://purl.bioontology.org/ontology/EFO; for a browser of OBI (v 2018-02-12) terms please see http://purl.bioontology.org/ontology/OBI	Expected value: text or EFO and/or OBI | pattern generalization: {termLabel} {[termID]}|{text}	xs:token			time series design [EFO:EFO_0001779]						experimental_factor
@@ -95,7 +95,7 @@ mixs_modified:org_nitro_method	organic nitrogen method	mixs_modified:default	Met
 mixs_modified:other_treatment	other treatments	mixs_modified:default	Other treatments applied to your samples that are not applicable to the provided fields	pattern generalization: {text}	xs:token		recommended							other_treatment
 MIXS:0000753	oxygenation status of sample	MIXS:core field	Oxygenation status of sample	Expected value: enumeration	select			aerobic						oxy_stat_samp
 mixs_modified:oxygen_relationship	relationship to oxygen	mixs_modified:default	Is this organism an aerobe, anaerobe? Please note that aerobic and anaerobic are valid descriptors for microbial environments		select									oxygen_relationship
-mixs_modified:pH	pH	mixs_modified:default	Ph measurement of the sample, or liquid portion of sample, or aqueous phase of the fluid	Expected value: measurement value | pattern generalization: {float}	xs:decimal			7.2				14	0	pH
+mixs_modified:pH	pH	mixs_modified:default	Ph measurement of the sample, or liquid portion of sample, or aqueous phase of the fluid	Expected value: measurement value | pattern generalization: {float}	xs:decimal			7.2				14.0	0.0	pH
 MIXS:0001001	pH	MIXS:core field	Ph measurement of the sample, or liquid portion of sample, or aqueous phase of the fluid	Expected value: measurement value	xs:decimal			7.2						ph
 MIXS:0001106	pH method	MIXS:core field	Reference or method used in determining ph	Expected value: PMID,DOI or url | pattern generalization: {PMID}|{DOI}|{URL}	xs:token									ph_meth
 MIXS:0000505	phosphate	MIXS:core field	Concentration of phosphate	Expected value: measurement value | Preferred unit: micromole per liter	xs:token	[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+		0.7 micromole per liter						phosphate
@@ -264,3 +264,56 @@ ENVO:00002254	Vertisols	soil_taxonomic/FAO classification
 	tined	history/tillage												
 	zonal tillage	history/tillage												
 	placeholder	MIXS:investigation field 	  	  	  	  	  	  	  	  	  	  	  	 
+ENVO:01001835	alpine biome [ENVO:01001835]	broad-scale environmental context												
+ENVO:01001505	__alpine tundra biome [ENVO:01001505]	broad-scale environmental context												
+ENVO:01000219	anthropogenic terrestrial biome [ENVO:01000219]	broad-scale environmental context												
+ENVO:01000247	__rangeland biome [ENVO:01000247]	broad-scale environmental context												
+ENVO:01000246	__village biome [ENVO:01000246]	broad-scale environmental context												
+ENVO:01001838	arid biome [ENVO:01001838]	broad-scale environmental context												
+ENVO:01000181	mangrove biome [ENVO:01000181]	broad-scale environmental context												
+ENVO:01001836	montane biome [ENVO:01001836]	broad-scale environmental context												
+ENVO:01000223	__montane savanna biome [ENVO:01000223]	broad-scale environmental context												
+ENVO:01000216	__montane shrubland biome [ENVO:01000216]	broad-scale environmental context												
+ENVO:01000339	polar biome [ENVO:01000339]	broad-scale environmental context												
+ENVO:01000176	shrubland biome [ENVO:01000176]	broad-scale environmental context												
+ENVO:01000216	__montane shrubland biome [ENVO:01000216]	broad-scale environmental context												
+ENVO:01000213	__subtropical shrubland biome [ENVO:01000213]	broad-scale environmental context												
+ENVO:01000217	____mediterranean shrubland biome [ENVO:01000217]	broad-scale environmental context												
+ENVO:01000215	__temperate shrubland biome [ENVO:01000215]	broad-scale environmental context												
+ENVO:01000214	__tropical shrubland biome [ENVO:01000214]	broad-scale environmental context												
+ENVO:01001837	subalpine biome [ENVO:01001837]	broad-scale environmental context												
+ENVO:01001834	subpolar biome [ENVO:01001834]	broad-scale environmental context												
+ENVO:01001832	subtropical biome [ENVO:01001832]	broad-scale environmental context												
+ENVO:01001833	__mediterranean biome [ENVO:01001833]	broad-scale environmental context												
+ENVO:01000229	____mediterranean savanna biome [ENVO:01000229]	broad-scale environmental context												
+ENVO:01000217	____mediterranean shrubland biome [ENVO:01000217]	broad-scale environmental context												
+ENVO:01000208	____mediterranean woodland biome [ENVO:01000208]	broad-scale environmental context												
+ENVO:01000187	__subtropical savanna biome [ENVO:01000187]	broad-scale environmental context												
+ENVO:01000229	____mediterranean savanna biome [ENVO:01000229]	broad-scale environmental context												
+ENVO:01000213	__subtropical shrubland biome [ENVO:01000213]	broad-scale environmental context												
+ENVO:01000217	____mediterranean shrubland biome [ENVO:01000217]	broad-scale environmental context												
+ENVO:01000222	__subtropical woodland biome [ENVO:01000222]	broad-scale environmental context												
+ENVO:01000208	____mediterranean woodland biome [ENVO:01000208]	broad-scale environmental context												
+ENVO:01001831	temperate biome [ENVO:01001831]	broad-scale environmental context												
+ENVO:01000189	__temperate savanna biome [ENVO:01000189]	broad-scale environmental context												
+ENVO:01000215	__temperate shrubland biome [ENVO:01000215]	broad-scale environmental context												
+ENVO:01000221	__temperate woodland biome [ENVO:01000221]	broad-scale environmental context												
+ENVO:01001830	tropical biome [ENVO:01001830]	broad-scale environmental context												
+ENVO:01000188	__tropical savanna biome [ENVO:01000188]	broad-scale environmental context												
+ENVO:01000214	__tropical shrubland biome [ENVO:01000214]	broad-scale environmental context												
+ENVO:01000220	__tropical woodland biome [ENVO:01000220]	broad-scale environmental context												
+ENVO:01000180	tundra biome [ENVO:01000180]	broad-scale environmental context												
+ENVO:01001505	__alpine tundra biome [ENVO:01001505]	broad-scale environmental context												
+ENVO:01000249	urban biome [ENVO:01000249]	broad-scale environmental context												
+ENVO:01000175	woodland biome [ENVO:01000175]	broad-scale environmental context												
+ENVO:01000178	__savanna biome [ENVO:01000178]	broad-scale environmental context												
+ENVO:01000190	____flooded savanna biome [ENVO:01000190]	broad-scale environmental context												
+ENVO:01000223	____montane savanna biome [ENVO:01000223]	broad-scale environmental context												
+ENVO:01000187	____subtropical savanna biome [ENVO:01000187]	broad-scale environmental context												
+ENVO:01000229	______mediterranean savanna biome [ENVO:01000229]	broad-scale environmental context												
+ENVO:01000189	____temperate savanna biome [ENVO:01000189]	broad-scale environmental context												
+ENVO:01000188	____tropical savanna biome [ENVO:01000188]	broad-scale environmental context												
+ENVO:01000222	__subtropical woodland biome [ENVO:01000222]	broad-scale environmental context												
+ENVO:01000208	____mediterranean woodland biome [ENVO:01000208]	broad-scale environmental context												
+ENVO:01000221	__temperate woodland biome [ENVO:01000221]	broad-scale environmental context												
+ENVO:01000220	__tropical woodland biome [ENVO:01000220]	broad-scale environmental context												
