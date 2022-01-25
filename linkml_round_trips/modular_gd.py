@@ -1,6 +1,6 @@
 import pygsheets
 from linkml_runtime.linkml_model import SchemaDefinition, ClassDefinition, Prefix, SlotDefinition, Example, \
-    EnumDefinition
+    EnumDefinition, PermissibleValue
 from linkml_runtime.utils.schemaview import SchemaView
 from pandasql import sqldf
 
@@ -200,6 +200,7 @@ def subset_slots_from_sheet(secret, id_of_sheet, sheet_title, query):
 
 def inject_supplementary(secret, supplementary_id, supplementary_tab_title, schema, prefix, class_name, enum_sheet,
                          rule_col=None, rule_val=None, overwrite=False):
+    enums_names = list(set(list(enum_sheet['enum'])))
     current_sheet = get_gsheet_frame(secret, supplementary_id, supplementary_tab_title)
     if rule_col != "" and rule_col is not None and rule_val != "" and rule_val is not None:
         logger.info(f"requiring {rule_col} to equal {rule_val}")
@@ -232,20 +233,28 @@ def inject_supplementary(secret, supplementary_id, supplementary_tab_title, sche
             if i['identifier'] != "" and i['identifier'] is not None:
                 new_slot.identifier = bool(i['identifier'])
             if i['syntax'] != "" and i['syntax'] is not None:
-                new_slot.string_serialization = i['syntax']
-                # try to standardize where "enumeration" is expressed... expected value comment/guidance?
                 if i['syntax'] == "enumeration":
-                    if i_s in enum_sheet.columns:
-                        raw_pvs = list(set(list(enum_sheet[i_s])))
-                        raw_pvs = [i for i in raw_pvs if i]
-                        if len(raw_pvs) > 0:
-                            te_name = i_s + "_enum"
-                            temp_enum = EnumDefinition(name=te_name)
-                            raw_pvs.sort()
-                            for pv in raw_pvs:
-                                temp_enum.permissible_values[pv] = pv
-                            new_slot.range = te_name
-                            schema.enums[te_name] = temp_enum
+                    if i_s in enums_names:
+                        suffixed_name = i_s + "_enum"
+                        temp_enum = EnumDefinition(name=suffixed_name)
+                        enum_subset = enum_sheet.loc[enum_sheet['enum'].eq(i_s)]
+                        enum_subset.sort_values(by=['permissible_value'])
+                        enum_subset = enum_subset.to_dict(orient='records')
+                        for es_row in enum_subset:
+                            # logger.info(f"{i_s} {es_row}")
+                            temp_pv = PermissibleValue(text=es_row['permissible_value'])
+                            if es_row['term_id'] != "" and es_row['term_id'] is not None:
+                                temp_pv.meaning = es_row['term_id']
+                            temp_enum.permissible_values[es_row['permissible_value']] = temp_pv
+                        # logger.info("\n")
+                        # logger.info(suffixed_name)
+                        # logger.info(temp_enum)
+                        new_slot.range = suffixed_name
+                        schema.enums[suffixed_name] = temp_enum
+                else:
+                    new_slot.string_serialization = i['syntax']
+                    # try to standardize where "enumeration" is expressed... expected value comment/guidance?
+
             schema.slots[i_s] = new_slot
             schema.classes[class_name].slots.append(i_s)
     return schema

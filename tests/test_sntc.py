@@ -61,7 +61,7 @@ expected_tabs = ['SheetIdentification',
                  'EMSL_sample_slots',
                  'JGI_sample_slots',
                  'Sections_order',
-                 'enumerations', 'enums_long', 'mock_section_defs']
+                 'enums_long', 'mock_section_defs']
 
 # order matters
 expected_mixs_soil_ind_slot_names = ['lat_lon', 'depth', 'alt', 'elev', 'temp', 'geo_loc_name', 'collection_date',

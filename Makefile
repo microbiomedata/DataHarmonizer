@@ -26,7 +26,6 @@ test: post_clone_submodule_steps
 #   still having trouble instantiating annotations for what used to be comments about Occurrence, "This field is used..."
 # yaml.representer.RepresenterError: ('cannot represent an object', JsonObj(Occurrence=Annotation(tag='Occurrence', value='', extensions={}, annotations={})))
 post_clone_submodule_steps:
-	# does anything bad happen if we do this routinely?
 	git submodule init
 	git submodule update
 
@@ -34,11 +33,11 @@ post_clone_submodule_steps:
 # egrep may not behave the same way on all systems
 # make it a real test
 target/string_serialization_check.txt:
-	- egrep "string_serialization:.*{PMID}|{DOI}|{URL}" mixs-source/model/schema/terms.yaml > $@
+	egrep "string_serialization:.*{PMID}|{DOI}|{URL}" mixs-source/model/schema/terms.yaml > $@
 
 # demonstrating that a failed step terminates the make process
 target/string_serialization_expected_failure.txt:
-	egrep "string_serialization:.*oh my darling" ../mixs-source/model/schema/*yaml > $@
+	- egrep "string_serialization:.*oh my darling" ../mixs-source/model/schema/*yaml > $@
 
 target/soil_biosample_regex_insight.tsv: target/soil_biosample_modular.yaml
 	poetry run python ranges_string_sers.py \
@@ -67,11 +66,17 @@ target/nmdc_generated.yaml: nmdc-schema/src/schema/nmdc.yaml
 target/nmdc_generated_no_imports.yaml: target/nmdc_generated.yaml
 	yq eval 'del(.imports)' $< > $@
 
+# rm -f target/soil_biosample_modular.yaml && make -o target/nmdc_generated_no_imports.yaml -o target/mixs_generated_no_imports.yaml target/soil_biosample_modular.yaml
 target/soil_biosample_modular.yaml:  target/nmdc_generated_no_imports.yaml target/mixs_generated_no_imports.yaml
 	# combine or mint terms according to the Soil-NMDC-Template_Compiled Google Sheet
 	#   and consulting the generated models above
-	poetry run combine_schemas --verbosity INFO --inc_emsl --jgi metagenomics > target/soil_biosample_modular.yaml
+	poetry run combine_schemas --verbosity INFO --env_package soil --inc_emsl --jgi metagenomics > $@
+	# todo see: mangled name already exists #92
+	yq eval 'del(.classes.["quantity value"].attributes)' $@ > target/soil_biosample_modular_no_redundant_mangling.yaml
+	poetry run gen-yaml \
+		target/soil_biosample_modular_no_redundant_mangling.yaml > target/soil_biosample_modular_no_redundant_mangling_generated.yaml 2> target/soil_biosample_modular_no_redundant_mangling_generated.log
 
+# rm -f target/soil_biosample_modular_annotated.yaml && make -o target/soil_biosample_modular.yaml target/soil_biosample_modular_annotated.yaml
 target/soil_biosample_modular_annotated.yaml: target/soil_biosample_modular.yaml
 	# find EnvO terms to account for FAO soil classes at least
 	poetry run enum_annotator \
@@ -93,15 +98,20 @@ target/soil_biosample_modular_annotated.yaml: target/soil_biosample_modular.yaml
 		--requested_enum_name analysis_type_enum \
 		--ontology_string ENVO \
 		--max_cosine 0.1 > $@ 2>> target/annotation.log
-#	poetry run linkml_to_dh_light --model_file target/soil_biosample_modular_annotated.yaml --selected_class soil_biosample > target/linkml_to_dh_light.log
+	rm -rf target/temp*yaml
 
 target/data.tsv: target/soil_biosample_modular_annotated.yaml
 	poetry run linkml_to_dh_light --model_file $< --selected_class soil_biosample 2> target/linkml_to_dh_light.log
 
+# make -o target/data.tsv docs/template/dev/data.tsv
+
 # this converts data.tsv to a data harmonizer main.html + main.js etc.
 #  and then stages it in the docs folder which will be exposed via GH pages
 docs/template/dev/data.tsv: target/data.tsv
-	cp $< template/dev/
+	# todo next two lines are a workaround for: yet another 'Failed to map' #79
+	cat $< second_columns.tsv > target/with_seconds.tsv
+	cp target/with_seconds.tsv template/dev/data.tsv
+	#
 	cd template/dev && poetry run python ../../script/make_data.py 2>make_data.log && cd -
 	cp -r libraries docs
 	cp -r script docs
