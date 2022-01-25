@@ -1,429 +1,5 @@
 var DATA = [
   {
-    "fieldName": "jgi_gen:default",
-    "children": [
-      {
-        "fieldName": "DNA Absorbance 260/280",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_absorb1",
-        "datatype": "xs:decimal",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "260/280 measurement of sample purity",
-        "guidance": "Recommended value is between 1 and 3. | pattern generalization: {float}",
-        "examples": "2.02",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_absorb1"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Absorbance 260/230",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_absorb2",
-        "datatype": "xs:decimal",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "260/230 measurement of sample purity",
-        "guidance": "Recommended value is between 1 and 3. | pattern generalization: {float}",
-        "examples": "2.02",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_absorb2"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Collection Site",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_collect_site",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Provide information on the site your DNA sample was collected from",
-        "guidance": "pattern generalization: {text}",
-        "examples": "untreated pond water",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_collect_site"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Concentration",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_concentration",
-        "datatype": "xs:decimal",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "0",
-        "xs:maxInclusive": "2000",
-        "requirement": "required",
-        "description": "Must be calculated using a fluorometric method; value >0 and <2000.",
-        "guidance": "Units should be in ng/uL | pattern generalization: {float}",
-        "examples": "100",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_concentration"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Container Type",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_cont_type",
-        "datatype": "select",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "tube or plate (96-well)",
-        "guidance": "pattern generalization: enumeration",
-        "examples": "plate",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_cont_type"
-            }
-          ]
-        },
-        "schema:ItemList": {
-          "plate": {},
-          "tube": {}
-        }
-      },
-      {
-        "fieldName": "DNA Well Number",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_cont_well",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Corner wells must be blank. For partial plates, fill by columns. Leave blank if the sample will be shipped in a tube.",
-        "guidance": "Required when 'plate' is selected for container type | pattern generalization: {text}",
-        "examples": "B2",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_cont_well"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Container Label",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_container_ID",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Must be unique across all tubes and plates, and <20 characters. All samples in a plate should have the same plate label.",
-        "guidance": "pattern generalization: {text}",
-        "examples": "Pond_MT_041618",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_container_ID"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNAse Treatment DNA",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_dnase",
-        "datatype": "select",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Y/N. Note DNAse treatment is required for all RNA samples.",
-        "guidance": "pattern generalization: enumeration",
-        "examples": "No",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_dnase"
-            }
-          ]
-        },
-        "schema:ItemList": {
-          "no": {},
-          "yes": {}
-        }
-      },
-      {
-        "fieldName": "DNA Isolation Method",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_isolate_meth",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Describe the method/protocol/kit used to extract DNA/RNA.",
-        "guidance": "pattern generalization: {text}",
-        "examples": "phenol/chloroform extraction",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_isolate_meth"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Expected Organisms",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_organisms",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "List any organisms known or suspected to grow in co-culture, as well as estimated % of the organism in that culture.",
-        "guidance": "pattern generalization: {text}",
-        "examples": "expected to contain microbes (59%) fungi (30%), viruses (10%), tadpoles (1%)",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_organisms"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Seq Project Contact",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_project_contact",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Prefilled",
-        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
-        "examples": "John Jones",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_project_contact"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Sample ID",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_samp_ID",
-        "datatype": "xs:unique",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Prefilled",
-        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
-        "examples": "187654",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_samp_ID"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Sample Format",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_sample_format",
-        "datatype": "select",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Choose from the following: Pellet, RNAStable, DNAStable, Ethanol, MDA reaction buffer, PBS, TE, Water, Low EDTA TE, 10 mM Tris-HCl",
-        "guidance": "Identify what the DNA sample is suspended in | pattern generalization: enumeration",
-        "examples": "Water",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_sample_format"
-            }
-          ]
-        },
-        "schema:ItemList": {
-          "10 mM Tris-HCl": {},
-          "DNAStable": {},
-          "Ethanol": {},
-          "Low EDTA TE": {},
-          "MDA reaction buffer": {},
-          "PBS": {},
-          "Pellet": {},
-          "RNAStable": {},
-          "TE": {},
-          "Water": {}
-        }
-      },
-      {
-        "fieldName": "DNA Sample Name",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_sample_name",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Give the DNA sample a name that is meaningful to you. Sample names must be unique across all JGI projects and contain ASCII characters only.",
-        "guidance": "pattern generalization: {text}",
-        "examples": "JGI_pond_041618",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_sample_name"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Seq Project ID",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_seq_project",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Prefilled",
-        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
-        "examples": "1191234",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_seq_project"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Seq Project PI",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_seq_project_PI",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Prefilled",
-        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
-        "examples": "Jane Johnson",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_seq_project_PI"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Seq Project Name",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_seq_project_name",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Prefilled",
-        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
-        "examples": "JGI Pond metagenomics",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_seq_project_name"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Volume",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_volume",
-        "datatype": "xs:decimal",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "0",
-        "xs:maxInclusive": "1000",
-        "requirement": "required",
-        "description": "Value must be >0 and <1000 (values <25 by special permission only).",
-        "guidance": "Units should be in uL | pattern generalization: {float}",
-        "examples": "25",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_volume"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Proposal ID",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:proposal_dna",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Prefilled",
-        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
-        "examples": "504000",
-        "exportField": {
-          "dev": [
-            {
-              "field": "proposal_dna"
-            }
-          ]
-        }
-      }
-    ]
-  },
-  {
     "fieldName": "samp_id:default",
     "children": [
       {
@@ -437,7 +13,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "Include all the data types associated or available for this biosample, this field can have multiple values separated by a ;",
-        "guidance": "This field is constrained to contain only a set of limited terms indicate the types of data that were generated. | pattern generalization: enumeration",
+        "guidance": "This field is constrained to contain only a set of limited terms indicate the types of data that were generated.",
         "examples": "metagenomics; metabolomics; proteomics",
         "exportField": {
           "dev": [
@@ -461,7 +37,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "MIxS extension for reporting of measurements and observations obtained from one or more of the environments where the sample was obtained. All environmental packages listed here are further defined in separate subtables. By giving the name of the environmental package, a selection of fields can be made from the subtables and can be reported",
-        "guidance": "pattern generalization: enumeration",
+        "guidance": "",
         "examples": "soil",
         "exportField": {
           "dev": [
@@ -566,6 +142,27 @@ var DATA = [
         }
       },
       {
+        "fieldName": "air temperature regimen",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000551",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Information about treatment involving an exposure to varying temperatures; should include the temperature, treatment regimen including how many times the treatment was repeated, how long each treatment lasted, and the start and end time of the entire treatment; can include different temperature regimens",
+        "guidance": "Expected value: temperature value;treatment interval and duration | Preferred unit: meter | pattern generalization: {float} {unit};{Rn/start_time/end_time/duration}",
+        "examples": "25 degree Celsius;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M",
+        "exportField": {
+          "dev": [
+            {
+              "field": "air_temp_regm"
+            }
+          ]
+        }
+      },
+      {
         "fieldName": "extreme_unusual_properties/Al saturation",
         "capitalize": "",
         "ontology_id": "MIXS:0000607",
@@ -648,6 +245,91 @@ var DATA = [
           "dev": [
             {
               "field": "annual_temp"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "biotic regimen",
+        "capitalize": "",
+        "ontology_id": "MIXS:0001038",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Information about treatment(s) involving use of biotic factors, such as bacteria, viruses or fungi.",
+        "guidance": "Expected value: free text | pattern generalization: {text}",
+        "examples": "sample inoculated with Rhizobium spp. Culture",
+        "exportField": {
+          "dev": [
+            {
+              "field": "biotic_regm"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "carbon/nitrogen ratio",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000310",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Ratio of amount or concentrations of carbon to nitrogen",
+        "guidance": "Expected value: measurement value",
+        "examples": "0.417361111",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "carb_nitro_ratio"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "chemical administration",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000751",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "List of chemical compounds administered to the host or site where sampling occurred, and when (e.g. Antibiotics, n fertilizer, air filter); can include multiple compounds. For chemical entities of biological interest ontology (chebi) (v 163), http://purl.bioontology.org/ontology/chebi",
+        "guidance": "Expected value: CHEBI;timestamp | pattern generalization: {termLabel} {[termID]};{timestamp}",
+        "examples": "agar [CHEBI:2509];2018-05-11T20:00Z",
+        "exportField": {
+          "dev": [
+            {
+              "field": "chem_administration"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "climate environment",
+        "capitalize": "",
+        "ontology_id": "MIXS:0001040",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Treatment involving an exposure to a particular climate; treatment regimen including how many times the treatment was repeated, how long each treatment lasted, and the start and end time of the entire treatment; can include multiple climates",
+        "guidance": "Expected value: climate name;treatment interval and duration | pattern generalization: {text};{Rn/start_time/end_time/duration}",
+        "examples": "tropical climate;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M",
+        "exportField": {
+          "dev": [
+            {
+              "field": "climate_environment"
             }
           ]
         }
@@ -956,6 +638,27 @@ var DATA = [
         }
       },
       {
+        "fieldName": "gaseous environment",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000558",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Use of conditions with differing gaseous environments; should include the name of gaseous compound, amount administered, treatment duration, interval and total experimental duration; can include multiple gaseous environment regimens",
+        "guidance": "Expected value: gaseous compound name;gaseous compound amount;treatment interval and duration | Preferred unit: micromole per liter | pattern generalization: {text};{float} {unit};{Rn/start_time/end_time/duration}",
+        "examples": "nitric oxide;0.5 micromole per liter;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M",
+        "exportField": {
+          "dev": [
+            {
+              "field": "gaseous_environment"
+            }
+          ]
+        }
+      },
+      {
         "fieldName": "extreme_unusual_properties/heavy metals",
         "capitalize": "",
         "ontology_id": "MIXS:0000652",
@@ -1015,6 +718,48 @@ var DATA = [
           "dev": [
             {
               "field": "horizon_meth"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "humidity regimen",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000568",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Information about treatment involving an exposure to varying degree of humidity; information about treatment involving use of growth hormones; should include amount of humidity administered, treatment regimen including how many times the treatment was repeated, how long each treatment lasted, and the start and end time of the entire treatment; can include multiple regimens",
+        "guidance": "Expected value: humidity value;treatment interval and duration | Preferred unit: gram per cubic meter | pattern generalization: {float} {unit};{Rn/start_time/end_time/duration}",
+        "examples": "25 gram per cubic meter;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M",
+        "exportField": {
+          "dev": [
+            {
+              "field": "humidity_regm"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "light regimen",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000569",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Information about treatment(s) involving exposure to light, including both light intensity and quality.",
+        "guidance": "Expected value: exposure type;light intensity;light quality | Preferred unit: lux; micrometer, nanometer, angstrom | pattern generalization: {text};{float} {unit};{float} {unit}",
+        "examples": "incandescant light;10 lux;450 nanometer",
+        "exportField": {
+          "dev": [
+            {
+              "field": "light_regm"
             }
           ]
         }
@@ -1169,6 +914,76 @@ var DATA = [
         }
       },
       {
+        "fieldName": "organic matter",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000204",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Concentration of organic matter",
+        "guidance": "Expected value: measurement value | Preferred unit: microgram per liter",
+        "examples": "1.75 milligram per cubic meter",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "org_matter"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "organic nitrogen",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000205",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Concentration of organic nitrogen",
+        "guidance": "Expected value: measurement value | Preferred unit: microgram per liter",
+        "examples": "4 micromole per liter",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "org_nitro"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "oxygenation status of sample",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000753",
+        "datatype": "select",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Oxygenation status of sample",
+        "guidance": "Expected value: enumeration",
+        "examples": "aerobic",
+        "exportField": {
+          "dev": [
+            {
+              "field": "oxy_stat_samp"
+            }
+          ]
+        },
+        "schema:ItemList": {
+          "aerobic": {},
+          "anaerobic": {},
+          "other": {}
+        }
+      },
+      {
         "fieldName": "pH",
         "capitalize": "",
         "ontology_id": "MIXS:0001001",
@@ -1206,6 +1021,28 @@ var DATA = [
           "dev": [
             {
               "field": "ph_meth"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "phosphate",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000505",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Concentration of phosphate",
+        "guidance": "Expected value: measurement value | Preferred unit: micromole per liter",
+        "examples": "0.7 micromole per liter",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "phosphate"
             }
           ]
         }
@@ -1281,6 +1118,28 @@ var DATA = [
         }
       },
       {
+        "fieldName": "salinity",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000183",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "The total concentration of all dissolved salts in a liquid or solid sample. While salinity can be measured by a complete chemical analysis, this method is difficult and time consuming. More often, it is instead derived from the conductivity measurement. This is known as practical salinity. These derivations compare the specific conductance of the sample to a salinity standard such as seawater.",
+        "guidance": "Expected value: measurement value | Preferred unit: practical salinity unit, percentage",
+        "examples": "25 practical salinity unit",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "salinity"
+            }
+          ]
+        }
+      },
+      {
         "fieldName": "salinity method",
         "capitalize": "",
         "ontology_id": "MIXS:0000341",
@@ -1297,6 +1156,28 @@ var DATA = [
           "dev": [
             {
               "field": "salinity_meth"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "sample storage temperature",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000110",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Temperature at which sample was stored, e.g. -80 degree Celsius",
+        "guidance": "Expected value: measurement value | Preferred unit: degree Celsius",
+        "examples": "-80 degree Celsius",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "samp_store_temp"
             }
           ]
         }
@@ -1362,6 +1243,50 @@ var DATA = [
           "dev": [
             {
               "field": "sieving"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "size-fraction lower threshold",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000735",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Refers to the mesh/pore size used to pre-filter/pre-sort the sample. Materials larger than the size threshold are excluded from the sample",
+        "guidance": "Expected value: value | Preferred unit: micrometer",
+        "examples": "0.2 micrometer",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "size_frac_low"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "size-fraction upper threshold",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000736",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Refers to the mesh/pore size used to retain the sample. Materials smaller than the size threshold are excluded from the sample",
+        "guidance": "Expected value: value | Preferred unit: micrometer",
+        "examples": "20 micrometer",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "size_frac_up"
             }
           ]
         }
@@ -1559,6 +1484,28 @@ var DATA = [
         }
       },
       {
+        "fieldName": "total carbon",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000525",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Total carbon content",
+        "guidance": "Expected value: measurement value | Preferred unit: microgram per liter",
+        "examples": "",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "tot_carb"
+            }
+          ]
+        }
+      },
+      {
         "fieldName": "total nitrogen content method",
         "capitalize": "",
         "ontology_id": "MIXS:0000338",
@@ -1645,6 +1592,28 @@ var DATA = [
         }
       },
       {
+        "fieldName": "total phosphorus",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000117",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Total phosphorus concentration in the sample, calculated by: total phosphorus = total dissolved phosphorus + particulate phosphorus",
+        "guidance": "Expected value: measurement value | Preferred unit: micromole per liter, milligram per liter, parts per million",
+        "examples": "0.03 milligram per liter",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "tot_phosp"
+            }
+          ]
+        }
+      },
+      {
         "fieldName": "water content method",
         "capitalize": "",
         "ontology_id": "MIXS:0000323",
@@ -1683,6 +1652,27 @@ var DATA = [
           "dev": [
             {
               "field": "water_content"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "watering regimen",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000591",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Information about treatment involving an exposure to watering frequencies, treatment regimen including how many times the treatment was repeated, how long each treatment lasted, and the start and end time of the entire treatment; can include multiple regimens",
+        "guidance": "Expected value: measurement value;treatment interval and duration | Preferred unit: milliliter, liter | pattern generalization: {float} {unit};{Rn/start_time/end_time/duration}",
+        "examples": "1 liter;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M",
+        "exportField": {
+          "dev": [
+            {
+              "field": "watering_regm"
             }
           ]
         }
@@ -1740,7 +1730,7 @@ var DATA = [
         "fieldName": "broad-scale environmental context",
         "capitalize": "",
         "ontology_id": "MIXS:0000012",
-        "datatype": "xs:token",
+        "datatype": "select",
         "source": "",
         "dataStatus": null,
         "xs:minInclusive": "",
@@ -1749,13 +1739,134 @@ var DATA = [
         "description": "Report the major environmental system the sample or specimen came from. The system(s) identified should have a coarse spatial grain, to provide the general environmental context of where the sampling was done (e.g. in the desert or a rainforest). We recommend using subclasses of EnvO\u2019s biome class:  http://purl.obolibrary.org/obo/ENVO_00000428. EnvO documentation about how to use the field: https://github.com/EnvironmentOntology/envo/wiki/Using-ENVO-with-MIxS",
         "guidance": "Expected value: The major environment type(s) where the sample was collected. Recommend subclasses of biome [ENVO:00000428]. Multiple terms can be separated by one or more pipes. | pattern generalization: {termLabel} {[termID]}",
         "examples": "oceanic epipelagic zone biome [ENVO:01000033] for annotating a water sample from the photic zone in middle of the Atlantic Ocean",
-        "pattern": ".* \\[ENVO:\\d+\\]",
         "exportField": {
           "dev": [
             {
               "field": "env_broad_scale"
             }
           ]
+        },
+        "schema:ItemList": {
+          "alpine biome [ENVO:01001835]": {
+            "ontology_id": "ENVO:01001835"
+          },
+          "__alpine tundra biome [ENVO:01001505]": {
+            "ontology_id": "ENVO:01001505"
+          },
+          "anthropogenic terrestrial biome [ENVO:01000219]": {
+            "ontology_id": "ENVO:01000219"
+          },
+          "__rangeland biome [ENVO:01000247]": {
+            "ontology_id": "ENVO:01000247"
+          },
+          "__village biome [ENVO:01000246]": {
+            "ontology_id": "ENVO:01000246"
+          },
+          "arid biome [ENVO:01001838]": {
+            "ontology_id": "ENVO:01001838"
+          },
+          "mangrove biome [ENVO:01000181]": {
+            "ontology_id": "ENVO:01000181"
+          },
+          "montane biome [ENVO:01001836]": {
+            "ontology_id": "ENVO:01001836"
+          },
+          "__montane savanna biome [ENVO:01000223]": {
+            "ontology_id": "ENVO:01000223"
+          },
+          "__montane shrubland biome [ENVO:01000216]": {
+            "ontology_id": "ENVO:01000216"
+          },
+          "polar biome [ENVO:01000339]": {
+            "ontology_id": "ENVO:01000339"
+          },
+          "shrubland biome [ENVO:01000176]": {
+            "ontology_id": "ENVO:01000176"
+          },
+          "__subtropical shrubland biome [ENVO:01000213]": {
+            "ontology_id": "ENVO:01000213"
+          },
+          "____mediterranean shrubland biome [ENVO:01000217]": {
+            "ontology_id": "ENVO:01000217"
+          },
+          "__temperate shrubland biome [ENVO:01000215]": {
+            "ontology_id": "ENVO:01000215"
+          },
+          "__tropical shrubland biome [ENVO:01000214]": {
+            "ontology_id": "ENVO:01000214"
+          },
+          "subalpine biome [ENVO:01001837]": {
+            "ontology_id": "ENVO:01001837"
+          },
+          "subpolar biome [ENVO:01001834]": {
+            "ontology_id": "ENVO:01001834"
+          },
+          "subtropical biome [ENVO:01001832]": {
+            "ontology_id": "ENVO:01001832"
+          },
+          "__mediterranean biome [ENVO:01001833]": {
+            "ontology_id": "ENVO:01001833"
+          },
+          "____mediterranean savanna biome [ENVO:01000229]": {
+            "ontology_id": "ENVO:01000229"
+          },
+          "____mediterranean woodland biome [ENVO:01000208]": {
+            "ontology_id": "ENVO:01000208"
+          },
+          "__subtropical savanna biome [ENVO:01000187]": {
+            "ontology_id": "ENVO:01000187"
+          },
+          "__subtropical woodland biome [ENVO:01000222]": {
+            "ontology_id": "ENVO:01000222"
+          },
+          "temperate biome [ENVO:01001831]": {
+            "ontology_id": "ENVO:01001831"
+          },
+          "__temperate savanna biome [ENVO:01000189]": {
+            "ontology_id": "ENVO:01000189"
+          },
+          "__temperate woodland biome [ENVO:01000221]": {
+            "ontology_id": "ENVO:01000221"
+          },
+          "tropical biome [ENVO:01001830]": {
+            "ontology_id": "ENVO:01001830"
+          },
+          "__tropical savanna biome [ENVO:01000188]": {
+            "ontology_id": "ENVO:01000188"
+          },
+          "__tropical woodland biome [ENVO:01000220]": {
+            "ontology_id": "ENVO:01000220"
+          },
+          "tundra biome [ENVO:01000180]": {
+            "ontology_id": "ENVO:01000180"
+          },
+          "urban biome [ENVO:01000249]": {
+            "ontology_id": "ENVO:01000249"
+          },
+          "woodland biome [ENVO:01000175]": {
+            "ontology_id": "ENVO:01000175"
+          },
+          "__savanna biome [ENVO:01000178]": {
+            "ontology_id": "ENVO:01000178"
+          },
+          "____flooded savanna biome [ENVO:01000190]": {
+            "ontology_id": "ENVO:01000190"
+          },
+          "____montane savanna biome [ENVO:01000223]": {
+            "ontology_id": "ENVO:01000223"
+          },
+          "____subtropical savanna biome [ENVO:01000187]": {
+            "ontology_id": "ENVO:01000187"
+          },
+          "______mediterranean savanna biome [ENVO:01000229]": {
+            "ontology_id": "ENVO:01000229"
+          },
+          "____temperate savanna biome [ENVO:01000189]": {
+            "ontology_id": "ENVO:01000189"
+          },
+          "____tropical savanna biome [ENVO:01000188]": {
+            "ontology_id": "ENVO:01000188"
+          }
         }
       },
       {
@@ -1870,6 +1981,49 @@ var DATA = [
     ]
   },
   {
+    "fieldName": "MIXS:investigation field",
+    "children": [
+      {
+        "fieldName": "experimental factor",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000008",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Experimental factors are essentially the variable aspects of an experiment design which can be used to describe an experiment, or set of experiments, in an increasingly detailed manner. This field accepts ontology terms from Experimental Factor Ontology (EFO) and/or Ontology for Biomedical Investigations (OBI). For a browser of EFO (v 2.95) terms, please see http://purl.bioontology.org/ontology/EFO; for a browser of OBI (v 2018-02-12) terms please see http://purl.bioontology.org/ontology/OBI",
+        "guidance": "Expected value: text or EFO and/or OBI | pattern generalization: {termLabel} {[termID]}|{text}",
+        "examples": "time series design [EFO:EFO_0001779]",
+        "exportField": {
+          "dev": [
+            {
+              "field": "experimental_factor"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "placeholder",
+        "capitalize": "  ",
+        "ontology_id": "",
+        "datatype": "  ",
+        "source": "  ",
+        "dataStatus": [
+          ""
+        ],
+        "xs:minInclusive": "  ",
+        "xs:maxInclusive": "  ",
+        "requirement": "  ",
+        "description": "  ",
+        "guidance": "  ",
+        "examples": "  ",
+        "pattern": "  "
+      }
+    ]
+  },
+  {
     "fieldName": "emsl:default",
     "children": [
       {
@@ -1968,7 +2122,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "Type of sample being submitted",
-        "guidance": "This can vary from 'environmental package' if the sample is an extraction. | pattern generalization: enumeration",
+        "guidance": "This can vary from 'environmental package' if the sample is an extraction.",
         "examples": "water extracted soil",
         "exportField": {
           "dev": [
@@ -1999,6 +2153,430 @@ var DATA = [
           "dev": [
             {
               "field": "technical_reps"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "fieldName": "jgi_gen:default",
+    "children": [
+      {
+        "fieldName": "DNA Absorbance 260/280",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_absorb1",
+        "datatype": "xs:decimal",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "260/280 measurement of sample purity",
+        "guidance": "Recommended value is between 1 and 3. | pattern generalization: {float}",
+        "examples": "2.02",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_absorb1"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Absorbance 260/230",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_absorb2",
+        "datatype": "xs:decimal",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "260/230 measurement of sample purity",
+        "guidance": "Recommended value is between 1 and 3. | pattern generalization: {float}",
+        "examples": "2.02",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_absorb2"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Collection Site",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_collect_site",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Provide information on the site your DNA sample was collected from",
+        "guidance": "pattern generalization: {text}",
+        "examples": "untreated pond water",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_collect_site"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Concentration",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_concentration",
+        "datatype": "xs:decimal",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "0.0",
+        "xs:maxInclusive": "2000.0",
+        "requirement": "required",
+        "description": "Must be calculated using a fluorometric method; value >0 and <2000.",
+        "guidance": "Units should be in ng/uL | pattern generalization: {float}",
+        "examples": "100",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_concentration"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Container Type",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_cont_type",
+        "datatype": "select",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "tube or plate (96-well)",
+        "guidance": "",
+        "examples": "plate",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_cont_type"
+            }
+          ]
+        },
+        "schema:ItemList": {
+          "plate": {},
+          "tube": {}
+        }
+      },
+      {
+        "fieldName": "DNA Well Number",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_cont_well",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Corner wells must be blank. For partial plates, fill by columns. Leave blank if the sample will be shipped in a tube.",
+        "guidance": "Required when 'plate' is selected for container type | pattern generalization: {text}",
+        "examples": "B2",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_cont_well"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Container Label",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_container_ID",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Must be unique across all tubes and plates, and <20 characters. All samples in a plate should have the same plate label.",
+        "guidance": "pattern generalization: {text}",
+        "examples": "Pond_MT_041618",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_container_ID"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNAse Treatment DNA",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_dnase",
+        "datatype": "select",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Y/N. Note DNAse treatment is required for all RNA samples.",
+        "guidance": "",
+        "examples": "No",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_dnase"
+            }
+          ]
+        },
+        "schema:ItemList": {
+          "no": {},
+          "yes": {}
+        }
+      },
+      {
+        "fieldName": "DNA Isolation Method",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_isolate_meth",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Describe the method/protocol/kit used to extract DNA/RNA.",
+        "guidance": "pattern generalization: {text}",
+        "examples": "phenol/chloroform extraction",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_isolate_meth"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Expected Organisms",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_organisms",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "List any organisms known or suspected to grow in co-culture, as well as estimated % of the organism in that culture.",
+        "guidance": "pattern generalization: {text}",
+        "examples": "expected to contain microbes (59%) fungi (30%), viruses (10%), tadpoles (1%)",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_organisms"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Seq Project Contact",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_project_contact",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Prefilled",
+        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
+        "examples": "John Jones",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_project_contact"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Sample ID",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_samp_ID",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Prefilled",
+        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
+        "examples": "187654",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_samp_ID"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Sample Format",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_sample_format",
+        "datatype": "select",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Choose from the following: Pellet, RNAStable, DNAStable, Ethanol, MDA reaction buffer, PBS, TE, Water, Low EDTA TE, 10 mM Tris-HCl",
+        "guidance": "Identify what the DNA sample is suspended in",
+        "examples": "Water",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_sample_format"
+            }
+          ]
+        },
+        "schema:ItemList": {
+          "10 mM Tris-HCl": {},
+          "DNAStable": {},
+          "Ethanol": {},
+          "Low EDTA TE": {},
+          "MDA reaction buffer": {},
+          "PBS": {},
+          "Pellet": {},
+          "RNAStable": {},
+          "TE": {},
+          "Water": {}
+        }
+      },
+      {
+        "fieldName": "DNA Sample Name",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_sample_name",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Give the DNA sample a name that is meaningful to you. Sample names must be unique across all JGI projects and contain ASCII characters only.",
+        "guidance": "pattern generalization: {text}",
+        "examples": "JGI_pond_041618",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_sample_name"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Seq Project ID",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_seq_project",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Prefilled",
+        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
+        "examples": "1191234",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_seq_project"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Seq Project PI",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_seq_project_PI",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Prefilled",
+        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
+        "examples": "Jane Johnson",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_seq_project_PI"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Seq Project Name",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_seq_project_name",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Prefilled",
+        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
+        "examples": "JGI Pond metagenomics",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_seq_project_name"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Volume",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_volume",
+        "datatype": "xs:decimal",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "0.0",
+        "xs:maxInclusive": "1000.0",
+        "requirement": "required",
+        "description": "Value must be >0 and <1000 (values <25 by special permission only).",
+        "guidance": "Units should be in uL | pattern generalization: {float}",
+        "examples": "25",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_volume"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Proposal ID",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:proposal_dna",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Prefilled",
+        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
+        "examples": "504000",
+        "exportField": {
+          "dev": [
+            {
+              "field": "proposal_dna"
             }
           ]
         }
@@ -2147,7 +2725,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "Type of facility/location where the sample was harvested; controlled vocabulary: growth chamber, open top chamber, glasshouse, experimental garden, field.",
-        "guidance": "pattern generalization: enumeration",
+        "guidance": "",
         "examples": "",
         "exportField": {
           "dev": [
@@ -2371,7 +2949,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Is this organism an aerobe, anaerobe? Please note that aerobic and anaerobic are valid descriptors for microbial environments",
-        "guidance": "pattern generalization: enumeration",
+        "guidance": "",
         "examples": "",
         "exportField": {
           "dev": [
@@ -2397,8 +2975,8 @@ var DATA = [
         "datatype": "xs:decimal",
         "source": "",
         "dataStatus": null,
-        "xs:minInclusive": "0",
-        "xs:maxInclusive": "14",
+        "xs:minInclusive": "0.0",
+        "xs:maxInclusive": "14.0",
         "requirement": "",
         "description": "Ph measurement of the sample, or liquid portion of sample, or aqueous phase of the fluid",
         "guidance": "Expected value: measurement value | pattern generalization: {float}",
@@ -2422,7 +3000,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Description of relationship(s) between the subject organism and other organism(s) it is associated with. E.g., parasite on species X; mutualist with species Y. The target organism is the subject of the relationship, and the other organism(s) is the object",
-        "guidance": "pattern generalization: enumeration",
+        "guidance": "",
         "examples": "",
         "exportField": {
           "dev": [
@@ -2556,7 +3134,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "Explain how the soil sample is stored (fresh/frozen/other).",
-        "guidance": "pattern generalization: enumeration",
+        "guidance": "",
         "examples": "",
         "exportField": {
           "dev": [

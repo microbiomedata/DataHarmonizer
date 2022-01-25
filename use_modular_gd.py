@@ -25,11 +25,12 @@ click_log.basic_config(logger)
               help='URL "id" for combined schema?')
 @click.option('--constructed_class_name', default='soil_biosample', show_default=True,
               help='name for combined class within combined schema?')
+@click.option('--env_package', help='Which environmental package should this LinkML model reflect?', required=True)
 @click.option('--inc_emsl/--no_emsl', default=False, show_default=True)
 @click.option('--jgi', type=click.Choice(['metagenomics', 'metatranscriptomics', 'omit']), default='omit',
               show_default=True)
 def combine_schemas(sheet_id, client_secret_json, constructed_schema_name, constructed_schema_id,
-                    constructed_class_name, inc_emsl, jgi):
+                    constructed_class_name, env_package, inc_emsl, jgi):
     additional_prefixes = {"prov": "http://www.w3.org/ns/prov#", "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
                            "schema": "http://schema.org/", "xsd": "http://www.w3.org/2001/XMLSchema#",
                            "UO": "http://purl.obolibrary.org/obo/UO_"}
@@ -50,16 +51,16 @@ def combine_schemas(sheet_id, client_secret_json, constructed_schema_name, const
                                 and disposition != 'skip';
     """},
              "mixs": {"yaml": "target/mixs_generated_no_imports.yaml", "title": "mixs_packages_x_slots",
-                      "focus_class": "soil",
-                      "query": """
+                      "focus_class": env_package,
+                      "query": f"""
                             SELECT
                                 slot as slot
                             FROM
                                 gsheet_frame
                             where
-                                package = 'soil'
+                                package = '{env_package}'
                                 and (
-                                disposition = 'use as-is' or disposition = 'borrowed as-is'
+                                disposition = 'use as-is' or disposition = 'borrowed'
                                 )
     """}, }
 
@@ -69,8 +70,10 @@ def combine_schemas(sheet_id, client_secret_json, constructed_schema_name, const
         new_schema = mgd.wrapper(task['yaml'], title, task['focus_class'], pysqldf_slot_list, new_schema,
                                  constructed_class_name)
 
-    # todo refactor
-    enum_sheet = mgd.get_gsheet_frame(client_secret_json, sheet_id, 'enumerations')
+    # todo refactor?
+    # enum_sheet = mgd.get_gsheet_frame(client_secret_json, sheet_id, 'enumerations')
+    enums_long_sheet_all_envpacks = mgd.get_gsheet_frame(client_secret_json, sheet_id, 'enums_long')
+    enum_sheet = enums_long_sheet_all_envpacks.loc[enums_long_sheet_all_envpacks['env_package'].eq(env_package)]
 
     # override for depth
     new_schema = mgd.inject_supplementary(client_secret_json, sheet_id, 'mixs_modified_slots', new_schema,
