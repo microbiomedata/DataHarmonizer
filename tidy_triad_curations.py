@@ -21,3 +21,5 @@ df_explode = df_explode.loc[df_explode['env_package'].eq('Soil')]
 df_explode['env_package'] = df_explode["env_package"].str.lower()
 
 df_explode.to_csv("tidy_triad_curations.tsv", sep="\t", index=False)
+
+

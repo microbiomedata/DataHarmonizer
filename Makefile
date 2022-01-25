@@ -178,3 +178,9 @@ docs/template/dev/data.tsv: target/data.tsv
 #		--selected_class soil_biosample_class \
 #		--output_file=$@
 
+soil_ebs_terms_indented.tsv:
+	poetry run hident \
+		--sco_tab_file_name ../../hident/target/envo_sco.tsv \
+		--lab_tab_file_name ../../hident/target/envo_labs.tsv \
+		--curie_file_name soil_ebs_terms.txt\
+		--indented_tsv $@
