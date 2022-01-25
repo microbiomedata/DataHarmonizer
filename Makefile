@@ -2,8 +2,6 @@
 
 all: docs/template/dev/data.tsv target/mixs_package_classes.tsv target/soil_biosample_regex_insight.tsv
 
-# target/mixs_package_classes.tsv target/soil_biosample_regex_insight.tsv
-
 setup: clean post_clone_submodule_steps target/string_serialization_check.txt target/string_serialization_expected_failure.txt test
 	# this sets the poetry environment, not the poetry application
 	# setting up the poetry application is the user's responsibility
@@ -127,12 +125,8 @@ target/soil_ebs_terms_indented.tsv: target/soil_ebs_terms.txt
 		--indented_tsv $@
 
 target/data_promoted.tsv: target/data.tsv target/soil_ebs_terms_indented.tsv
-	# todo this is 1) a workaround for: yet another 'Failed to map' #79
-	# a way to add enum/select rows (from hident?) and change the owning column to type "select"
-	# currently disables the owning column's regex validation
 	poetry run python promote_to_select.py \
 		--promote 'broad-scale environmental context' \
-		--extra_row_files artifacts/extra_mixs_inv_field_row.tsv \
 		--extra_row_files target/soil_ebs_terms_indented.tsv \
 		--data_tsv_out $@
 

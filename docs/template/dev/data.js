@@ -2003,23 +2003,6 @@ var DATA = [
             }
           ]
         }
-      },
-      {
-        "fieldName": "placeholder",
-        "capitalize": "  ",
-        "ontology_id": "",
-        "datatype": "  ",
-        "source": "  ",
-        "dataStatus": [
-          ""
-        ],
-        "xs:minInclusive": "  ",
-        "xs:maxInclusive": "  ",
-        "requirement": "  ",
-        "description": "  ",
-        "guidance": "  ",
-        "examples": "  ",
-        "pattern": "  "
       }
     ]
   },

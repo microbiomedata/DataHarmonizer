@@ -263,7 +263,6 @@ ENVO:00002254	Vertisols	soil_taxonomic/FAO classification
 	strip tillage	history/tillage												
 	tined	history/tillage												
 	zonal tillage	history/tillage												
-	placeholder	MIXS:investigation field 	  	  	  	  	  	  	  	  	  	  	  	 
 ENVO:01001835	alpine biome [ENVO:01001835]	broad-scale environmental context												
 ENVO:01001505	__alpine tundra biome [ENVO:01001505]	broad-scale environmental context												
 ENVO:01000219	anthropogenic terrestrial biome [ENVO:01000219]	broad-scale environmental context												
