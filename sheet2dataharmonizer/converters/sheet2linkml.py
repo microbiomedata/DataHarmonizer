@@ -3,7 +3,13 @@ from typing import Dict, Any, List
 import pygsheets
 import pandas as pd
 
-from linkml_runtime.linkml_model import SchemaDefinition, ClassDefinition, Prefix
+from linkml_runtime.linkml_model import (
+    SchemaDefinition,
+    ClassDefinition,
+    Prefix,
+    SlotDefinition,
+    Example,
+)
 from linkml_runtime.utils.schemaview import SchemaView
 
 from pandasql import sqldf

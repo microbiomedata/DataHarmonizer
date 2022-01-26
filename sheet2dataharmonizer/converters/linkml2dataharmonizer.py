@@ -54,19 +54,30 @@ class LinkML2DataHarmonizer:
         ]
 
     def range_data_types(self) -> Dict[str, str]:
-        return {"date": "xs:date", "timestamp value": "date", "string": "xs:token"}
+        return {
+            "date": "xs:date",
+            "double": "xs:decimal",
+            "string": "xs:token",
+            "timestamp value": "date",
+        }
 
     def str_ser_data_types(self) -> Dict[str, str]:
-        return {"{integer}": "xs:nonNegativeInteger", "{timestamp}": "xs:date",
-                             "{float}": "xs:decimal"}
+        return {
+            "{float}": "xs:decimal",
+            "{integer}": "xs:nonNegativeInteger",
+            "{timestamp}": "xs:date",
+        }
 
     def range_regexes(self) -> Dict[str, str]:
         return {"quantity value": r"[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+"}
 
     def str_ser_regexes(self) -> Dict[str, str]:
-        return {"{float} {unit}": r"[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+",
-                          "{text};{float} {unit}": r"\S*;[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+",
-                          "{termLabel} {[termID]}": r".* \[ENVO:\d+\]", "{text}:{text}": r"[^\:\n\r]+\:[^\:\n\r]+"}
+        return {
+            "{float} {unit}": r"[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+",
+            "{text};{float} {unit}": r"\S*;[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+",
+            "{termLabel} {[termID]}": r".* \[ENVO:\d+\]",
+            "{text}:{text}": r"[^\:\n\r]+\:[^\:\n\r]+",
+        }
 
     def log_tally(self, tally: List[str], message: str) -> None:
         logger.info(message)
@@ -121,18 +132,19 @@ class LinkML2DataHarmonizer:
         for i in relevant_slots:
             prefix_portion = ""
             if i.slot_uri is None or i.slot_uri == "":
-                section_prefix = ""
+                # section_prefix = ""
+                pass
             else:
                 # what if the slot uri is a full uri, not a curie?
                 prefix_portion = i.slot_uri.split(":")[0] + ":"
                 logger.info(f"saw the prefix {prefix_portion}")
                 self.prefix_tally.append(prefix_portion)
-            
+
             if i.is_a is None:
                 relevant_isa = prefix_portion + default_section
             else:
                 relevant_isa = prefix_portion + i.is_a
-            
+
             isa_dict[i.name] = relevant_isa
             isa_set.add(relevant_isa)
 
@@ -169,11 +181,6 @@ class LinkML2DataHarmonizer:
 
         isa_dict = self._get_is_a_struct(selected_class, default_section)
 
-        self.string_ser_tally = []
-
-        # wrap in ^ and $?
-        q_val_pattern = "\d+[.\d+] \S+"
-
         term_names = list(isa_dict.keys())
         term_names.sort()
         term_list = []
@@ -195,8 +202,10 @@ class LinkML2DataHarmonizer:
                 current_row["label"] = current_sd.title
             else:
                 current_row["label"] = current_sd.name
+
             # useless parent classes:  attribute, <default>,
             current_row["parent class"] = isa_dict[i]
+
             # description: quote and or bracket wrappers, TODO, empty
             if current_sd.description is None:
                 pass
@@ -208,14 +217,17 @@ class LinkML2DataHarmonizer:
                 temp = re.sub(r"^[\['\"]*", "", temp)
                 temp = re.sub(r"['\]\"]*$", "", temp)
                 current_row["description"] = temp
+
             # guidance: I have moved slot used in...  out of the MIxS comments
             #  Occurrence is still in there
             #   ~ half of the MixS soil/NMDC biosample fields lack comments for "guidance"
             #   Montana provides her own, to be concatenated on
             #   Damion's latest LinkML -> JS approach lays the comments and examples out nicer
             current_row["guidance"] = " | ".join(current_sd.comments)
+
             # todo refactor
             current_row["datatype"] = "xs:token"
+
             if current_sd.pattern is not None and current_sd.pattern != "":
                 if (
                     current_row["guidance"] is not None
@@ -254,19 +266,23 @@ class LinkML2DataHarmonizer:
             # don't forget selects and multis
             # map selects to terms and indent
             self.range_tally.append(current_sd.range)
-            
-            if current_sd.string_serialization is not None and current_sd.string_serialization != "":
+
+            if (
+                current_sd.string_serialization is not None
+                and current_sd.string_serialization != ""
+            ):
                 self.string_ser_tally.append(current_sd.string_serialization[0:99])
             else:
                 self.string_ser_tally.append("<none>")
 
             current_row["pattern"] = current_sd.pattern
+
             # if (current_sd.pattern is None or current_sd.pattern == "") and current_sd.range == "quantity value":
             #     current_row["pattern"] = q_val_pattern
             # todo check for numeric but don't force float when int will do?
             if current_sd.minimum_value is not None and current_sd.minimum_value != "":
                 current_row["min value"] = current_sd.minimum_value
-                
+
             if current_sd.maximum_value is not None and current_sd.maximum_value != "":
                 current_row["max value"] = current_sd.maximum_value
 
@@ -298,7 +314,7 @@ class LinkML2DataHarmonizer:
                 current_row["requirement"] = "recommended"
             elif current_sd.required or current_sd.name in req_rec_dict["required"]:
                 current_row["requirement"] = "required"
-            # --- examples
+
             example_list = []
             for exmpl in current_sd.examples:
                 # ignoring description which always seems to be None
@@ -306,6 +322,7 @@ class LinkML2DataHarmonizer:
                     example_list.append(exmpl.value)
                     example_cat = "|".join(example_list)
                     current_row["examples"] = example_cat
+
             current_row["source"] = default_source  # for reuse of enums?
             current_row["capitalize"] = default_capitalize
             current_row["data status"] = default_data_status
@@ -323,12 +340,16 @@ class LinkML2DataHarmonizer:
             if current_sd.range in range_data_types:
                 current_row["datatype"] = range_data_types[current_sd.range]
             elif current_sd.string_serialization in str_ser_data_types:
-                current_row["datatype"] = str_ser_data_types[current_sd.string_serialization]
+                current_row["datatype"] = str_ser_data_types[
+                    current_sd.string_serialization
+                ]
 
             if current_sd.range in range_regexes:
                 current_row["pattern"] = range_regexes[current_sd.range]
             elif current_sd.string_serialization in str_ser_regexes:
-                current_row["pattern"] = str_ser_regexes[current_sd.string_serialization]
+                current_row["pattern"] = str_ser_regexes[
+                    current_sd.string_serialization
+                ]
 
             if current_sd.identifier:
                 current_row["datatype"] = "xs:unique"
@@ -384,11 +405,21 @@ class LinkML2DataHarmonizer:
         reunited = reunited.append(coc_leftovers)
         reunited = reunited.append(nr_leftovers)
 
-        self.log_tally(self.prefix_tally, "TABULATION OF TERM PREFIXES, for prioritizing range->regex conversion")
-        self.log_tally(self.range_tally, "TABULATION OF SLOT RANGES, for prioritizing range->regex conversion")
-        self.log_tally(self.string_ser_tally, "TABULATION OF STRING SERIALIZATIONS, for prioritizing serialization->regex conversion")
+        self.log_tally(
+            self.prefix_tally,
+            "TABULATION OF TERM PREFIXES, for prioritizing range->regex conversion",
+        )
+        self.log_tally(
+            self.range_tally,
+            "TABULATION OF SLOT RANGES, for prioritizing range->regex conversion",
+        )
+        self.log_tally(
+            self.string_ser_tally,
+            "TABULATION OF STRING SERIALIZATIONS, for prioritizing serialization->regex conversion",
+        )
 
         return reunited
+
 
 # # soil biosample
 # ranges that could be interpreted as datatypes or patterns
