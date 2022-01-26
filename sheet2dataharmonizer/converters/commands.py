@@ -191,7 +191,7 @@ def _inject_supplementary(
 )
 @click.option(
     "--client_secret_json",
-    default="local/client_secret_fresh-sheet2linkml.apps.googleusercontent.com.json",
+    default="local/client_secret.apps.googleusercontent.com.json",
     show_default=True,
     help="location of Google Sheets authentication file.",
     type=click.Path(exists=True),
@@ -511,7 +511,7 @@ def range_str_ser(model_file, selected_class, output_file):
 @click_log.simple_verbosity_option(logger)
 @click.option(
     "--client_secret",
-    default="local/client_secret.apps.googleusercontent.com.json",
+    default="local/client_secret_fresh-sheet2linkml.apps.googleusercontent.com.json",
     type=click.Path(exists=True),
     help="path your google sheet authentication file",
     show_default=True,
