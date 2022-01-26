@@ -1,28 +1,28 @@
 [tool.poetry]
-name = "linkml_round_trips"
+name = "sheet2dataharmonizer"
 version = "0.1.0"
 description = ""
 authors = ["Mark Andrew Miller <MAM@lbl.gov>"]
 
 [tool.poetry.dependencies]
-black = "*"
-click-log = "*"
 deepdiff = "*"
 glom = "*"
-jupyter = "*"
 linkml = "^1.1.13"
 linkml-model = "^1.0.6"
 # nmdc-schema = ""
 pygsheets = "*"
 python = "^3.9"
 strsimpy = "*"
-pytest = "*"
 dpath = "^2.0.5"
 pandasql = "^0.7.3"
 linkml-model-enrichment = "^0.0.4"
 hident = "^0.1.4"
 
 [tool.poetry.dev-dependencies]
+black = "*"
+click-log = "*"
+pytest = "*"
+jupyter = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
