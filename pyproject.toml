@@ -20,6 +20,7 @@ pytest = "*"
 dpath = "^2.0.5"
 pandasql = "^0.7.3"
 linkml-model-enrichment = "^0.0.4"
+hident = "^0.1.4"
 
 [tool.poetry.dev-dependencies]
 
@@ -28,13 +29,9 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-## superceded by linkml_to_dh_light
-#linkml_to_dh_no_annotations = "linkml_round_trips.linkml_to_dh_no_annotations:linkml_to_dh_no_annotations"
-#interleave_classes = "linkml_round_trips.old.interleave_classes:interleave_classes"
-#get_dependencies = "linkml_round_trips.old.get_dependencies:get_dependencies"
-#merge_dont_interleave = "linkml_round_trips.old.merge_dont_interleave:merge_dont_interleave"
-#interleave_mergeds = "linkml_round_trips.old.interleave_mergeds:interleave_mergeds"
-linkml_to_dh_light = "linkml_round_trips.linkml_to_dh_light:linkml_to_dh_light"
-mixs_package_classes = "linkml_round_trips.old.mixs_package_classes:mixs_package_classes"
+range_str_ser = "sheet2dataharmonizer.converters.commands:range_str_ser"
+tidy_triad_curations = "sheet2dataharmonizer.converters.commands:tidy_triad_curations"
+promote_to_select = "sheet2dataharmonizer.converters.commands:promote_to_select"
+mixs_package_map = "sheet2dataharmonizer.converters.commands:mixs_package_map"
 linkml2dataharmonizer = "sheet2dataharmonizer.converters.commands:linkml2dataharmonizer"
 sheet2linkml = "sheet2dataharmonizer.converters.commands:sheet2linkml"
