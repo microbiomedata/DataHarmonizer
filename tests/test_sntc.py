@@ -1,5 +1,5 @@
 # from itertools import dropwhile
-
+import re
 import pandas as pd
 import pygsheets
 import pytest
@@ -11,6 +11,8 @@ from linkml_runtime.utils.schemaview import SchemaView
 # import linkml_round_trips.old.just_exacts as je
 
 import pprint
+
+# test for no gaps and no repeats in column orders
 
 # ---
 
@@ -41,10 +43,17 @@ sntc_id = '1pSmxX6XGOxmoA7S7rKyj5OaEl3PmAl4jAOlROuNHrU0'
 
 expected_SI_frame_cols = ['sheet_name', 'notes', 'input for soil DH template generation']
 
+expected_enums_frame_cols = ['env_package', 'enum', 'permissible_value']
+
+# all the MIxS env package classed?
+# plus the derived ones from EMSL? Montana can helo with that?
+allowed_env_packs = ['soil']
+enum_check_env_pack = 'soil'
+
+enum_suffix = "_enum"
+
 expected_tabs = ['SheetIdentification',
                  'Example Use',
-                 'OtherPackages',
-                 'JGI Terms',
                  'mixs_packages_x_slots',
                  'mixs_modified_slots',
                  'biosample_identification_slots',
@@ -52,7 +61,7 @@ expected_tabs = ['SheetIdentification',
                  'EMSL_sample_slots',
                  'JGI_sample_slots',
                  'Sections_order',
-                 'enumerations']
+                 'enums_long', 'mock_section_defs']
 
 # order matters
 expected_mixs_soil_ind_slot_names = ['lat_lon', 'depth', 'alt', 'elev', 'temp', 'geo_loc_name', 'collection_date',
@@ -69,7 +78,7 @@ expected_mixs_soil_ind_slot_names = ['lat_lon', 'depth', 'alt', 'elev', 'temp', 
                                      'micro_biomass_meth', 'link_addit_analys', 'extreme_salinity', 'salinity_meth',
                                      'heavy_metals', 'heavy_metals_meth', 'al_sat', 'al_sat_meth', 'misc_param']
 
-mixs_yaml = "../mixs-source/model/schema/mixs.yaml"
+mixs_yaml = "mixs-source/model/schema/mixs.yaml"
 
 
 # ---
@@ -151,9 +160,114 @@ def test_tabs_vs_previous(tabs_list):
     assert tabs_list == expected_tabs
 
 
+# @pytest.fixture(scope="module")
+# def enums_tab(sntc_gsheet):
+#     enums_tab = sntc_gsheet.worksheet("title", 'enumerations')
+#     return enums_tab
+#
+#
+# def test_enums_tab(enums_tab):
+#     assert enums_tab is not None
+
+
+# not really a test
+# just ran once for reshaping part of the SNTC Google sheet
+# def test_make_long_enums_frame(enums_tab, sntc_gsheet):
+#     orig_enums_frame = enums_tab.get_as_df()
+#     orig_enums_dict = orig_enums_frame.to_dict(orient='dict')
+#     row_list = []
+#     for ck, cv in orig_enums_dict.items():
+#         for rk, rv in cv.items():
+#             if informative_check(rv):
+#                 row_list.append({"enum": ck, "permissible_value": rv})
+#     reshaped_enum_frame = pd.DataFrame(row_list)
+#     sheet_name = 'enums_long'
+#     # try:
+#     sntc_gsheet.add_worksheet(sheet_name)
+#     wks_write = sntc_gsheet.worksheet_by_title(sheet_name)
+#     wks_write.clear('A1', None, '*')
+#     wks_write.set_dataframe(reshaped_enum_frame, (1, 1), encoding='utf-8', fit=True)
+#     wks_write.frozen_rows = 1
+#     assert True
+
 @pytest.fixture(scope="module")
-def enums_cols(Terms_tab):
-    pass
+def enums_tab(sntc_gsheet):
+    enums_tab = sntc_gsheet.worksheet("title", 'enums_long')
+    return enums_tab
+
+
+def test_enums_tab(enums_tab):
+    assert enums_tab is not None
+
+
+@pytest.fixture(scope="module")
+def enums_frame(enums_tab):
+    enums_frame = enums_tab.get_as_df()
+    return enums_frame
+
+
+def test_enums_frame(enums_frame):
+    assert type(enums_frame) == pd.DataFrame
+
+
+@pytest.fixture(scope="module")
+def mixs_view():
+    mv = SchemaView(mixs_yaml)
+    return mv
+
+
+@pytest.fixture(scope="module")
+def mixs_enums(mixs_view):
+    mixs_enums = mixs_view.all_enums()
+    return mixs_enums
+
+
+def test_mixs_view_accessible(mixs_view):
+    assert type(mixs_view) == SchemaView
+
+
+def test_mixs_has_enums(mixs_enums):
+    assert type(mixs_enums) == dict
+
+
+def test_report_enum_diffs(mixs_enums, enums_frame):
+    mixs_enum_keys = mixs_enums.keys()
+    mixs_enum_names = list(mixs_enum_keys)
+    sntc_enum_col = enums_frame.loc[enums_frame['env_package'].eq(enum_check_env_pack), 'enum']
+    sntc_enums = list(set(list(sntc_enum_col)))
+    sntc_enums = [i + enum_suffix for i in sntc_enums]
+    mixs_enum_names_only = get_list_diif(mixs_enum_names, sntc_enums)
+    mixs_enum_names_only.sort()
+    print("\n")
+    print(f"MIxS only enums: {mixs_enum_names_only}")
+    sntc_enum_names_only = get_list_diif(sntc_enums, mixs_enum_names)
+    sntc_enum_names_only.sort()
+    print("\n")
+    print(f"SNTC only enums: {sntc_enum_names_only}")
+    shared_enum_names = get_list_intersection(mixs_enum_names, sntc_enums)
+    shared_enum_names.sort()
+    print("\n")
+    print(f"Shared enums: {shared_enum_names}")
+    print("\n")
+    for i in shared_enum_names:
+        enum_suff_stripped = re.sub(enum_suffix, "", i)
+        mixs_pvs = list(mixs_enums[i].permissible_values.keys())
+        mixs_pvs.sort()
+        sntc_pvs_series = enums_frame.loc[
+            enums_frame['env_package'].eq(enum_check_env_pack) & enums_frame['enum'].eq(
+                enum_suff_stripped), 'permissible_value']
+        sntc_pvs = list(sntc_pvs_series)
+        sntc_pvs.sort()
+        mixs_only = get_list_diif(mixs_pvs, sntc_pvs)
+        if len(mixs_only) > 0:
+            mixs_only.sort()
+            print(f"MIxS only values for {enum_suff_stripped}: {mixs_only}")
+            print("\n")
+        sntc_only = get_list_diif(sntc_pvs, mixs_pvs)
+        if len(sntc_only) > 0:
+            sntc_only.sort()
+            print(f"SNTC only values for {enum_suff_stripped}: {sntc_only}")
+            print("\n")
 
 
 # ---
@@ -165,12 +279,6 @@ def Terms_mixs(Terms_tab):
     Terms_frame = Terms_tab.get_as_df()
     col_contents = Terms_frame['mixs_6_slot_name']
     return col_contents
-
-
-@pytest.fixture(scope="module")
-def mixs_view():
-    mv = SchemaView(mixs_yaml)
-    return mv
 
 
 @pytest.fixture(scope="module")
