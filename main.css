@@ -46,16 +46,6 @@ html, body {
     z-index: 5000;
 }
 
-/* Specify headers modal */
-#specify-headers-comparison-row {
-	overflow-x: auto;
-}
-#expected-headers-div, #actual-headers-div {
-	white-space: pre;
-}
-#specify-headers-err-msg {
-	display: none;
-}
 
 /* Getting started modal */
 .carousel-control-prev-icon {
@@ -124,10 +114,38 @@ html, body {
 }
 #grid table.htCore > tbody > tr td:nth-child(2) {
 	border-right: medium solid gray;
+  	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 #add-rows-input {max-width:5rem}
 
 /* Below grid */
 #footer-row {
     visibility: hidden;
+}
+
+
+/* Specify headers modal */
+
+
+#specify-headers-err-msg {
+	display: none;
+}
+
+
+#field-mapping-container {
+	overflow-x: scroll; 
+	padding-bottom: 1rem;
+	scrollbar-width: 1rem;
+}
+
+#field-mapping {
+	white-space: nowrap;
+}
+
+#field-mapping col:first-child {background: #FF0}
+#field-mapping col:nth-child(2n+3) {background: #CCC}
+
+#field-mapping tr td , #field-mapping tr th {
+	padding: 3px;
 }
