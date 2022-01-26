@@ -31,10 +31,6 @@
 			<!-- python search and replace does this part -->	
   			
 						<tr class="section">
-							<td colspan="5"><h3>jgi_gen:default</h3></td>
-						</tr>
-						
-						<tr class="section">
 							<td colspan="5"><h3>samp_id:default</h3></td>
 						</tr>
 						
@@ -43,169 +39,7 @@
 							<td>Include all the data types associated or available for this biosample, this field can have multiple values separated by a ;</td>
 							<td>This field is constrained to contain only a set of limited terms indicate the types of data that were generated. | pattern generalization: enumeration</td>
 							<td>metagenomics; metabolomics; proteomics</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">DNA Absorbance 260/280</td>
-							<td>260/280 measurement of sample purity</td>
-							<td>Recommended value is between 1 and 3. | pattern generalization: {float}</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">DNA Absorbance 260/230</td>
-							<td>260/230 measurement of sample purity</td>
-							<td>Recommended value is between 1 and 3. | pattern generalization: {float}</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">DNA Collection Site</td>
-							<td>Provide information on the site your DNA sample was collected from</td>
-							<td>pattern generalization: {text}</td>
-							<td>untreated pond water</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">DNA Concentration</td>
-							<td>Must be calculated using a fluorometric method; value >0 and <2000.</td>
-							<td>Units should be in ng/uL | pattern generalization: {float} ng/uL</td>
-							<td>100</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">DNA Container Type</td>
-							<td>tube or plate (96-well)</td>
-							<td>pattern generalization: enumeration</td>
-							<td>plate</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">DNA Well Number</td>
-							<td>Corner wells must be blank. For partial plates, fill by columns. Leave blank if the sample will be shipped in a tube.</td>
-							<td>Required when 'plate' is selected for container type | pattern generalization: {text}</td>
-							<td>B2</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">DNA Container Label</td>
-							<td>Must be unique across all tubes and plates, and <20 characters. All samples in a plate should have the same plate label.</td>
-							<td>pattern generalization: {text}</td>
-							<td>Pond_MT_041618</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">DNAse Treatment DNA</td>
-							<td>Y/N. Note DNAse treatment is required for all RNA samples.</td>
-							<td>pattern generalization: enumeration</td>
-							<td>No</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">DNA Isolation Method</td>
-							<td>Describe the method/protocol/kit used to extract DNA/RNA.</td>
-							<td>pattern generalization: {text}</td>
-							<td>phenol/chloroform extraction</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">DNA Expected Organisms</td>
-							<td>List any organisms known or suspected to grow in co-culture, as well as estimated % of the organism in that culture.</td>
-							<td>pattern generalization: {text}</td>
-							<td>expected to contain microbes (59%) fungi (30%), viruses (10%), tadpoles (1%)</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">DNA Seq Project Contact</td>
-							<td>Prefilled</td>
-							<td>Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}</td>
-							<td>John Jones</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">DNA Sample ID</td>
-							<td>Prefilled</td>
-							<td>Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}</td>
-							<td>187654</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">DNA Sample Format</td>
-							<td>Choose from the following: Pellet, RNAStable, DNAStable, Ethanol, MDA reaction buffer, PBS, TE, Water, Low EDTA TE, 10 mM Tris-HCl</td>
-							<td>Identify what the DNA sample is suspended in | pattern generalization: enumeration</td>
-							<td>Water</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">DNA Sample Name</td>
-							<td>Give the DNA sample a name that is meaningful to you. Sample names must be unique across all JGI projects and contain ASCII characters only.</td>
-							<td>pattern generalization: {text}</td>
-							<td>JGI_pond_041618</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">DNA Seq Project ID</td>
-							<td>Prefilled</td>
-							<td>Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}</td>
-							<td>1191234</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">DNA Seq Project PI</td>
-							<td>Prefilled</td>
-							<td>Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}</td>
-							<td>Jane Johnson</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">DNA Seq Project Name</td>
-							<td>Prefilled</td>
-							<td>Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}</td>
-							<td>JGI Pond metagenomics</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">DNA Volume</td>
-							<td>Value must be >0 and <1000 (values <25 by special permission only).</td>
-							<td>Units should be in uL | pattern generalization: {float} uL</td>
-							<td>25</td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -214,16 +48,7 @@
 							<td>MIxS extension for reporting of measurements and observations obtained from one or more of the environments where the sample was obtained. All environmental packages listed here are further defined in separate subtables. By giving the name of the environmental package, a selection of fields can be made from the subtables and can be reported</td>
 							<td>pattern generalization: enumeration</td>
 							<td>soil</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">DNA Proposal ID</td>
-							<td>Prefilled</td>
-							<td>Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}</td>
-							<td>504000</td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -232,7 +57,7 @@
 							<td>A unique identifier to assign parent-child, subsample, or sibling samples. This is relevant when a sample or other material was used to generate the new sample. This field allows multiple entries separated by ; (Examples: Soil collected from the field will link with the soil used in an incubation. The soil a plant was grown in links to the plant sample. An original culture sample was transferred to a new vial and generated a new sample)</td>
 							<td>Multiple identifiers can be provided, separated by a ; | pattern generalization: {text}:{text}</td>
 							<td>IGSN:DSJ0284</td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -241,7 +66,7 @@
 							<td>A local identifier or name that for the material sample collected. Refers to the original material collected or to any derived sub-samples. It can have any format, but we suggest that you make it concise, unique and consistent within your lab, and as informative as possible.</td>
 							<td>Should be human readable | pattern generalization: {text}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -250,7 +75,7 @@
 							<td>A globally unique identifier assigned to the biological sample to link all analytes and subsamples derived from it.</td>
 							<td>Field REQUIRED for ALL sample submission. Options: IGSN- http://www.geosamples.org/getigsn ; UUID- https://www.uuidgenerator.net/ | pattern generalization: {text}:{text}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -263,7 +88,15 @@
 						</tr>
 						
 						<tr class="section">
+							<td colspan="5"><h3>MIXS:investigation field</h3></td>
+						</tr>
+						
+						<tr class="section">
 							<td colspan="5"><h3>emsl:default</h3></td>
+						</tr>
+						
+						<tr class="section">
+							<td colspan="5"><h3>jgi_gen:default</h3></td>
 						</tr>
 						
 						<tr class="section">
@@ -277,9 +110,9 @@
 						<tr>
 							<td class="label">EMSL Sample Storage Temperature</td>
 							<td>Temperature at which the sample sent to EMSL should be stored</td>
-							<td>pattern generalization: {float} C</td>
+							<td>Enter a temperature in celsius. Numeric portion only. | pattern generalization: {float}</td>
 							<td>-80</td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -288,7 +121,16 @@
 							<td>Addition of fertilizers, pesticides, etc. - amount and time of applications</td>
 							<td>Expected value: agrochemical name;agrochemical amount;timestamp | Preferred unit: gram, mole per liter, milligram per liter | pattern generalization: {text};{float} {unit};{timestamp}</td>
 							<td>roundup;5 milligram per liter;2018-06-21</td>
-							<td>None</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">air temperature regimen</td>
+							<td>Information about treatment involving an exposure to varying temperatures; should include the temperature, treatment regimen including how many times the treatment was repeated, how long each treatment lasted, and the start and end time of the entire treatment; can include different temperature regimens</td>
+							<td>Expected value: temperature value;treatment interval and duration | Preferred unit: meter | pattern generalization: {float} {unit};{Rn/start_time/end_time/duration}</td>
+							<td>25 degree Celsius;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -297,7 +139,7 @@
 							<td>Aluminum saturation (esp. For tropical soils)</td>
 							<td>Expected value: measurement value | Preferred unit: percentage</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -306,7 +148,7 @@
 							<td>Reference or method used in determining Al saturation</td>
 							<td>Expected value: PMID,DOI or URL | pattern generalization: {PMID}|{DOI}|{URL}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -315,7 +157,7 @@
 							<td>Altitude is a term used to identify heights of objects such as airplanes, space shuttles, rockets, atmospheric balloons and heights of places such as atmospheric layers and clouds. It is used to measure the height of an object which is above the earth's surface. In this context, the altitude measurement is the vertical distance between the earth's surface above sea level and the sampled position in the air</td>
 							<td>Expected value: measurement value</td>
 							<td>100 meter</td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -324,7 +166,7 @@
 							<td>The average of all annual precipitation values known, or an estimated equivalent value derived by such methods as regional indexes or Isohyetal maps.</td>
 							<td>Expected value: measurement value | Preferred unit: millimeter</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -333,7 +175,43 @@
 							<td>Mean annual temperature</td>
 							<td>Expected value: measurement value | Preferred unit: degree Celsius</td>
 							<td>12.5 degree Celsius</td>
-							<td>None</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">biotic regimen</td>
+							<td>Information about treatment(s) involving use of biotic factors, such as bacteria, viruses or fungi.</td>
+							<td>Expected value: free text | pattern generalization: {text}</td>
+							<td>sample inoculated with Rhizobium spp. Culture</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">carbon/nitrogen ratio</td>
+							<td>Ratio of amount or concentrations of carbon to nitrogen</td>
+							<td>Expected value: measurement value</td>
+							<td>0.417361111</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">chemical administration</td>
+							<td>List of chemical compounds administered to the host or site where sampling occurred, and when (e.g. Antibiotics, n fertilizer, air filter); can include multiple compounds. For chemical entities of biological interest ontology (chebi) (v 163), http://purl.bioontology.org/ontology/chebi</td>
+							<td>Expected value: CHEBI;timestamp | pattern generalization: {termLabel} {[termID]};{timestamp}</td>
+							<td>agar [CHEBI:2509];2018-05-11T20:00Z</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">climate environment</td>
+							<td>Treatment involving an exposure to a particular climate; treatment regimen including how many times the treatment was repeated, how long each treatment lasted, and the start and end time of the entire treatment; can include multiple climates</td>
+							<td>Expected value: climate name;treatment interval and duration | pattern generalization: {text};{Rn/start_time/end_time/duration}</td>
+							<td>tropical climate;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -342,7 +220,7 @@
 							<td>The date of sampling, either as an instance (single point) or interval. </td>
 							<td>Date should be formatted as YYYY-MM-DD | pattern generalization: {timestamp}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -351,7 +229,7 @@
 							<td>Date the incubation was harvested/collected/ended. Only relevant for incubation samples.</td>
 							<td>date and time should be represented as YYYY-MM-DDTHH:MM:SS GMT | pattern generalization: {timestamp}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -360,7 +238,7 @@
 							<td>The time of sampling, either as an instance (single point) or interval.</td>
 							<td>Time should be formatted as HH:MM:SS | pattern generalization: HH:MM:SS</td>
 							<td>Time should be reported in GMT (LINK)</td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -369,16 +247,16 @@
 							<td>Whether or not crop is rotated, and if yes, rotation schedule</td>
 							<td>Expected value: crop rotation status;schedule | pattern generalization: {boolean};{Rn/start_time/end_time/duration}</td>
 							<td>yes;R2/2017-01-01/2018-12-31/P6M</td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
 						<tr>
 							<td class="label">current land use</td>
 							<td>Present state of sample site</td>
-							<td>Expected value: enumeration | pattern generalization: [cities|farmstead|industrial areas|roads/railroads|rock|sand|gravel|mudflats|salt flats|badlands|permanent snow or ice|saline seeps|mines/quarries|oil waste areas|small grains|row crops|vegetable crops|horticultural plants (e.g. tulips)|marshlands (grass,sedges,rushes)|tundra (mosses,lichens)|rangeland|pastureland (grasslands used for livestock grazing)|hayland|meadows (grasses,alfalfa,fescue,bromegrass,timothy)|shrub land (e.g. mesquite,sage-brush,creosote bush,shrub oak,eucalyptus)|successional shrub land (tree saplings,hazels,sumacs,chokecherry,shrub dogwoods,blackberries)|shrub crops (blueberries,nursery ornamentals,filberts)|vine crops (grapes)|conifers (e.g. pine,spruce,fir,cypress)|hardwoods (e.g. oak,hickory,elm,aspen)|intermixed hardwood and conifers|tropical (e.g. mangrove,palms)|rainforest (evergreen forest receiving >406 cm annual rainfall)|swamp (permanent or semi-permanent water body dominated by woody plants)|crop trees (nuts,fruit,christmas trees,nursery trees)]</td>
+							<td>Expected value: enumeration</td>
 							<td>conifers</td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -387,7 +265,7 @@
 							<td>Vegetation classification from one or more standard classification systems, or agricultural crop</td>
 							<td>Expected value: current vegetation type | pattern generalization: {text}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -396,7 +274,7 @@
 							<td>Reference or method used in vegetation classification</td>
 							<td>Expected value: PMID,DOI or url | pattern generalization: {PMID}|{DOI}|{URL}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -405,16 +283,178 @@
 							<td>The vertical distance below local surface, e.g. For sediment or soil samples depth is measured from sediment or soil surface, respectively. Depth can be reported as an interval for subsurface samples.</td>
 							<td>All depths should be reported in meters | pattern generalization: {float}; {float}-{float}</td>
 							<td>0-0.1 OR 1</td>
-							<td>None</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">DNA Absorbance 260/280</td>
+							<td>260/280 measurement of sample purity</td>
+							<td>Recommended value is between 1 and 3. | pattern generalization: {float}</td>
+							<td>2.02</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">DNA Absorbance 260/230</td>
+							<td>260/230 measurement of sample purity</td>
+							<td>Recommended value is between 1 and 3. | pattern generalization: {float}</td>
+							<td>2.02</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">DNA Collection Site</td>
+							<td>Provide information on the site your DNA sample was collected from</td>
+							<td>pattern generalization: {text}</td>
+							<td>untreated pond water</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">DNA Concentration</td>
+							<td>Must be calculated using a fluorometric method; value >0 and <2000.</td>
+							<td>Units should be in ng/uL | pattern generalization: {float}</td>
+							<td>100</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">DNA Container Type</td>
+							<td>tube or plate (96-well)</td>
+							<td>pattern generalization: enumeration</td>
+							<td>plate</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">DNA Well Number</td>
+							<td>Corner wells must be blank. For partial plates, fill by columns. Leave blank if the sample will be shipped in a tube.</td>
+							<td>Required when 'plate' is selected for container type | pattern generalization: {text}</td>
+							<td>B2</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">DNA Container Label</td>
+							<td>Must be unique across all tubes and plates, and <20 characters. All samples in a plate should have the same plate label.</td>
+							<td>pattern generalization: {text}</td>
+							<td>Pond_MT_041618</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">DNAse Treatment DNA</td>
+							<td>Y/N. Note DNAse treatment is required for all RNA samples.</td>
+							<td>pattern generalization: enumeration</td>
+							<td>No</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">DNA Isolation Method</td>
+							<td>Describe the method/protocol/kit used to extract DNA/RNA.</td>
+							<td>pattern generalization: {text}</td>
+							<td>phenol/chloroform extraction</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">DNA Expected Organisms</td>
+							<td>List any organisms known or suspected to grow in co-culture, as well as estimated % of the organism in that culture.</td>
+							<td>pattern generalization: {text}</td>
+							<td>expected to contain microbes (59%) fungi (30%), viruses (10%), tadpoles (1%)</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">DNA Seq Project Contact</td>
+							<td>Prefilled</td>
+							<td>Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}</td>
+							<td>John Jones</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">DNA Sample ID</td>
+							<td>Prefilled</td>
+							<td>Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}</td>
+							<td>187654</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">DNA Sample Format</td>
+							<td>Choose from the following: Pellet, RNAStable, DNAStable, Ethanol, MDA reaction buffer, PBS, TE, Water, Low EDTA TE, 10 mM Tris-HCl</td>
+							<td>Identify what the DNA sample is suspended in | pattern generalization: enumeration</td>
+							<td>Water</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">DNA Sample Name</td>
+							<td>Give the DNA sample a name that is meaningful to you. Sample names must be unique across all JGI projects and contain ASCII characters only.</td>
+							<td>pattern generalization: {text}</td>
+							<td>JGI_pond_041618</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">DNA Seq Project ID</td>
+							<td>Prefilled</td>
+							<td>Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}</td>
+							<td>1191234</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">DNA Seq Project PI</td>
+							<td>Prefilled</td>
+							<td>Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}</td>
+							<td>Jane Johnson</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">DNA Seq Project Name</td>
+							<td>Prefilled</td>
+							<td>Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}</td>
+							<td>JGI Pond metagenomics</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">DNA Volume</td>
+							<td>Value must be >0 and <1000 (values <25 by special permission only).</td>
+							<td>Units should be in uL | pattern generalization: {float}</td>
+							<td>25</td>
+							<td>['default']</td>
 						</tr>
 
 						
 						<tr>
 							<td class="label">drainage classification</td>
 							<td>Drainage classification from a standard system such as the USDA system</td>
-							<td>Expected value: enumeration | pattern generalization: [very poorly|poorly|somewhat poorly|moderately well|well|excessively drained]</td>
+							<td>Expected value: enumeration</td>
 							<td>well</td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -423,7 +463,7 @@
 							<td>TODO</td>
 							<td></td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -432,7 +472,7 @@
 							<td>TODO</td>
 							<td></td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -441,7 +481,7 @@
 							<td>TODO</td>
 							<td></td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -450,7 +490,7 @@
 							<td>TODO</td>
 							<td></td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -459,7 +499,7 @@
 							<td>Elevation of the sampling site is its height above a fixed reference point, most commonly the mean sea level. Elevation is mainly used when referring to points on the earth's surface, while altitude is used for points above the surface, such as an aircraft in flight or a spacecraft in orbit.</td>
 							<td>Expected value: measurement value</td>
 							<td>100 meter</td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -468,7 +508,7 @@
 							<td>Report the major environmental system the sample or specimen came from. The system(s) identified should have a coarse spatial grain, to provide the general environmental context of where the sampling was done (e.g. in the desert or a rainforest). We recommend using subclasses of EnvO’s biome class:  http://purl.obolibrary.org/obo/ENVO_00000428. EnvO documentation about how to use the field: https://github.com/EnvironmentOntology/envo/wiki/Using-ENVO-with-MIxS</td>
 							<td>Expected value: The major environment type(s) where the sample was collected. Recommend subclasses of biome [ENVO:00000428]. Multiple terms can be separated by one or more pipes. | pattern generalization: {termLabel} {[termID]}</td>
 							<td>oceanic epipelagic zone biome [ENVO:01000033] for annotating a water sample from the photic zone in middle of the Atlantic Ocean</td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -477,7 +517,7 @@
 							<td>Report the entity or entities which are in the sample or specimen’s local vicinity and which you believe have significant causal influences on your sample or specimen. We recommend using EnvO terms which are of smaller spatial grain than your entry for env_broad_scale. Terms, such as anatomical sites, from other OBO Library ontologies which interoperate with EnvO (e.g. UBERON) are accepted in this field. EnvO documentation about how to use the field: https://github.com/EnvironmentOntology/envo/wiki/Using-ENVO-with-MIxS.</td>
 							<td>Expected value: Environmental entities having causal influences upon the entity at time of sampling. | pattern generalization: {termLabel} {[termID]}</td>
 							<td>litter layer [ENVO:01000338]; Annotating a pooled sample taken from various vegetation layers in a forest consider: canopy [ENVO:00000047]|herb and fern layer [ENVO:01000337]|litter layer [ENVO:01000338]|understory [01000335]|shrub layer [ENVO:01000336].</td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -486,7 +526,16 @@
 							<td>Report the environmental material(s) immediately surrounding the sample or specimen at the time of sampling. We recommend using subclasses of 'environmental material' (http://purl.obolibrary.org/obo/ENVO_00010483). EnvO documentation about how to use the field: https://github.com/EnvironmentOntology/envo/wiki/Using-ENVO-with-MIxS . Terms from other OBO ontologies are permissible as long as they reference mass/volume nouns (e.g. air, water, blood) and not discrete, countable entities (e.g. a tree, a leaf, a table top).</td>
 							<td>Expected value: The material displaced by the entity at time of sampling. Recommend subclasses of environmental material [ENVO:00010483]. | pattern generalization: {termLabel} {[termID]}</td>
 							<td>soil [ENVO:00001998]; Annotating a fish swimming in the upper 100 m of the Atlantic Ocean, consider: ocean water [ENVO:00002151]. Example: Annotating a duck on a pond consider: pond water [ENVO:00002228]|air [ENVO_00002005]</td>
-							<td>None</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">experimental factor</td>
+							<td>Experimental factors are essentially the variable aspects of an experiment design which can be used to describe an experiment, or set of experiments, in an increasingly detailed manner. This field accepts ontology terms from Experimental Factor Ontology (EFO) and/or Ontology for Biomedical Investigations (OBI). For a browser of EFO (v 2.95) terms, please see http://purl.bioontology.org/ontology/EFO; for a browser of OBI (v 2018-02-12) terms please see http://purl.bioontology.org/ontology/OBI</td>
+							<td>Expected value: text or EFO and/or OBI | pattern generalization: {termLabel} {[termID]}|{text}</td>
+							<td>time series design [EFO:EFO_0001779]</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -495,7 +544,7 @@
 							<td>Other details about your sample that you feel can't be accurately represented in the available columns.</td>
 							<td>pattern generalization: {text}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -504,16 +553,16 @@
 							<td>Unusual physical events that may have affected microbial populations</td>
 							<td>Expected value: date</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
 						<tr>
 							<td class="label">soil_taxonomic/FAO classification</td>
 							<td>Soil classification from the FAO World Reference Database for Soil Resources. The list can be found at http://www.fao.org/nr/land/sols/soil/wrb-soil-maps/reference-groups</td>
-							<td>Expected value: enumeration | pattern generalization: [Acrisols|Andosols|Arenosols|Cambisols|Chernozems|Ferralsols|Fluvisols|Gleysols|Greyzems|Gypsisols|Histosols|Kastanozems|Lithosols|Luvisols|Nitosols|Phaeozems|Planosols|Podzols|Podzoluvisols|Rankers|Regosols|Rendzinas|Solonchaks|Solonetz|Vertisols|Yermosols]</td>
+							<td>Expected value: enumeration</td>
 							<td>Luvisols</td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -522,7 +571,7 @@
 							<td>Type of filter used or how the sample was filteres</td>
 							<td>pattern generalization: {text}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -531,7 +580,7 @@
 							<td>Historical and/or physical evidence of fire</td>
 							<td>Expected value: date</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -540,7 +589,16 @@
 							<td>Historical and/or physical evidence of flooding</td>
 							<td>Expected value: date</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">gaseous environment</td>
+							<td>Use of conditions with differing gaseous environments; should include the name of gaseous compound, amount administered, treatment duration, interval and total experimental duration; can include multiple gaseous environment regimens</td>
+							<td>Expected value: gaseous compound name;gaseous compound amount;treatment interval and duration | Preferred unit: micromole per liter | pattern generalization: {text};{float} {unit};{Rn/start_time/end_time/duration}</td>
+							<td>nitric oxide;0.5 micromole per liter;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -549,7 +607,7 @@
 							<td>The geographical origin of the sample as defined by the country or sea name followed by specific region name. Country or sea names should be chosen from the INSDC country list (http://insdc.org/country.html), or the GAZ ontology (http://purl.bioontology.org/ontology/GAZ)</td>
 							<td>Expected value: country or sea name (INSDC or GAZ): region(GAZ), specific location name | pattern generalization: {term}: {term}, {text}</td>
 							<td>USA: Maryland, Bethesda</td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -558,7 +616,7 @@
 							<td>Type of facility/location where the sample was harvested; controlled vocabulary: growth chamber, open top chamber, glasshouse, experimental garden, field.</td>
 							<td>pattern generalization: enumeration</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -567,7 +625,7 @@
 							<td>Heavy metals present in the sequenced sample and their concentrations. For multiple heavy metals and concentrations, add multiple copies of this field.</td>
 							<td>Expected value: heavy metal name;measurement value unit | Preferred unit: microgram per gram | pattern generalization: {text};{float} {unit}</td>
 							<td>mercury;0.09 micrograms per gram</td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -576,7 +634,7 @@
 							<td>Reference or method used in determining heavy metals</td>
 							<td>Expected value: PMID,DOI or url | pattern generalization: {PMID}|{DOI}|{URL}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -585,7 +643,16 @@
 							<td>Reference or method used in determining the horizon</td>
 							<td>Expected value: PMID,DOI or url | pattern generalization: {PMID}|{DOI}|{URL}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">humidity regimen</td>
+							<td>Information about treatment involving an exposure to varying degree of humidity; information about treatment involving use of growth hormones; should include amount of humidity administered, treatment regimen including how many times the treatment was repeated, how long each treatment lasted, and the start and end time of the entire treatment; can include multiple regimens</td>
+							<td>Expected value: humidity value;treatment interval and duration | Preferred unit: gram per cubic meter | pattern generalization: {float} {unit};{Rn/start_time/end_time/duration}</td>
+							<td>25 gram per cubic meter;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -594,7 +661,7 @@
 							<td>List isotope exposure or addition applied to your sample.</td>
 							<td>pattern generalization: {termLabel} {[termID]}; {timestamp}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -603,7 +670,16 @@
 							<td>The geographical origin of the sample as defined by latitude and longitude. The values should be reported in decimal degrees and in WGS84 system</td>
 							<td>Expected value: decimal degrees,  limit to 8 decimal points | pattern generalization: {float} {float}</td>
 							<td>50.586825 6.408977</td>
-							<td>None</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">light regimen</td>
+							<td>Information about treatment(s) involving exposure to light, including both light intensity and quality.</td>
+							<td>Expected value: exposure type;light intensity;light quality | Preferred unit: lux; micrometer, nanometer, angstrom | pattern generalization: {text};{float} {unit};{float} {unit}</td>
+							<td>incandescant light;10 lux;450 nanometer</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -612,7 +688,7 @@
 							<td>Link to digitized soil maps or other soil classification information</td>
 							<td>Expected value: PMID,DOI or url | pattern generalization: {PMID}|{DOI}|{URL}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -621,7 +697,7 @@
 							<td>Link to climate resource</td>
 							<td>Expected value: PMID,DOI or url | pattern generalization: {PMID}|{DOI}|{URL}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -630,7 +706,7 @@
 							<td>Soil classification based on local soil classification system</td>
 							<td>Expected value: local classification name | pattern generalization: {text}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -639,7 +715,7 @@
 							<td>Reference or method used in determining the local soil classification</td>
 							<td>Expected value: PMID,DOI or url | pattern generalization: {PMID}|{DOI}|{URL}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -648,7 +724,7 @@
 							<td>Reference or method used in determining microbial biomass</td>
 							<td>required if "microbial_biomass_C" is provided | pattern generalization: {PMID}|{DOI}|{URL}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -657,7 +733,7 @@
 							<td>Reference or method used in determining microbial biomass nitrogen</td>
 							<td>required if "microbial_biomass_N" is provided | pattern generalization: {PMID}|{DOI}|{URL}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -666,7 +742,7 @@
 							<td>Reference or method used in determining microbial biomass</td>
 							<td>Expected value: PMID,DOI or url | pattern generalization: {PMID}|{DOI}|{URL}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -675,7 +751,7 @@
 							<td>The part of the organic matter in the soil that constitutes living microorganisms smaller than 5-10 micrometer. If you keep this, you would need to have correction factors used for conversion to the final units</td>
 							<td>Expected value: measurement value | Preferred unit: ton, kilogram, gram per kilogram soil</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -684,7 +760,7 @@
 							<td>The part of the organic matter in the soil that constitutes living microorganisms smaller than 5-10 micrometer. If you keep this, you would need to have correction factors used for conversion to the final units</td>
 							<td>pattern generalization: {float} {unit}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -693,7 +769,7 @@
 							<td>The part of the organic matter in the soil that constitutes living microorganisms smaller than 5-10 micrometer. If you keep this, you would need to have correction factors used for conversion to the final units</td>
 							<td>pattern generalization: {float} {unit}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -702,7 +778,7 @@
 							<td>Any other measurement performed or parameter collected, that is not listed here</td>
 							<td>Expected value: parameter name;measurement value | pattern generalization: {text};{float} {unit}</td>
 							<td>Bicarbonate ion concentration;2075 micromole per kilogram</td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -711,7 +787,7 @@
 							<td>Amount of biomass; should include the name for the part of biomass measured, e.g.insect, plant, total. Can include multiple measurements separated by ;</td>
 							<td>pattern generalization: {text};{float} {unit}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -720,7 +796,25 @@
 							<td>Reference or method used in determining biomass</td>
 							<td>required if "non-microbial biomass" is provided | pattern generalization: {PMID}|{DOI}|{URL}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">organic matter</td>
+							<td>Concentration of organic matter</td>
+							<td>Expected value: measurement value | Preferred unit: microgram per liter</td>
+							<td>1.75 milligram per cubic meter</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">organic nitrogen</td>
+							<td>Concentration of organic nitrogen</td>
+							<td>Expected value: measurement value | Preferred unit: microgram per liter</td>
+							<td>4 micromole per liter</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -729,7 +823,7 @@
 							<td>Method used for obtaining organic nitrogen</td>
 							<td>pattern generalization: {PMID}|{DOI}|{URL}</td>
 							<td>required if "org_nitro_ is provided</td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -738,7 +832,16 @@
 							<td>Other treatments applied to your samples that are not applicable to the provided fields</td>
 							<td>pattern generalization: {text}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">oxygenation status of sample</td>
+							<td>Oxygenation status of sample</td>
+							<td>Expected value: enumeration</td>
+							<td>aerobic</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -747,7 +850,7 @@
 							<td>Is this organism an aerobe, anaerobe? Please note that aerobic and anaerobic are valid descriptors for microbial environments</td>
 							<td>pattern generalization: enumeration</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -756,7 +859,7 @@
 							<td>Ph measurement of the sample, or liquid portion of sample, or aqueous phase of the fluid</td>
 							<td>Expected value: measurement value | pattern generalization: {float}</td>
 							<td>7.2</td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -765,7 +868,7 @@
 							<td>Ph measurement of the sample, or liquid portion of sample, or aqueous phase of the fluid</td>
 							<td>Expected value: measurement value</td>
 							<td>7.2</td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -774,7 +877,16 @@
 							<td>Reference or method used in determining ph</td>
 							<td>Expected value: PMID,DOI or url | pattern generalization: {PMID}|{DOI}|{URL}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">phosphate</td>
+							<td>Concentration of phosphate</td>
+							<td>Expected value: measurement value | Preferred unit: micromole per liter</td>
+							<td>0.7 micromole per liter</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -783,7 +895,7 @@
 							<td>Reference or method used in determining previous land use and dates</td>
 							<td>Expected value: PMID,DOI or url | pattern generalization: {PMID}|{DOI}|{URL}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -792,16 +904,16 @@
 							<td>Previous land use and dates</td>
 							<td>Expected value: land use name;date | pattern generalization: {text};{timestamp}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
 						<tr>
 							<td class="label">profile position</td>
 							<td>Cross-sectional position in the hillslope where sample was collected.sample area position in relation to surrounding areas</td>
-							<td>Expected value: enumeration | pattern generalization: [summit|shoulder|backslope|footslope|toeslope]</td>
+							<td>Expected value: enumeration</td>
 							<td>summit</td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -810,7 +922,16 @@
 							<td>Proposal IDs or names associated with dataset</td>
 							<td>pattern generalization: {text}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">DNA Proposal ID</td>
+							<td>Prefilled</td>
+							<td>Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}</td>
+							<td>504000</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -819,7 +940,16 @@
 							<td>If sending biological replicates, indicate the rep number here.</td>
 							<td>This will guide staff in ensuring your samples are block & randomized correctly | pattern generalization: {integer}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">salinity</td>
+							<td>The total concentration of all dissolved salts in a liquid or solid sample. While salinity can be measured by a complete chemical analysis, this method is difficult and time consuming. More often, it is instead derived from the conductivity measurement. This is known as practical salinity. These derivations compare the specific conductance of the sample to a salinity standard such as seawater.</td>
+							<td>Expected value: measurement value | Preferred unit: practical salinity unit, percentage</td>
+							<td>25 practical salinity unit</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -828,7 +958,7 @@
 							<td>Reference or method used in determining salinity</td>
 							<td>Expected value: PMID,DOI or url | pattern generalization: {PMID}|{DOI}|{URL}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -837,7 +967,16 @@
 							<td>Description of relationship(s) between the subject organism and other organism(s) it is associated with. E.g., parasite on species X; mutualist with species Y. The target organism is the subject of the relationship, and the other organism(s) is the object</td>
 							<td>pattern generalization: enumeration</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">sample storage temperature</td>
+							<td>Temperature at which sample was stored, e.g. -80 degree Celsius</td>
+							<td>Expected value: measurement value | Preferred unit: degree Celsius</td>
+							<td>-80 degree Celsius</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -846,7 +985,7 @@
 							<td>The total amount or size (volume (ml), mass (g) or area (m2) ) of sample collected.</td>
 							<td>This referes to the TOTAL amount of sample collected from the experiment. NOT the amount sent to each institution or collected for a specific analysis. | pattern generalization: {float} {unit}</td>
 							<td>5 grams; 10 mL</td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -855,7 +994,7 @@
 							<td>The device used to collect an environmental sample. This field accepts terms listed under environmental sampling device (http://purl.obolibrary.org/obo/ENVO). This field also accepts terms listed under specimen collection device (http://purl.obolibrary.org/obo/GENEPIO_0002094).</td>
 							<td>Report dimensions and details when applicable | pattern generalization: {termLabel} {[termID]}|{text}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -864,7 +1003,7 @@
 							<td>The method employed for collecting the sample.</td>
 							<td>This can be a citation or description | pattern generalization: {PMID}|{DOI}|{URL}|{text}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -873,7 +1012,7 @@
 							<td>A brief description of any processing applied to the sample during or after retrieving the sample from environment, or a link to the relevant protocol(s) performed.</td>
 							<td>pattern generalization: {text}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -882,7 +1021,7 @@
 							<td>The total amount or size (volume (ml), mass (g) or area (m2) ) of sample sent to EMSL</td>
 							<td>pattern generalization: {float} {unit}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -891,7 +1030,7 @@
 							<td>Type of sample being submitted</td>
 							<td>This can vary from 'environmental package' if the sample is an extraction. | pattern generalization: enumeration</td>
 							<td>water extracted soil</td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -900,7 +1039,7 @@
 							<td>The average of all seasonal precipitation values known, or an estimated equivalent value derived by such methods as regional indexes or Isohyetal maps.</td>
 							<td>Expected value: measurement value | Preferred unit: millimeter</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -909,7 +1048,7 @@
 							<td>Mean seasonal temperature</td>
 							<td>Expected value: measurement value | Preferred unit: degree Celsius</td>
 							<td>18 degree Celsius</td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -918,7 +1057,25 @@
 							<td>Collection design of pooled samples and/or sieve size and amount of sample sieved</td>
 							<td>Expected value: design name and/or size;amount | pattern generalization: {{text}|{float} {unit}};{float} {unit}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">size-fraction lower threshold</td>
+							<td>Refers to the mesh/pore size used to pre-filter/pre-sort the sample. Materials larger than the size threshold are excluded from the sample</td>
+							<td>Expected value: value | Preferred unit: micrometer</td>
+							<td>0.2 micrometer</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">size-fraction upper threshold</td>
+							<td>Refers to the mesh/pore size used to retain the sample. Materials smaller than the size threshold are excluded from the sample</td>
+							<td>Expected value: value | Preferred unit: micrometer</td>
+							<td>20 micrometer</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -927,7 +1084,7 @@
 							<td>The direction a slope faces. While looking down a slope use a compass to record the direction you are facing (direction or degrees); e.g., nw or 315 degrees. This measure provides an indication of sun and wind exposure that will influence soil temperature and evapotranspiration.</td>
 							<td>Expected value: measurement value | Preferred unit: degree</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -936,16 +1093,16 @@
 							<td>Commonly called 'slope'. The angle between ground surface and a horizontal line (in percent). This is the direction that overland water would flow. This measure is usually taken with a hand level meter or clinometer</td>
 							<td>Expected value: measurement value | Preferred unit: percentage</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
 						<tr>
 							<td class="label">soil horizon</td>
 							<td>Specific layer in the land area which measures parallel to the soil surface and possesses physical characteristics which differ from the layers above and beneath</td>
-							<td>Expected value: enumeration | pattern generalization: [O horizon|A horizon|E horizon|B horizon|C horizon|R layer|Permafrost]</td>
+							<td>Expected value: enumeration</td>
 							<td>A horizon</td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -954,7 +1111,7 @@
 							<td>The relative proportion of different grain sizes of mineral particles in a soil, as described using a standard system; express as % sand (50 um to 2 mm), silt (2 um to 50 um), and clay (<2 um) with textural name (e.g., silty clay loam) optional.</td>
 							<td>Expected value: measurement value</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -963,7 +1120,7 @@
 							<td>Reference or method used in determining soil texture</td>
 							<td>Expected value: PMID,DOI or url | pattern generalization: {PMID}|{DOI}|{URL}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -972,7 +1129,7 @@
 							<td>Description of the soil type or classification. This field accepts terms under soil (http://purl.obolibrary.org/obo/ENVO_00001998).  Multiple terms can be separated by pipes.</td>
 							<td>Expected value: ENVO_00001998 | pattern generalization: {termLabel} {[termID]}</td>
 							<td>plinthosol [ENVO:00002250]</td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -981,7 +1138,7 @@
 							<td>Reference or method used in determining soil series name or other lower-level classification</td>
 							<td>Expected value: PMID,DOI or url | pattern generalization: {PMID}|{DOI}|{URL}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -990,7 +1147,7 @@
 							<td>TODO</td>
 							<td></td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -999,7 +1156,7 @@
 							<td>Date the incubation was started. Only relevant for incubation samples.</td>
 							<td>date and time should be represented as YYYY-MM-DDTHH:MM:SS GMT | pattern generalization: {timestamp}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -1008,7 +1165,7 @@
 							<td>Explain how the soil sample is stored (fresh/frozen/other).</td>
 							<td>pattern generalization: enumeration</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -1017,7 +1174,7 @@
 							<td>If sending multiple technical replicates of the same sample, indicate how many replicates are being sent</td>
 							<td>pattern generalization: {integer}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -1026,16 +1183,25 @@
 							<td>Temperature of the sample at the time of sampling.</td>
 							<td>Expected value: measurement value | Preferred unit: degree Celsius</td>
 							<td>25 degree Celsius</td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
 						<tr>
 							<td class="label">history/tillage</td>
 							<td>Note method(s) used for tilling</td>
-							<td>Expected value: enumeration | pattern generalization: [drill|cutting disc|ridge till|strip tillage|zonal tillage|chisel|tined|mouldboard|disc plough]</td>
+							<td>Expected value: enumeration</td>
 							<td>chisel</td>
-							<td>None</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">total carbon</td>
+							<td>Total carbon content</td>
+							<td>Expected value: measurement value | Preferred unit: microgram per liter</td>
+							<td></td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -1044,7 +1210,7 @@
 							<td>Reference or method used in determining the total nitrogen</td>
 							<td>Expected value: PMID,DOI or url | pattern generalization: {PMID}|{DOI}|{URL}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -1053,7 +1219,7 @@
 							<td>Total nitrogen content of the sample</td>
 							<td>Expected value: measurement value | Preferred unit: microgram per liter, micromole per liter, milligram per liter</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -1062,7 +1228,7 @@
 							<td>Reference or method used in determining total organic carbon</td>
 							<td>Expected value: PMID,DOI or url | pattern generalization: {PMID}|{DOI}|{URL}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -1071,7 +1237,16 @@
 							<td>Definition for soil: total organic carbon content of the soil, definition otherwise: total organic carbon content</td>
 							<td>Expected value: measurement value | Preferred unit: gram Carbon per kilogram sample material</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">total phosphorus</td>
+							<td>Total phosphorus concentration in the sample, calculated by: total phosphorus = total dissolved phosphorus + particulate phosphorus</td>
+							<td>Expected value: measurement value | Preferred unit: micromole per liter, milligram per liter, parts per million</td>
+							<td>0.03 milligram per liter</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -1080,7 +1255,7 @@
 							<td>Reference or method used in determining the water content of soil</td>
 							<td>Expected value: PMID,DOI or url | pattern generalization: {PMID}|{DOI}|{URL}</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
 						</tr>
 
 						
@@ -1089,7 +1264,16 @@
 							<td>Water content measurement</td>
 							<td>Expected value: measurement value | Preferred unit: gram per gram or cubic centimeter per cubic centimeter</td>
 							<td></td>
-							<td>None</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">watering regimen</td>
+							<td>Information about treatment involving an exposure to watering frequencies, treatment regimen including how many times the treatment was repeated, how long each treatment lasted, and the start and end time of the entire treatment; can include multiple regimens</td>
+							<td>Expected value: measurement value;treatment interval and duration | Preferred unit: milliliter, liter | pattern generalization: {float} {unit};{Rn/start_time/end_time/duration}</td>
+							<td>1 liter;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M</td>
+							<td>['default']</td>
 						</tr>
 
 						</table>
