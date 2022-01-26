@@ -1,6 +1,7 @@
 import logging
 
 import click
+import click_log
 import pandas as pd
 
 from linkml_runtime.linkml_model import (
@@ -17,9 +18,11 @@ from sheet2dataharmonizer.converters.sheet2linkml import Sheet2LinkML
 
 
 logger = logging.getLogger(__name__)
+click_log.basic_config(logger)
 
 
 @click.command()
+@click_log.simple_verbosity_option(logger)
 @click.option("--model_file", type=click.Path(exists=True), required=True)
 @click.option("--selected_class", required=True)
 @click.option("--default_section", default="default", show_default=True)
@@ -179,6 +182,7 @@ def _inject_supplementary(
 
 
 @click.command()
+@click_log.simple_verbosity_option(logger)
 @click.option(
     "--sheet_id",
     default="1pSmxX6XGOxmoA7S7rKyj5OaEl3PmAl4jAOlROuNHrU0",
@@ -367,6 +371,7 @@ def sheet2linkml(
 
 
 @click.command()
+@click_log.simple_verbosity_option(logger)
 @click.option("--model_file", type=click.Path(exists=True), required=True)
 @click.option("--output_file", type=click.Path(), required=True)
 def mixs_package_map(model_file, output_file):
@@ -459,6 +464,7 @@ def mixs_package_map(model_file, output_file):
 
 
 @click.command()
+@click_log.simple_verbosity_option(logger)
 @click.option("--model_file", type=click.Path(exists=True), required=True)
 @click.option("--selected_class", required=True)
 @click.option(
@@ -502,6 +508,7 @@ def range_str_ser(model_file, selected_class, output_file):
 
 
 @click.command()
+@click_log.simple_verbosity_option(logger)
 @click.option(
     "--client_secret",
     default="local/client_secret.apps.googleusercontent.com.json",
@@ -560,6 +567,7 @@ def tidy_triad_curations(
     df_explode.to_csv(curated_tsv_out, sep="\t", index=False)
 
 @click.command()
+@click_log.simple_verbosity_option(logger)
 @click.option('--data_tsv_in', default="target/data.tsv", type=click.Path(exists=True),
               help='path to DataHarmonizer data.tsv input', show_default=True)
 @click.option('--data_tsv_out', default="target/data_promoted.tsv", type=click.Path(),
