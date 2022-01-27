@@ -1378,11 +1378,33 @@ const templateOptions = () =>  {
   }
 };
 
+/**
+ * Handle new file upload.
+ */
+const processFileChange = function (file) {
+  const ext = file.name.split('.').pop();
+  const acceptedExts = ['xlsx', 'xls', 'tsv', 'csv'];
+  if (!acceptedExts.includes(ext)) {
+    const errMsg = `Only ${acceptedExts.join(', ')} files are supported`;
+    $('#open-err-msg').text(errMsg);
+    $('#open-error-modal').modal('show');
+  } else {
+    window.INVALID_CELLS = {};
+    runBehindLoadingScreen(openFile, [file, HOT, DATA, XLSX]);
+  }
+  // Allow consecutive uploads of the same file
+  $('#open-file-input')[0].value = '';
+
+  $('#next-error-button,#no-error-button').hide();
+  window.CURRENT_SELECTION = [null, null, null, null];
+}
+
 /************************** APPLICATION LAUNCH ********************/
 
 $(document).ready(() => {
 
   setupTriggers();
+  setupMessageInterface();
 
   // Default template
   let template_label = 'MAM NMDC Dev Template';
@@ -1448,27 +1470,11 @@ const setupTriggers = () => {
   });
 
   // File -> Open
-  const $fileInput = $('#open-file-input');
-
-  $fileInput.change(() => {
-    const file = $fileInput[0].files[0];
-    const ext = file.name.split('.').pop();
-    const acceptedExts = ['xlsx', 'xls', 'tsv', 'csv'];
-    if (!acceptedExts.includes(ext)) {
-      const errMsg = `Only ${acceptedExts.join(', ')} files are supported`;
-      $('#open-err-msg').text(errMsg);
-      $('#open-error-modal').modal('show');
-    } else {
-      window.INVALID_CELLS = {};
-      runBehindLoadingScreen(openFile, [file, HOT, DATA, XLSX]);
-    }
-    // Allow consecutive uploads of the same file
-    $fileInput[0].value = '';
-
-    $('#next-error-button,#no-error-button').hide();
-    window.CURRENT_SELECTION = [null,null,null,null];
-
+  $('#open-file-input').change(() => {
+    const file = $('#open-file-input')[0].files[0];
+    processFileChange(file);
   });
+
   // Reset specify header modal values when the modal is closed
   $('#specify-headers-modal').on('hidden.bs.modal', () => {
     $('#expected-headers-div').empty();
@@ -1793,5 +1799,166 @@ const launch = (template_folder, DATA) => {
     minLength: 0
   })
 
+  // Call this at the end of the regular launch function
+  launch_additions();
 }
 
+/************ Messaging interface ******************** */
+
+/** --------------------------------------------------------- */
+/** Messaging interface for NMDC Portal-- Do not modify above */
+/** --------------------------------------------------------- */
+
+/**
+ * Call from the regular launch function to set up
+ * additional behavior for integration for NMDC submission portal
+ *
+ * This method is called when a new template is launched.
+ */
+const launch_additions = () => {
+  const fieldYCoordinates = getFieldYCoordinates(window.DATA);
+  updateParentState(fieldYCoordinates, window.INVALID_CELLS);
+}
+
+const updateParentState = (fieldYCoordinates, INVALID_CELLS) => {
+  window.parent.postMessage({ type: 'update', fieldYCoordinates, INVALID_CELLS }, "*");
+};
+
+
+const setupMessageInterface = () => {
+  console.log("Setting up message interface");
+  window.addEventListener("message", async (event) => {
+    console.log('child received event', event.data.type);
+    const fieldYCoordinates = getFieldYCoordinates(DATA);
+    switch(event.data.type) {
+      case 'setupTemplate':
+        setupTemplate(event.data.folder);
+        break;
+
+      case 'open':
+        processFileChange(event.data.files);
+        break;
+
+      case 'validate':
+        runBehindLoadingScreen(() => {
+          window.INVALID_CELLS = getInvalidCells(HOT, DATA);
+          HOT.render();
+    
+          // If any rows have error, show this.
+          if (Object.keys(window.INVALID_CELLS).length > 0) {
+            $('#next-error-button').show();
+          }
+          else
+            $('#next-error-button').hide();
+
+          updateParentState(fieldYCoordinates, window.INVALID_CELLS);
+        });
+        break;
+
+      case 'jumpTo':
+        const column = fieldYCoordinates[event.data.columnName];
+        scrollTo(0, column, window.DATA, window.HOT);
+        break;
+      case 'jumpToRowCol':
+        scrollTo(event.data.row, event.data.column, DATA, HOT);
+        break;
+      case 'changeVisibility':
+        changeColVisibility(`show-${event.data.value}-cols-dropdown-item`, DATA, HOT);
+        break;
+      case 'exportJson':
+        const value = getTrimmedData(HOT)
+        window.parent.postMessage({ type: 'exportJson', value }, "*");
+        break;
+      case 'loadData':
+        while (!window.HOT) {
+          await new Promise((resolve) => window.setTimeout(resolve, 100));
+        }
+        HOT.loadData(event.data.data);
+        break;
+      default:
+        console.log('Unknown Type', event.data.type);
+    }
+  });
+
+/**
+ * Handle new file upload.
+ */
+const processFileChange = function (file) {
+  const ext = file.name.split('.').pop();
+  const acceptedExts = ['xlsx', 'xls', 'tsv', 'csv'];
+  if (!acceptedExts.includes(ext)) {
+    const errMsg = `Only ${acceptedExts.join(', ')} files are supported`;
+    $('#open-err-msg').text(errMsg);
+    $('#open-error-modal').modal('show');
+  } else {
+    window.INVALID_CELLS = {};
+    runBehindLoadingScreen(openFile, [file, HOT, DATA, XLSX]);
+  }
+  // Allow consecutive uploads of the same file
+  $('#open-file-input')[0].value = '';
+
+  $('#next-error-button,#no-error-button').hide();
+  window.CURRENT_SELECTION = [null, null, null, null];
+}
+
+const setupMessageInterface = () => {
+  const params = new URLSearchParams(location.search);
+  if (params.get('minified') || false) {
+    console.log("Setting up message interface");
+    $('#header-row').css('display', 'none');
+
+    window.addEventListener("message", async (event) => {
+      console.log('child received event', event.data.type);
+      const fieldYCoordinates = getFieldYCoordinates(DATA);
+      switch (event.data.type) {
+        case 'setupTemplate':
+          setupTemplate(event.data.folder);
+          break;
+
+        case 'open':
+          processFileChange(event.data.files);
+          break;
+
+        case 'validate':
+          runBehindLoadingScreen(() => {
+            window.INVALID_CELLS = getInvalidCells(HOT, DATA);
+            HOT.render();
+
+            // If any rows have error, show this.
+            if (Object.keys(window.INVALID_CELLS).length > 0) {
+              $('#next-error-button').show();
+            }
+            else
+              $('#next-error-button').hide();
+
+            updateParentState(fieldYCoordinates, window.INVALID_CELLS);
+          });
+          break;
+
+        case 'jumpTo':
+          const column = fieldYCoordinates[event.data.columnName];
+          scrollTo(0, column, window.DATA, window.HOT);
+          break;
+        case 'jumpToRowCol':
+          scrollTo(event.data.row, event.data.column, DATA, HOT);
+          break;
+        case 'changeVisibility':
+          changeColVisibility(`show-${event.data.value}-cols-dropdown-item`, DATA, HOT);
+          break;
+        case 'exportJson':
+          const value = getTrimmedData(HOT)
+          window.parent.postMessage({ type: 'exportJson', value }, "*");
+          break;
+        case 'loadData':
+          while (!window.HOT) {
+            await new Promise((resolve) => window.setTimeout(resolve, 100));
+          }
+          HOT.loadData(event.data.data);
+          break;
+        default:
+          console.log('Unknown Type', event.data.type);
+      }
+    });
+  }
+
+}
