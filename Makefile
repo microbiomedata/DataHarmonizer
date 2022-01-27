@@ -37,13 +37,13 @@ target/string_serialization_expected_failure.txt:
 	- egrep "pattern:.*{PMID}|{DOI}|{URL}" ../mixs-source/model/schema/*yaml > $@
 
 target/soil_biosample_regex_insight.tsv: target/soil_biosample_modular.yaml
-	poetry run python ranges_string_sers.py \
+	poetry run range_str_ser \
 		--model_file target/soil_biosample_modular_annotated.yaml \
 		--selected_class soil_biosample \
 		--output_file $@
 
 target/mixs_package_classes.tsv:
-	poetry run mixs_package_classes \
+	poetry run mixs_package_map \
 		--model_file mixs-source/model/schema/mixs.yaml --output_file $@
 
 target/mixs_generated.yaml: setup
@@ -65,10 +65,11 @@ target/nmdc_generated_no_imports.yaml: target/nmdc_generated.yaml
 target/soil_biosample_modular.yaml: target/mixs_generated_no_imports.yaml target/nmdc_generated_no_imports.yaml
 	# combine or mint terms according to the Soil-NMDC-Template_Compiled Google Sheet
 	#   and consulting the generated models above
-	poetry run combine_schemas --verbosity INFO --env_package soil --inc_emsl --jgi metagenomics > $@
+	poetry run sheet2linkml --env_package soil --inc_emsl --jgi metagenomics > $@
 	# test for LinkML schema validity
 	# todo see: mangled name already exists #92
 	yq eval 'del(.classes.["quantity value"].attributes)' $@ > target/soil_biosample_modular_no_redundant_mangling.yaml
+	# todo this nis failing due to the annotations created above by combine_schemas (specifically inject_supplementary)
 	poetry run gen-yaml \
 		target/soil_biosample_modular_no_redundant_mangling.yaml > target/soil_biosample_modular_no_redundant_mangling_generated.yaml 2> target/soil_biosample_modular_no_redundant_mangling_generated.log
 
@@ -93,11 +94,10 @@ target/soil_biosample_modular_annotated.yaml: target/soil_biosample_modular.yaml
 	rm -rf target/temp*yaml
 
 target/data.tsv: target/soil_biosample_modular_annotated.yaml
-	poetry run linkml_to_dh_light --model_file $< --selected_class soil_biosample 2> target/linkml_to_dh_light.log
+	poetry run linkml2dataharmonizer --model_file $< --selected_class soil_biosample 2> target/linkml_to_dh_light.log
 
 target/soil_curated_terms.txt:
-	poetry run python tidy_triad_curations.py \
-		--client_secret local/client_secret.apps.googleusercontent.com.json \
+	poetry run tidy_triad_curations \
 		--sheet_id "1WErXj8sM5uJi51VVLNQZDilDF7wMiyBC2T4zELp7Axc" \
 		--tab_title "Subset_EnvO_Broad_Local_Medium_terms_062221" \
 		--env_package 'Soil' \
@@ -125,7 +125,7 @@ target/soil_ebs_terms_indented.tsv: target/soil_ebs_terms.txt
 		--indented_tsv $@
 
 target/data_promoted.tsv: target/data.tsv target/soil_ebs_terms_indented.tsv
-	poetry run python promote_to_select.py \
+	poetry run promote_to_select \
 		--promote 'broad-scale environmental context' \
 		--extra_row_files target/soil_ebs_terms_indented.tsv \
 		--data_tsv_out $@
