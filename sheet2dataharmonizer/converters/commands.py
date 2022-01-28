@@ -16,7 +16,6 @@ from linkml_runtime.dumpers import yaml_dumper
 from sheet2dataharmonizer.converters.linkml2dataharmonizer import LinkML2DataHarmonizer
 from sheet2dataharmonizer.converters.sheet2linkml import Sheet2LinkML
 
-
 logger = logging.getLogger(__name__)
 click_log.basic_config(logger)
 
@@ -41,7 +40,6 @@ def linkml2dataharmonizer(
     default_data_status,
     output_file,
 ):
-
     lml_dh = LinkML2DataHarmonizer(linkml_model_path=model_file)
 
     section_list = lml_dh._get_section_list(selected_class, default_section)
@@ -537,7 +535,7 @@ def range_str_ser(model_file, selected_class, output_file):
 )
 @click.option(
     "--env_package",
-    default="Soil",
+    default="soil",
     help="""for which environmental packages (as expressed in the google sheet) 
               do you want do extract curated enums??""",
 )
@@ -546,41 +544,63 @@ def tidy_triad_curations(
 ):
     raw = Sheet2LinkML.get_gsheet_frame(client_secret, sheet_id, tab_title)
 
-    raw.columns = ["enum", "raw_id", "permissible_value", "definition", "env_package"]
+    # raw.columns = ["enum", "raw_id", "permissible_value", "definition", "env_package"]
+    #
+    # raw["partial"] = raw["raw_id"].str.replace(
+    #     "<http://purl.obolibrary.org/obo/ENVO_", "ENVO:", regex=True
+    # )
+    #
+    # raw["term_id"] = raw["partial"].str.replace(">", "", regex=True)
+    #
+    # raw = raw[["env_package", "enum", "permissible_value", "term_id"]]
+    #
+    # raw["env_package"] = raw["env_package"].str.split("|", expand=False)
 
-    raw["partial"] = raw["raw_id"].str.replace(
-        "<http://purl.obolibrary.org/obo/ENVO_", "ENVO:", regex=True
-    )
-
-    raw["term_id"] = raw["partial"].str.replace(">", "", regex=True)
-
-    raw = raw[["env_package", "enum", "permissible_value", "term_id"]]
-
-    raw["env_package"] = raw["env_package"].str.split("|", expand=False)
+    raw["env_package"] = raw["packages_consensus"].str.split("|", expand=False)
 
     df_explode = raw.explode("env_package")
 
     df_explode = df_explode.loc[df_explode["env_package"].eq(env_package)]
 
-    df_explode["env_package"] = df_explode["env_package"].str.lower()
+    # logger.info(df_explode)
+
+    # df_explode["env_package"] = df_explode["env_package"].str.lower()
 
     df_explode.to_csv(curated_tsv_out, sep="\t", index=False)
 
+
 @click.command()
 @click_log.simple_verbosity_option(logger)
-@click.option('--data_tsv_in', default="target/data.tsv", type=click.Path(exists=True),
-              help='path to DataHarmonizer data.tsv input', show_default=True)
-@click.option('--data_tsv_out', default="target/data_promoted.tsv", type=click.Path(),
-              help='destination for modified data.tsv', show_default=True)
-@click.option('--promote', multiple=True, help='which columns should be promoted to select type?')
-@click.option('--extra_row_files', multiple=True, type=click.Path(exists=True),
-              help='path to files defining the new select/enum column(s) etc.', show_default=True)
+@click.option(
+    "--data_tsv_in",
+    default="target/data.tsv",
+    type=click.Path(exists=True),
+    help="path to DataHarmonizer data.tsv input",
+    show_default=True,
+)
+@click.option(
+    "--data_tsv_out",
+    default="target/data_promoted.tsv",
+    type=click.Path(),
+    help="destination for modified data.tsv",
+    show_default=True,
+)
+@click.option(
+    "--promote", multiple=True, help="which columns should be promoted to select type?"
+)
+@click.option(
+    "--extra_row_files",
+    multiple=True,
+    type=click.Path(exists=True),
+    help="path to files defining the new select/enum column(s) etc.",
+    show_default=True,
+)
 def promote_to_select(data_tsv_in, data_tsv_out, promote, extra_row_files):
     data_in = pd.read_csv(data_tsv_in, sep="\t")
     for i in promote:
         logger.info(i)
-        data_in.loc[data_in['label'].eq(i), 'datatype'] = 'select'
-        data_in.loc[data_in['label'].eq(i), 'pattern'] = ''
+        data_in.loc[data_in["label"].eq(i), "datatype"] = "select"
+        data_in.loc[data_in["label"].eq(i), "pattern"] = ""
     to_concat = [data_in]
     for i in extra_row_files:
         logger.info(i)

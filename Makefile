@@ -96,17 +96,17 @@ target/soil_biosample_modular_annotated.yaml: target/soil_biosample_modular.yaml
 target/data.tsv: target/soil_biosample_modular_annotated.yaml
 	poetry run linkml2dataharmonizer --model_file $< --selected_class soil_biosample 2> target/linkml_to_dh_light.log
 
-target/soil_curated_terms.txt:
+target/soil_curated_terms.tsv:
 	poetry run tidy_triad_curations \
-		--sheet_id "1WErXj8sM5uJi51VVLNQZDilDF7wMiyBC2T4zELp7Axc" \
-		--tab_title "Subset_EnvO_Broad_Local_Medium_terms_062221" \
-		--env_package 'Soil' \
+		--sheet_id "1pSmxX6XGOxmoA7S7rKyj5OaEl3PmAl4jAOlROuNHrU0" \
+		--tab_title "envo_terms_for_mixs_env_triad" \
+		--env_package 'soil' \
 		--curated_tsv_out $@
 
-target/soil_ebs_terms.txt: target/soil_curated_terms.txt
+target/soil_ebs_terms.txt: target/soil_curated_terms.tsv
 	# do this in python
 	grep 'env_broad_scale' $< > target/temp.txt
-	cut -f4 target/temp.txt > $@
+	cut -f2 target/temp.txt > $@
 	rm target/temp.txt
 
 # need a method for generating the envo*tsv files
