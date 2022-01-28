@@ -13,8 +13,12 @@ from linkml_runtime.linkml_model import (
 from linkml_runtime.utils.schemaview import SchemaView
 from linkml_runtime.dumpers import yaml_dumper
 
-from sheet2dataharmonizer.converters.linkml2dataharmonizer import LinkML2DataHarmonizer
+from sheet2dataharmonizer.converters.linkml2dataharmonizer import (
+    LinkML2DataHarmonizer,
+    ValidationConverter,
+)
 from sheet2dataharmonizer.converters.sheet2linkml import Sheet2LinkML
+import pprint
 
 logger = logging.getLogger(__name__)
 click_log.basic_config(logger)
@@ -608,3 +612,8 @@ def promote_to_select(data_tsv_in, data_tsv_out, promote, extra_row_files):
         to_concat.append(temp)
     catted = pd.concat(to_concat)
     catted.to_csv(data_tsv_out, sep="\t", index=False)
+
+
+def validation_converter():
+    throwaway = ValidationConverter()
+    pprint.pprint(throwaway.vc_dod["{float}"])

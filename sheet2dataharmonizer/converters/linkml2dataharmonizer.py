@@ -6,8 +6,11 @@ from typing import Any, Dict, List
 import pandas as pd
 
 from linkml_runtime.utils.schemaview import SchemaView
+from sheet2dataharmonizer.converters.sheet2linkml import Sheet2LinkML
+
 
 logger = logging.getLogger(__name__)
+
 
 # model_file = "target/soil_biosample_interleaved.yaml"
 # selected_class = "soil_biosample_class"
@@ -16,6 +19,24 @@ logger = logging.getLogger(__name__)
 # default_capitalize = ""
 # default_data_status = ""
 # output_file = "target/data.tsv"
+
+
+class ValidationConverter:
+    """
+    structure for looking up DH datatypes and regular expressions
+    based on MIxS string serializations and ranges
+    """
+
+    def __init__(self) -> None:
+        # parameterize these
+        selected_cols = ["from_val", "from_type", "to_type", "to_val"]
+        sheet_id = "1pSmxX6XGOxmoA7S7rKyj5OaEl3PmAl4jAOlROuNHrU0"
+        tab_title = "validation_converter"
+        client_secret = "../../local/client_secret.apps.googleusercontent.com.json"
+        raw = Sheet2LinkML.get_gsheet_frame(client_secret, sheet_id, tab_title)
+        sc_frame = raw[selected_cols]
+        vc_lod = sc_frame.to_dict(orient="records")
+        self.vc_dod = {i["from_val"]: i for i in vc_lod}
 
 
 class LinkML2DataHarmonizer:
