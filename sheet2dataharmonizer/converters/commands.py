@@ -1,4 +1,5 @@
 import logging
+from threading import currentThread
 
 import click
 import click_log
@@ -9,6 +10,7 @@ from linkml_runtime.linkml_model import (
     Example,
     EnumDefinition,
     PermissibleValue,
+    Annotation
 )
 from linkml_runtime.utils.schemaview import SchemaView
 from linkml_runtime.dumpers import yaml_dumper
@@ -123,6 +125,30 @@ def _inject_supplementary(
             new_slot = SlotDefinition(
                 name=i_s, slot_uri=prefix + ":" + i_s, title=i["name"]
             )
+            
+            ann_list = []   # list of section, column pair annotations
+            if 'section' in i:
+                tag_name = "dh:section_name"
+                ghsheet_header = 'section'
+                val_name = i[ghsheet_header]
+                if not val_name:
+                    logger.warning(f"The header {ghsheet_header} could not be found.")
+                    val_name = "to_be_annotated"
+                ann = Annotation(tag=tag_name, value=val_name)
+                ann_list.append(ann)
+            if 'column_order' in i:
+                tag_name = "dh:column_number"
+                ghsheet_header = 'column_number'
+                val_name = i[ghsheet_header]
+                if not val_name:
+                    logger.warning(f"The header {ghsheet_header} could not be found.")
+                    val_name = "to_be_annotated"
+                ann = Annotation(tag=tag_name, value=val_name)
+                ann_list.append(ann)
+            
+            # assign list of annotations to slot's annotations attribute
+            new_slot.annotations = ann_list
+
             if i["requirement status"] == "required":
                 new_slot.required = True
             if i["requirement status"] == "recommended":
@@ -242,6 +268,7 @@ def sheet2linkml(
         "schema": "http://schema.org/",
         "xsd": "http://www.w3.org/2001/XMLSchema#",
         "UO": "http://purl.obolibrary.org/obo/UO_",
+        "dh": "https://github.com/cidgoh/DataHarmonizer/wiki"
     }
 
     new_schema = Sheet2LinkML.construct_schema(
