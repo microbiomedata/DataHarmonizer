@@ -63,6 +63,7 @@ expected_tabs = [
     "enums_long",
     "mock_section_defs",
     "envo_terms_for_mixs_env_triad",
+    "validation_converter",
 ]
 
 # order matters
