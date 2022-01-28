@@ -64,6 +64,7 @@ expected_tabs = [
     "mock_section_defs",
     "envo_terms_for_mixs_env_triad",
     "validation_converter",
+    "soil_biosample_regex_insight_snapshot",
 ]
 
 # order matters
