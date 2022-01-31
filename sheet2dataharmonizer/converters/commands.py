@@ -138,7 +138,7 @@ def _inject_supplementary(
                 ann_list.append(ann)
             if 'column_order' in i:
                 tag_name = "dh:column_number"
-                ghsheet_header = 'column_number'
+                ghsheet_header = 'column_order'
                 val_name = i[ghsheet_header]
                 if not val_name:
                     logger.warning(f"The header {ghsheet_header} could not be found.")
