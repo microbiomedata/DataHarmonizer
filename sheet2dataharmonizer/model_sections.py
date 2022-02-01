@@ -7,8 +7,6 @@ from linkml_runtime.linkml_model import (
 )
 from linkml_runtime.dumpers import yaml_dumper
 
-# import pprint
-
 logger = logging.getLogger(__name__)
 click_log.basic_config(logger)
 
@@ -26,7 +24,6 @@ def model_sections(auth_file, sheet_id, tab_title):
     dh_section_class = ClassDefinition(name="dh_section")
     section_schema.classes['dh_section'] = dh_section_class
     for i in section_lod:
-        # pprint.pprint(i)
         sn = i['section_name']
         st = i['section_title']
         current_class = ClassDefinition(name=sn, title=st)
@@ -35,13 +32,9 @@ def model_sections(auth_file, sheet_id, tab_title):
         current_class.annotations['dh_sect_order'] = Annotation(tag="dh_sect_order", value=i['section_order'])
         current_class.is_a = "dh_section"
         section_schema.classes[sn] = current_class
-    # print(section_schema)
     dumped = yaml_dumper.dumps(section_schema)
     print(dumped)
 
 
 if __name__ == '__main__':
     model_sections()
-
-
-#
