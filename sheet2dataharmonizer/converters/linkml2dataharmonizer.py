@@ -1,3 +1,4 @@
+from __future__ import annotations
 import re
 import logging
 
@@ -137,7 +138,7 @@ class LinkML2DataHarmonizer:
             else:
                 # what if the slot uri is a full uri, not a curie?
                 prefix_portion = i.slot_uri.split(":")[0] + ":"
-                logger.info(f"saw the prefix {prefix_portion}")
+                # logger.info(f"saw the prefix {prefix_portion}")
                 self.prefix_tally.append(prefix_portion)
 
             if i.is_a is None:
@@ -194,9 +195,10 @@ class LinkML2DataHarmonizer:
         model_enum_names.sort()
 
         for i in term_names:
-            logger.info(f"processing {i}")
+            # logger.info(f"processing {i}")
             current_row = blank_row.copy()
             current_sd = rs_dict[i]
+
             current_row["Ontology ID"] = current_sd.slot_uri
             if current_sd.title is not None and len(current_sd.title) > 0:
                 current_row["label"] = current_sd.title
@@ -217,6 +219,17 @@ class LinkML2DataHarmonizer:
                 temp = re.sub(r"^[\['\"]*", "", temp)
                 temp = re.sub(r"['\]\"]*$", "", temp)
                 current_row["description"] = temp
+
+            # block that adds section and column information to the data.tsv
+            # the int() is necessary to convert the column number from str type to int so
+            # pandas can sort
+            try:
+                current_row["column_number"] = int(
+                    current_sd.annotations._get("dh:column_number").value
+                )
+            except AttributeError:
+                logger.debug(f"No annotations associated with slot {current_sd.name}")
+                pass
 
             # guidance: I have moved slot used in...  out of the MIxS comments
             #  Occurrence is still in there
@@ -292,7 +305,7 @@ class LinkML2DataHarmonizer:
                 # update this once the enums are built
                 if current_sd.multivalued:
                     current_row["datatype"] = "multiple"
-                    logger.info(f"    {i} is multi-valued")
+                    # logger.info(f"    {i} is multi-valued")
                 else:
                     current_row["datatype"] = "select"
 
@@ -356,7 +369,7 @@ class LinkML2DataHarmonizer:
                 current_row["requirement"] = "required"
 
             term_list.append(current_row)
-        logger.info("\n")
+        # logger.info("\n")
 
         return {"term": term_list, "pv": pv_list}
 
@@ -404,6 +417,12 @@ class LinkML2DataHarmonizer:
         reunited = stolen_label_rows.append(cream_of_crop)
         reunited = reunited.append(coc_leftovers)
         reunited = reunited.append(nr_leftovers)
+
+        # group columns by sections in the template and order the columns
+        # by column_number field
+        reunited = reunited.groupby("parent class").apply(
+            pd.DataFrame.sort_values, "column_number"
+        )
 
         self.log_tally(
             self.prefix_tally,
