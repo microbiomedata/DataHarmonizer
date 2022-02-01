@@ -131,17 +131,14 @@ class LinkML2DataHarmonizer:
 
         for i in relevant_slots:
             # block that adds approporiate section names to the data.tsv
-            if i.is_a is None:
-                try:
-                    relevant_isa = i.annotations._get("dh:section_name").value
+            try:
+                relevant_isa = i.annotations._get("dh:section_name").value
 
-                    isa_dict[i.name] = relevant_isa
-                    isa_set.add(relevant_isa)
-                except AttributeError:
-                    logger.debug(f"No annotations associated with slot {i.name}")
-                    pass
-            else:
-                relevant_isa = "placeholder"
+                isa_dict[i.name] = relevant_isa
+                isa_set.add(relevant_isa)
+            except AttributeError:
+                logger.debug(f"No annotations associated with slot {i.name}")
+                pass
 
         if as_a == "set":
             return isa_set
