@@ -25,7 +25,6 @@ class LinkML2DataHarmonizer:
 
     def __init__(self, linkml_model_path: str) -> None:
         self.model_sv = SchemaView(linkml_model_path)
-        self.prefix_tally = []
         self.range_tally = []
         self.string_ser_tally = []
 
@@ -131,23 +130,18 @@ class LinkML2DataHarmonizer:
         isa_set = set()
 
         for i in relevant_slots:
-            prefix_portion = ""
-            if i.slot_uri is None or i.slot_uri == "":
-                # section_prefix = ""
-                pass
-            else:
-                # what if the slot uri is a full uri, not a curie?
-                prefix_portion = i.slot_uri.split(":")[0] + ":"
-                logger.info(f"saw the prefix {prefix_portion}")
-                self.prefix_tally.append(prefix_portion)
-
+            # block that adds approporiate section names to the data.tsv
             if i.is_a is None:
-                relevant_isa = prefix_portion + default_section
-            else:
-                relevant_isa = prefix_portion + i.is_a
+                try:
+                    relevant_isa = i.annotations._get("dh:section_name").value
 
-            isa_dict[i.name] = relevant_isa
-            isa_set.add(relevant_isa)
+                    isa_dict[i.name] = relevant_isa
+                    isa_set.add(relevant_isa)
+                except AttributeError:
+                    logger.debug(f"No annotations associated with slot {i.name}")
+                    pass
+            else:
+                relevant_isa = "placeholder"
 
         if as_a == "set":
             return isa_set
@@ -220,7 +214,7 @@ class LinkML2DataHarmonizer:
                 temp = re.sub(r"['\]\"]*$", "", temp)
                 current_row["description"] = temp
 
-            # block that adds section and column information to the data.tsv
+            # block that adds column information to the data.tsv
             # the int() is necessary to convert the column number from str type to int so
             # pandas can sort
             try:
@@ -424,10 +418,6 @@ class LinkML2DataHarmonizer:
             pd.DataFrame.sort_values, "column_number"
         )
 
-        self.log_tally(
-            self.prefix_tally,
-            "TABULATION OF TERM PREFIXES, for prioritizing range->regex conversion",
-        )
         self.log_tally(
             self.range_tally,
             "TABULATION OF SLOT RANGES, for prioritizing range->regex conversion",

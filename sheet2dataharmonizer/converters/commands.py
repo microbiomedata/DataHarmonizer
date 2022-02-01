@@ -1,5 +1,4 @@
 import logging
-from threading import currentThread
 
 import click
 import click_log
