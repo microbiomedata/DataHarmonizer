@@ -227,7 +227,7 @@
 						<tr>
 							<td class="label">Incubation Collection Date</td>
 							<td>Date the incubation was harvested/collected/ended. Only relevant for incubation samples.</td>
-							<td>date and time should be represented as YYYY-MM-DDTHH:MM:SS in GMT. See here for a converter: https://www.worldtimebuddy.com/pst-to-gmt-converter | pattern generalization: {timestamp}</td>
+							<td>date should be represented as YYYY-MM-DD. See here for a converter: https://www.worldtimebuddy.com/pst-to-gmt-converter | pattern generalization: {timestamp}</td>
 							<td></td>
 							<td>['default']</td>
 						</tr>
@@ -238,6 +238,15 @@
 							<td>The time of sampling, either as an instance (single point) or interval.</td>
 							<td>Time should be formatted as HH:MM:SS | pattern generalization: HH:MM:SS</td>
 							<td>Time should be reported in GMT (LINK)</td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">Incubation Collection Time</td>
+							<td>Time the incubation was harvested/collected/ended. Only relevant for incubation samples.</td>
+							<td>Time should be represented as HH:MM:SS in GMT. See here for a converter: https://www.worldtimebuddy.com/pst-to-gmt-converter | pattern generalization: {timestamp}</td>
+							<td></td>
 							<td>['default']</td>
 						</tr>
 
@@ -864,15 +873,6 @@
 
 						
 						<tr>
-							<td class="label">pH</td>
-							<td>Ph measurement of the sample, or liquid portion of sample, or aqueous phase of the fluid</td>
-							<td>Expected value: measurement value</td>
-							<td>7.2</td>
-							<td>['default']</td>
-						</tr>
-
-						
-						<tr>
 							<td class="label">pH method</td>
 							<td>Reference or method used in determining ph</td>
 							<td>Expected value: PMID,DOI or url | pattern generalization: {PMID}|{DOI}|{URL}</td>
@@ -1154,7 +1154,16 @@
 						<tr>
 							<td class="label">Incubation Start Date</td>
 							<td>Date the incubation was started. Only relevant for incubation samples.</td>
-							<td>date and time should be represented as YYYY-MM-DDTHH:MM:SS GMT | pattern generalization: {timestamp}</td>
+							<td>date should be represented as YYYY-MM-DD | pattern generalization: {timestamp}</td>
+							<td></td>
+							<td>['default']</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">Incubation Start Time</td>
+							<td>Time the incubation was started. Only relevant for incubation samples.</td>
+							<td>Time should be represented as HH:MM:SS GMT | pattern generalization: {timestamp}</td>
 							<td></td>
 							<td>['default']</td>
 						</tr>
