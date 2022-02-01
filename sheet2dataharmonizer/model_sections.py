@@ -1,0 +1,47 @@
+from sheet2dataharmonizer.converters.sheet2linkml import Sheet2LinkML as S2Lml
+import logging
+import click
+import click_log
+from linkml_runtime.linkml_model import (
+    Annotation, SchemaDefinition, ClassDefinition
+)
+from linkml_runtime.dumpers import yaml_dumper
+
+# import pprint
+
+logger = logging.getLogger(__name__)
+click_log.basic_config(logger)
+
+
+@click.command()
+@click_log.simple_verbosity_option(logger)
+@click.option("--sheet_id", default="1pSmxX6XGOxmoA7S7rKyj5OaEl3PmAl4jAOlROuNHrU0")
+@click.option("--tab_title", default="Sections_order")
+@click.option("--auth_file", required=True)
+def model_sections(auth_file, sheet_id, tab_title):
+    section_sheet = S2Lml.get_gsheet_frame(title=tab_title, sheet_id=sheet_id, gauth_file_path=auth_file)
+    section_lod = section_sheet.to_dict(orient='records')
+
+    section_schema = SchemaDefinition(name="model_sections", id="http://example.com/model_sections")
+    dh_section_class = ClassDefinition(name="dh_section")
+    section_schema.classes['dh_section'] = dh_section_class
+    for i in section_lod:
+        # pprint.pprint(i)
+        sn = i['section_name']
+        st = i['section_title']
+        current_class = ClassDefinition(name=sn, title=st)
+        if i['notes'] != "" and i['notes'] is not None:
+            current_class.comments.append(i['notes'])
+        current_class.annotations['dh_sect_order'] = Annotation(tag="dh_sect_order", value=i['section_order'])
+        current_class.is_a = "dh_section"
+        section_schema.classes[sn] = current_class
+    # print(section_schema)
+    dumped = yaml_dumper.dumps(section_schema)
+    print(dumped)
+
+
+if __name__ == '__main__':
+    model_sections()
+
+
+#
