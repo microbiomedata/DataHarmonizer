@@ -138,7 +138,7 @@ class LinkML2DataHarmonizer:
             else:
                 # what if the slot uri is a full uri, not a curie?
                 prefix_portion = i.slot_uri.split(":")[0] + ":"
-                # logger.info(f"saw the prefix {prefix_portion}")
+                logger.info(f"saw the prefix {prefix_portion}")
                 self.prefix_tally.append(prefix_portion)
 
             if i.is_a is None:
@@ -195,7 +195,7 @@ class LinkML2DataHarmonizer:
         model_enum_names.sort()
 
         for i in term_names:
-            # logger.info(f"processing {i}")
+            logger.info(f"processing {i}")
             current_row = blank_row.copy()
             current_sd = rs_dict[i]
 
@@ -305,7 +305,7 @@ class LinkML2DataHarmonizer:
                 # update this once the enums are built
                 if current_sd.multivalued:
                     current_row["datatype"] = "multiple"
-                    # logger.info(f"    {i} is multi-valued")
+                    logger.info(f"    {i} is multi-valued")
                 else:
                     current_row["datatype"] = "select"
 
@@ -369,7 +369,7 @@ class LinkML2DataHarmonizer:
                 current_row["requirement"] = "required"
 
             term_list.append(current_row)
-        # logger.info("\n")
+        logger.info("\n")
 
         return {"term": term_list, "pv": pv_list}
 
