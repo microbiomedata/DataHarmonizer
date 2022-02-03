@@ -9,6 +9,7 @@ import pandas as pd
 from linkml_runtime.utils.schemaview import SchemaView
 from sheet2dataharmonizer.converters.sheet2linkml import Sheet2LinkML
 
+from linkml_runtime.linkml_model import Annotation
 
 logger = logging.getLogger(__name__)
 
@@ -144,18 +145,25 @@ class LinkML2DataHarmonizer:
         return {"required": req_from_usage, "recommended": rec_from_usage}
 
     def _get_is_a_struct(
-        self, selected_class: str, default_section: str, as_a: str = "dictionary"
+            self, selected_class: str, default_section: str, as_a: str = "dictionary"
     ):
         relevant_slots = self.model_sv.class_induced_slots(selected_class)
         isa_dict = {}
         isa_set = set()
 
         for i in relevant_slots:
-            # block that adds approporiate section names to the data.tsv
-            if i.annotations:
+            # block that adds appropriate section names to the data.tsv
+            ia_jsonobj = i.annotations
+            ijd = ia_jsonobj.__dict__
+            if i.annotations and "dh:section_name" in ijd:
+                # todo no, there are terms with annotations but no section_name
+                # _inject_supplementary is adding the annotations for emls, jgi, mixs modified terms etc
+                # by XXX also needs to add annotations for mixs and nmdc as-is etc terms
                 relevant_isa = i.annotations._get("dh:section_name").value
-            else:
+            elif i.is_a:
                 relevant_isa = i.is_a
+            else:
+                relevant_isa = "undef_sect"
 
             isa_dict[i.name] = relevant_isa
             isa_set.add(relevant_isa)
@@ -182,12 +190,12 @@ class LinkML2DataHarmonizer:
         return section_list
 
     def _get_term_pv_list(
-        self,
-        selected_class: str,
-        default_section: str,
-        default_source: str,
-        default_capitalize: str,
-        default_data_status: str,
+            self,
+            selected_class: str,
+            default_section: str,
+            default_source: str,
+            default_capitalize: str,
+            default_data_status: str,
     ):
         blank_row = {i: "" for i in self.table_columns()}
 
@@ -254,35 +262,35 @@ class LinkML2DataHarmonizer:
 
             if current_sd.pattern is not None and current_sd.pattern != "":
                 if (
-                    current_row["guidance"] is not None
-                    and current_row["guidance"] != ""
+                        current_row["guidance"] is not None
+                        and current_row["guidance"] != ""
                 ):
                     current_row["guidance"] = (
-                        current_row["guidance"]
-                        + " | pattern as regular expression: "
-                        + current_sd.pattern
+                            current_row["guidance"]
+                            + " | pattern as regular expression: "
+                            + current_sd.pattern
                     )
                 else:
                     current_row["guidance"] = (
-                        "pattern as regular expression: " + current_sd.pattern
+                            "pattern as regular expression: " + current_sd.pattern
                     )
 
             if (
-                current_sd.string_serialization is not None
-                and current_sd.string_serialization != ""
+                    current_sd.string_serialization is not None
+                    and current_sd.string_serialization != ""
             ):
                 if (
-                    current_row["guidance"] is not None
-                    and current_row["guidance"] != ""
+                        current_row["guidance"] is not None
+                        and current_row["guidance"] != ""
                 ):
                     current_row["guidance"] = (
-                        current_row["guidance"]
-                        + " | pattern generalization: "
-                        + current_sd.string_serialization
+                            current_row["guidance"]
+                            + " | pattern generalization: "
+                            + current_sd.string_serialization
                     )
                 else:
                     current_row["guidance"] = (
-                        "pattern generalization: " + current_sd.string_serialization
+                            "pattern generalization: " + current_sd.string_serialization
                     )
                 # if current_sd.string_serialization == '{float}':
                 #     current_row["datatype"] = "xs:decimal"
@@ -292,8 +300,8 @@ class LinkML2DataHarmonizer:
             self.range_tally.append(current_sd.range)
 
             if (
-                current_sd.string_serialization is not None
-                and current_sd.string_serialization != ""
+                    current_sd.string_serialization is not None
+                    and current_sd.string_serialization != ""
             ):
                 self.string_ser_tally.append(current_sd.string_serialization[0:99])
             else:
@@ -385,12 +393,12 @@ class LinkML2DataHarmonizer:
         return {"term": term_list, "pv": pv_list}
 
     def _combined_list(
-        self,
-        section_list: List[str],
-        term_list: List[str],
-        pv_list: List[str],
-        selected_class: str,
-        default_section: str,
+            self,
+            section_list: List[str],
+            term_list: List[str],
+            pv_list: List[str],
+            selected_class: str,
+            default_section: str,
     ):
         final_list = section_list + term_list + pv_list
         needs_reordering = pd.DataFrame(final_list)
@@ -445,7 +453,6 @@ class LinkML2DataHarmonizer:
         )
 
         return reunited
-
 
 # # soil biosample
 # ranges that could be interpreted as datatypes or patterns
