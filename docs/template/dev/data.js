@@ -3,27 +3,46 @@ var DATA = [
     "fieldName": "biosample_id",
     "children": [
       {
-        "fieldName": "Analysis/Data Type",
+        "fieldName": "Globally Unique ID",
         "capitalize": "",
-        "ontology_id": "samp_id:analysis_type",
-        "datatype": "multiple",
+        "ontology_id": "samp_id:unique_ID",
+        "datatype": "xs:unique",
         "source": "",
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "required",
-        "description": "Include all the data types associated or available for this biosample, this field can have multiple values separated by a ;",
-        "guidance": "This field is constrained to contain only a set of limited terms indicate the types of data that were generated. | pattern generalization: enumeration",
-        "examples": "metagenomics; metabolomics; proteomics",
+        "description": "A globally unique identifier assigned to the biological sample to link all analytes and subsamples derived from it.",
+        "guidance": "Field REQUIRED for ALL sample submission. Options: IGSN- http://www.geosamples.org/getigsn ; UUID- https://www.uuidgenerator.net/ | pattern generalization: {text}:{text}",
+        "examples": "",
+        "pattern": "[^\\:\\n\\r]+\\:[^\\:\\n\\r]+",
         "exportField": {
           "dev": [
             {
-              "field": "analysis_type"
+              "field": "unique_ID"
             }
           ]
-        },
-        "schema:ItemList": {
-          "natural organic matter": {}
+        }
+      },
+      {
+        "fieldName": "sample name",
+        "capitalize": "",
+        "ontology_id": "samp_id:sample_name",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "A local identifier or name that for the material sample collected. Refers to the original material collected or to any derived sub-samples. It can have any format, but we suggest that you make it concise, unique and consistent within your lab, and as informative as possible.",
+        "guidance": "Should be human readable | pattern generalization: {text}",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "sample_name"
+            }
+          ]
         }
       },
       {
@@ -51,6 +70,34 @@ var DATA = [
         }
       },
       {
+        "fieldName": "Analysis/Data Type",
+        "capitalize": "",
+        "ontology_id": "samp_id:analysis_type",
+        "datatype": "multiple",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Include all the data types associated or available for this biosample, this field can have multiple values separated by a ;",
+        "guidance": "This field is constrained to contain only a set of limited terms indicate the types of data that were generated. | pattern generalization: enumeration",
+        "examples": "metagenomics; metabolomics; proteomics",
+        "exportField": {
+          "dev": [
+            {
+              "field": "analysis_type"
+            }
+          ]
+        },
+        "schema:ItemList": {
+          "metabolomics": {},
+          "metagenomics": {},
+          "metaproteomics": {},
+          "metatranscriptomics": {},
+          "natural organic matter": {}
+        }
+      },
+      {
         "fieldName": "sample linkage",
         "capitalize": "",
         "ontology_id": "samp_id:sample_link",
@@ -71,46 +118,1182 @@ var DATA = [
             }
           ]
         }
-      },
+      }
+    ]
+  },
+  {
+    "fieldName": "emsl",
+    "children": [
       {
-        "fieldName": "sample name",
+        "fieldName": "Project ID",
         "capitalize": "",
-        "ontology_id": "samp_id:sample_name",
+        "ontology_id": "emsl:project_ID",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "required",
-        "description": "A local identifier or name that for the material sample collected. Refers to the original material collected or to any derived sub-samples. It can have any format, but we suggest that you make it concise, unique and consistent within your lab, and as informative as possible.",
-        "guidance": "Should be human readable | pattern generalization: {text}",
+        "description": "Proposal IDs or names associated with dataset",
+        "guidance": "pattern generalization: {text}",
         "examples": "",
         "exportField": {
           "dev": [
             {
-              "field": "sample_name"
+              "field": "project_ID"
             }
           ]
         }
       },
       {
-        "fieldName": "Globally Unique ID",
+        "fieldName": "sample type",
         "capitalize": "",
-        "ontology_id": "samp_id:unique_ID",
-        "datatype": "xs:unique",
+        "ontology_id": "emsl:sample_type",
+        "datatype": "select",
         "source": "",
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "required",
-        "description": "A globally unique identifier assigned to the biological sample to link all analytes and subsamples derived from it.",
-        "guidance": "Field REQUIRED for ALL sample submission. Options: IGSN- http://www.geosamples.org/getigsn ; UUID- https://www.uuidgenerator.net/ | pattern generalization: {text}:{text}",
-        "examples": "",
-        "pattern": "[^\\:\\n\\r]+\\:[^\\:\\n\\r]+",
+        "description": "Type of sample being submitted",
+        "guidance": "This can vary from 'environmental package' if the sample is an extraction. | pattern generalization: enumeration",
+        "examples": "water extracted soil",
         "exportField": {
           "dev": [
             {
-              "field": "unique_ID"
+              "field": "sample_type"
+            }
+          ]
+        },
+        "schema:ItemList": {
+          "soil": {},
+          "water_extract_soil": {}
+        }
+      },
+      {
+        "fieldName": "sample shipped amount",
+        "capitalize": "",
+        "ontology_id": "emsl:sample_shipped",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "The total amount or size (volume (ml), mass (g) or area (m2) ) of sample sent to EMSL",
+        "guidance": "pattern generalization: {float} {unit}",
+        "examples": "",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "sample_shipped"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "EMSL Sample Storage Temperature",
+        "capitalize": "",
+        "ontology_id": "emsl:EMSL_store_temp",
+        "datatype": "xs:decimal",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Temperature at which the sample sent to EMSL should be stored",
+        "guidance": "Enter a temperature in celsius. Numeric portion only. | pattern generalization: {float}",
+        "examples": "-80",
+        "exportField": {
+          "dev": [
+            {
+              "field": "EMSL_store_temp"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "Number Technical Replicate",
+        "capitalize": "",
+        "ontology_id": "emsl:technical_reps",
+        "datatype": "xs:nonNegativeInteger",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "recommended",
+        "description": "If sending multiple technical replicates of the same sample, indicate how many replicates are being sent",
+        "guidance": "pattern generalization: {integer}",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "technical_reps"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "Replicate Number",
+        "capitalize": "",
+        "ontology_id": "emsl:replicate_number",
+        "datatype": "xs:nonNegativeInteger",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "recommended",
+        "description": "If sending biological replicates, indicate the rep number here.",
+        "guidance": "This will guide staff in ensuring your samples are block & randomized correctly | pattern generalization: {integer}",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "replicate_number"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "fieldName": "jgi_mg",
+    "children": [
+      {
+        "fieldName": "DNA Seq Project ID",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_seq_project",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Prefilled",
+        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
+        "examples": "1191234",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_seq_project"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Seq Project Name",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_seq_project_name",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Prefilled",
+        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
+        "examples": "JGI Pond metagenomics",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_seq_project_name"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Sample ID",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_samp_ID",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Prefilled",
+        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
+        "examples": "187654",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_samp_ID"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Sample Name",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_sample_name",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Give the DNA sample a name that is meaningful to you. Sample names must be unique across all JGI projects and contain ASCII characters only.",
+        "guidance": "pattern generalization: {text}",
+        "examples": "JGI_pond_041618",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_sample_name"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Concentration",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_concentration",
+        "datatype": "xs:decimal",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "0.0",
+        "xs:maxInclusive": "2000.0",
+        "requirement": "required",
+        "description": "Must be calculated using a fluorometric method; value >0 and <2000.",
+        "guidance": "Units should be in ng/uL | pattern generalization: {float}",
+        "examples": "100",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_concentration"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Volume",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_volume",
+        "datatype": "xs:decimal",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "0.0",
+        "xs:maxInclusive": "1000.0",
+        "requirement": "required",
+        "description": "Value must be >0 and <1000 (values <25 by special permission only).",
+        "guidance": "Units should be in uL | pattern generalization: {float}",
+        "examples": "25",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_volume"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Absorbance 260/280",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_absorb1",
+        "datatype": "xs:decimal",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "260/280 measurement of sample purity",
+        "guidance": "Recommended value is between 1 and 3. | pattern generalization: {float}",
+        "examples": "2.02",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_absorb1"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Absorbance 260/230",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_absorb2",
+        "datatype": "xs:decimal",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "260/230 measurement of sample purity",
+        "guidance": "Recommended value is between 1 and 3. | pattern generalization: {float}",
+        "examples": "2.02",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_absorb2"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Container Label",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_container_ID",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Must be unique across all tubes and plates, and <20 characters. All samples in a plate should have the same plate label.",
+        "guidance": "pattern generalization: {text}",
+        "examples": "Pond_MT_041618",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_container_ID"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Container Type",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_cont_type",
+        "datatype": "select",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "tube or plate (96-well)",
+        "guidance": "pattern generalization: enumeration",
+        "examples": "plate",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_cont_type"
+            }
+          ]
+        },
+        "schema:ItemList": {
+          "plate": {},
+          "tube": {}
+        }
+      },
+      {
+        "fieldName": "DNA Well Number",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_cont_well",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Corner wells must be blank. For partial plates, fill by columns. Leave blank if the sample will be shipped in a tube.",
+        "guidance": "Required when 'plate' is selected for container type | pattern generalization: {text}",
+        "examples": "B2",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_cont_well"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Sample Format",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_sample_format",
+        "datatype": "select",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Choose from the following: Pellet, RNAStable, DNAStable, Ethanol, MDA reaction buffer, PBS, TE, Water, Low EDTA TE, 10 mM Tris-HCl",
+        "guidance": "Identify what the DNA sample is suspended in | pattern generalization: enumeration",
+        "examples": "Water",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_sample_format"
+            }
+          ]
+        },
+        "schema:ItemList": {
+          "10 mM Tris-HCl": {},
+          "DNAStable": {},
+          "Ethanol": {},
+          "Low EDTA TE": {},
+          "MDA reaction buffer": {},
+          "PBS": {},
+          "Pellet": {},
+          "RNAStable": {},
+          "TE": {},
+          "Water": {}
+        }
+      },
+      {
+        "fieldName": "DNAse Treatment DNA",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_dnase",
+        "datatype": "select",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Y/N. Note DNAse treatment is required for all RNA samples.",
+        "guidance": "pattern generalization: enumeration",
+        "examples": "No",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_dnase"
+            }
+          ]
+        },
+        "schema:ItemList": {
+          "no": {},
+          "yes": {}
+        }
+      },
+      {
+        "fieldName": "DNA Expected Organisms",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_organisms",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "List any organisms known or suspected to grow in co-culture, as well as estimated % of the organism in that culture.",
+        "guidance": "pattern generalization: {text}",
+        "examples": "expected to contain microbes (59%) fungi (30%), viruses (10%), tadpoles (1%)",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_organisms"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Collection Site",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_collect_site",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Provide information on the site your DNA sample was collected from",
+        "guidance": "pattern generalization: {text}",
+        "examples": "untreated pond water",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_collect_site"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Isolation Method",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_isolate_meth",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Describe the method/protocol/kit used to extract DNA/RNA.",
+        "guidance": "pattern generalization: {text}",
+        "examples": "phenol/chloroform extraction",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_isolate_meth"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Seq Project PI",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_seq_project_PI",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Prefilled",
+        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
+        "examples": "Jane Johnson",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_seq_project_PI"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Seq Project Contact",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:dna_project_contact",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Prefilled",
+        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
+        "examples": "John Jones",
+        "exportField": {
+          "dev": [
+            {
+              "field": "dna_project_contact"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "DNA Proposal ID",
+        "capitalize": "",
+        "ontology_id": "jgi_gen:proposal_dna",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Prefilled",
+        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
+        "examples": "504000",
+        "exportField": {
+          "dev": [
+            {
+              "field": "proposal_dna"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "fieldName": "mixs_mod_req",
+    "children": [
+      {
+        "fieldName": "growth facility",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:growth_facility",
+        "datatype": "select",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Type of facility/location where the sample was harvested; controlled vocabulary: growth chamber, open top chamber, glasshouse, experimental garden, field.",
+        "guidance": "pattern generalization: enumeration",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "growth_facility"
+            }
+          ]
+        },
+        "schema:ItemList": {
+          "experimental_garden": {},
+          "field": {},
+          "field_incubation": {},
+          "glasshouse": {},
+          "greenhouse": {},
+          "growth_chamber": {},
+          "lab_incubation": {},
+          "open_top_chamber": {},
+          "other": {}
+        }
+      },
+      {
+        "fieldName": "storage conditions",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:storage_condt",
+        "datatype": "select",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Explain how the soil sample is stored (fresh/frozen/other).",
+        "guidance": "pattern generalization: enumeration",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "storage_condt"
+            }
+          ]
+        },
+        "schema:ItemList": {
+          "fresh": {},
+          "frozen": {},
+          "lyophilized": {},
+          "other": {}
+        }
+      },
+      {
+        "fieldName": "Collection Date",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:collection_date",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "The date of sampling, either as an instance (single point) or interval. ",
+        "guidance": "Date should be formatted as YYYY-MM-DD | pattern generalization: YYYY-MM-DD",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "collection_date"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "pH",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:pH",
+        "datatype": "xs:decimal",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "0.0",
+        "xs:maxInclusive": "14.0",
+        "requirement": "recommended",
+        "description": "Ph measurement of the sample, or liquid portion of sample, or aqueous phase of the fluid",
+        "guidance": "Expected value: measurement value | pattern generalization: {float}",
+        "examples": "7.2",
+        "exportField": {
+          "dev": [
+            {
+              "field": "pH"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "fieldName": "mixs_mod_rec",
+    "children": [
+      {
+        "fieldName": "collection time",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:collection_time",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "recommended",
+        "description": "The time of sampling, either as an instance (single point) or interval.",
+        "guidance": "Time should be formatted as HH:MM:SS | pattern generalization: HH:MM:SS",
+        "examples": "Time should be reported in GMT (LINK)",
+        "exportField": {
+          "dev": [
+            {
+              "field": "collection_time"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "Incubation Collection Date",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:collection_date_inc",
+        "datatype": "xs:date",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "recommended",
+        "description": "Date the incubation was harvested/collected/ended. Only relevant for incubation samples.",
+        "guidance": "date should be represented as YYYY-MM-DD. See here for a converter: https://www.worldtimebuddy.com/pst-to-gmt-converter | pattern generalization: {timestamp}",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "collection_date_inc"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "Incubation Collection Time",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:collection_time_inc",
+        "datatype": "xs:date",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "recommended",
+        "description": "Time the incubation was harvested/collected/ended. Only relevant for incubation samples.",
+        "guidance": "Time should be represented as HH:MM:SS in GMT. See here for a converter: https://www.worldtimebuddy.com/pst-to-gmt-converter | pattern generalization: {timestamp}",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "collection_time_inc"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "Incubation Start Date",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:start_date_inc",
+        "datatype": "xs:date",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "recommended",
+        "description": "Date the incubation was started. Only relevant for incubation samples.",
+        "guidance": "date should be represented as YYYY-MM-DD | pattern generalization: {timestamp}",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "start_date_inc"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "Incubation Start Time",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:start_time_inc",
+        "datatype": "xs:date",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "recommended",
+        "description": "Time the incubation was started. Only relevant for incubation samples.",
+        "guidance": "Time should be represented as HH:MM:SS GMT | pattern generalization: {timestamp}",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "start_time_inc"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "depth",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:depth",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "recommended",
+        "description": "The vertical distance below local surface, e.g. For sediment or soil samples depth is measured from sediment or soil surface, respectively. Depth can be reported as an interval for subsurface samples.",
+        "guidance": "All depths should be reported in meters | pattern generalization: {float}| {float}-{float}",
+        "examples": "0-0.1 OR 1",
+        "exportField": {
+          "dev": [
+            {
+              "field": "depth"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "sample material processing",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:sample_processing",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "recommended",
+        "description": "A brief description of any processing applied to the sample during or after retrieving the sample from environment, or a link to the relevant protocol(s) performed.",
+        "guidance": "pattern generalization: {text}",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "sample_processing"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "sample collection device",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:sample_collection_dev",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "recommended",
+        "description": "The device used to collect an environmental sample. This field accepts terms listed under environmental sampling device (http://purl.obolibrary.org/obo/ENVO). This field also accepts terms listed under specimen collection device (http://purl.obolibrary.org/obo/GENEPIO_0002094).",
+        "guidance": "Report dimensions and details when applicable | pattern generalization: {termLabel} {[termID]}|{text}",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "sample_collection_dev"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "sample collection method",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:sample_collection_method",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "recommended",
+        "description": "The method employed for collecting the sample.",
+        "guidance": "This can be a citation or description | pattern generalization: {PMID}|{DOI}|{URL}|{text}",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "sample_collection_method"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "Filter Method",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:filter_method",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "recommended",
+        "description": "Type of filter used or how the sample was filteres",
+        "guidance": "pattern generalization: {text}",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "filter_method"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "amount or size of sample collected",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:sample_collected",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "recommended",
+        "description": "The total amount or size (volume (ml), mass (g) or area (m2) ) of sample collected.",
+        "guidance": "This referes to the TOTAL amount of sample collected from the experiment. NOT the amount sent to each institution or collected for a specific analysis. | pattern generalization: {float} {unit}",
+        "examples": "5 grams; 10 mL",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "sample_collected"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "experimental factor- other",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:experimental_factor_other",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "recommended",
+        "description": "Other details about your sample that you feel can't be accurately represented in the available columns.",
+        "guidance": "pattern generalization: {text}",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "experimental_factor_other"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "other treatments",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:other_treatment",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "recommended",
+        "description": "Other treatments applied to your samples that are not applicable to the provided fields",
+        "guidance": "pattern generalization: {text}",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "other_treatment"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "isotope exposure/addition",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:isotope_exposure",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "recommended",
+        "description": "List isotope exposure or addition applied to your sample.",
+        "guidance": "pattern generalization: {termLabel} {[termID]}; {timestamp}",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "isotope_exposure"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "fieldName": "mixs_mod_opt",
+    "children": [
+      {
+        "fieldName": "observed biotic relationship",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:samp_biotic_relationship",
+        "datatype": "select",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Description of relationship(s) between the subject organism and other organism(s) it is associated with. E.g., parasite on species X; mutualist with species Y. The target organism is the subject of the relationship, and the other organism(s) is the object",
+        "guidance": "pattern generalization: enumeration",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "samp_biotic_relationship"
+            }
+          ]
+        },
+        "schema:ItemList": {
+          "commensalism": {},
+          "free living": {},
+          "mutualism": {},
+          "parasitism": {},
+          "symbiotic": {}
+        }
+      },
+      {
+        "fieldName": "relationship to oxygen",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:oxygen_relationship",
+        "datatype": "select",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Is this organism an aerobe, anaerobe? Please note that aerobic and anaerobic are valid descriptors for microbial environments",
+        "guidance": "pattern generalization: enumeration",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "oxygen_relationship"
+            }
+          ]
+        },
+        "schema:ItemList": {
+          "aerobe": {},
+          "anaerobe": {},
+          "facultative": {},
+          "microaerophilic": {},
+          "microanaerobe": {},
+          "obligate aerobe": {},
+          "obligate anaerobe": {}
+        }
+      },
+      {
+        "fieldName": "non-microbial biomass",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:non_microb_biomass",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Amount of biomass; should include the name for the part of biomass measured, e.g.insect, plant, total. Can include multiple measurements separated by ;",
+        "guidance": "pattern generalization: {text};{float} {unit}",
+        "examples": "",
+        "pattern": "\\S*;[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "non_microb_biomass"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "non-microbial biomass method",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:non_microb_biomass_method",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Reference or method used in determining biomass",
+        "guidance": "required if \"non-microbial biomass\" is provided | pattern generalization: {PMID}|{DOI}|{URL}",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "non_microb_biomass_method"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "microbial biomass carbon",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:microbial_biomass_C",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "The part of the organic matter in the soil that constitutes living microorganisms smaller than 5-10 micrometer. If you keep this, you would need to have correction factors used for conversion to the final units",
+        "guidance": "pattern generalization: {float} {unit}",
+        "examples": "",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "microbial_biomass_C"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "microbial biomass carbon method",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:micro_biomass_C_meth",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Reference or method used in determining microbial biomass",
+        "guidance": "required if \"microbial_biomass_C\" is provided | pattern generalization: {PMID}|{DOI}|{URL}",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "micro_biomass_C_meth"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "microbial biomass nitrogen",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:microbial_biomass_N",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "The part of the organic matter in the soil that constitutes living microorganisms smaller than 5-10 micrometer. If you keep this, you would need to have correction factors used for conversion to the final units",
+        "guidance": "pattern generalization: {float} {unit}",
+        "examples": "",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "microbial_biomass_N"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "microbial biomass nitrogen method",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:micro_biomass_N_meth",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Reference or method used in determining microbial biomass nitrogen",
+        "guidance": "required if \"microbial_biomass_N\" is provided | pattern generalization: {PMID}|{DOI}|{URL}",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "micro_biomass_N_meth"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "organic nitrogen method",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:org_nitro_method",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Method used for obtaining organic nitrogen",
+        "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
+        "examples": "required if \"org_nitro_ is provided",
+        "exportField": {
+          "dev": [
+            {
+              "field": "org_nitro_method"
             }
           ]
         }
@@ -376,48 +1559,38 @@ var DATA = [
           ]
         },
         "schema:ItemList": {
-          "badlands": {
-            "ontology_id": "ENVO:00000127"
-          },
+          "badlands": {},
           "cities": {},
           "conifers (e.g. pine,spruce,fir,cypress)": {},
           "crop trees (nuts,fruit,christmas trees,nursery trees)": {},
-          "farmstead": {
-            "ontology_id": "ENVO:00000078"
-          },
-          "gravel": {
-            "ontology_id": "ENVO:01000018"
-          },
+          "farmstead": {},
+          "gravel": {},
+          "hardwoods (e.g. oak,hickory,elm,aspen)": {},
+          "hayland": {},
           "horticultural plants (e.g. tulips)": {},
           "industrial areas": {},
-          "meadows (grasses,alfalfa,fescue,bromegrass,timothy)": {
-            "ontology_id": "ENVO:00000108"
-          },
+          "intermixed hardwood and conifers": {},
+          "marshlands (grass,sedges,rushes)": {},
+          "meadows (grasses,alfalfa,fescue,bromegrass,timothy)": {},
+          "mines/quarries": {},
+          "mudflats": {},
           "oil waste areas": {},
           "pastureland (grasslands used for livestock grazing)": {},
           "permanent snow or ice": {},
           "rainforest (evergreen forest receiving >406 cm annual rainfall)": {},
           "rangeland": {},
           "roads/railroads": {},
-          "rock": {
-            "ontology_id": "ENVO:00001995"
-          },
+          "rock": {},
           "row crops": {},
           "saline seeps": {},
           "salt flats": {},
-          "sand": {
-            "ontology_id": "ENVO:01000017"
-          },
+          "sand": {},
           "shrub crops (blueberries,nursery ornamentals,filberts)": {},
           "shrub land (e.g. mesquite,sage-brush,creosote bush,shrub oak,eucalyptus)": {},
           "small grains": {},
           "successional shrub land (tree saplings,hazels,sumacs,chokecherry,shrub dogwoods,blackberries)": {},
-          "swamp (permanent or semi-permanent water body dominated by woody plants)": {
-            "ontology_id": "ENVO:00000233"
-          },
-          "tropical (e.g. mangrove,palms)": {
-            "ontology_id": "ENVO:01000204"
-          },
+          "swamp (permanent or semi-permanent water body dominated by woody plants)": {},
+          "tropical (e.g. mangrove,palms)": {},
           "tundra (mosses,lichens)": {},
           "vegetable crops": {},
           "vine crops (grapes)": {}
@@ -536,63 +1709,32 @@ var DATA = [
           ]
         },
         "schema:ItemList": {
-          "Acrisols": {
-            "ontology_id": "ENVO:00002234"
-          },
-          "Andosols": {
-            "ontology_id": "ENVO:00002232"
-          },
-          "Arenosols": {
-            "ontology_id": "ENVO:00002229"
-          },
-          "Cambisols": {
-            "ontology_id": "ENVO:00002235"
-          },
-          "Chernozems": {
-            "ontology_id": "ENVO:00002237"
-          },
-          "Ferralsols": {
-            "ontology_id": "ENVO:00002246"
-          },
-          "Fluvisols": {
-            "ontology_id": "ENVO:00002273"
-          },
-          "Gleysols": {
-            "ontology_id": "ENVO:00002244"
-          },
-          "Gypsisols": {
-            "ontology_id": "ENVO:00002245"
-          },
-          "Histosols": {
-            "ontology_id": "ENVO:00002243"
-          },
-          "Kastanozems": {
-            "ontology_id": "ENVO:00002240"
-          },
-          "Luvisols": {
-            "ontology_id": "ENVO:00002248"
-          },
-          "Phaeozems": {
-            "ontology_id": "ENVO:00002249"
-          },
-          "Planosols": {
-            "ontology_id": "ENVO:00002251"
-          },
-          "Podzols": {
-            "ontology_id": "ENVO:00002257"
-          },
-          "Regosols": {
-            "ontology_id": "ENVO:00002256"
-          },
-          "Solonchaks": {
-            "ontology_id": "ENVO:00002252"
-          },
-          "Solonetz": {
-            "ontology_id": "ENVO:00002255"
-          },
-          "Vertisols": {
-            "ontology_id": "ENVO:00002254"
-          }
+          "Acrisols": {},
+          "Andosols": {},
+          "Arenosols": {},
+          "Cambisols": {},
+          "Chernozems": {},
+          "Ferralsols": {},
+          "Fluvisols": {},
+          "Gleysols": {},
+          "Greyzems": {},
+          "Gypsisols": {},
+          "Histosols": {},
+          "Kastanozems": {},
+          "Lithosols": {},
+          "Luvisols": {},
+          "Nitosols": {},
+          "Phaeozems": {},
+          "Planosols": {},
+          "Podzols": {},
+          "Podzoluvisols": {},
+          "Rankers": {},
+          "Regosols": {},
+          "Rendzinas": {},
+          "Solonchaks": {},
+          "Solonetz": {},
+          "Vertisols": {},
+          "Yermosols": {}
         }
       },
       {
@@ -1659,142 +2801,6 @@ var DATA = [
     ]
   },
   {
-    "fieldName": "emsl",
-    "children": [
-      {
-        "fieldName": "EMSL Sample Storage Temperature",
-        "capitalize": "",
-        "ontology_id": "emsl:EMSL_store_temp",
-        "datatype": "xs:decimal",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Temperature at which the sample sent to EMSL should be stored",
-        "guidance": "Enter a temperature in celsius. Numeric portion only. | pattern generalization: {float}",
-        "examples": "-80",
-        "exportField": {
-          "dev": [
-            {
-              "field": "EMSL_store_temp"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "Project ID",
-        "capitalize": "",
-        "ontology_id": "emsl:project_ID",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Proposal IDs or names associated with dataset",
-        "guidance": "pattern generalization: {text}",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "project_ID"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "Replicate Number",
-        "capitalize": "",
-        "ontology_id": "emsl:replicate_number",
-        "datatype": "xs:nonNegativeInteger",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "recommended",
-        "description": "If sending biological replicates, indicate the rep number here.",
-        "guidance": "This will guide staff in ensuring your samples are block & randomized correctly | pattern generalization: {integer}",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "replicate_number"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "sample shipped amount",
-        "capitalize": "",
-        "ontology_id": "emsl:sample_shipped",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "The total amount or size (volume (ml), mass (g) or area (m2) ) of sample sent to EMSL",
-        "guidance": "pattern generalization: {float} {unit}",
-        "examples": "",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
-        "exportField": {
-          "dev": [
-            {
-              "field": "sample_shipped"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "sample type",
-        "capitalize": "",
-        "ontology_id": "emsl:sample_type",
-        "datatype": "select",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Type of sample being submitted",
-        "guidance": "This can vary from 'environmental package' if the sample is an extraction. | pattern generalization: enumeration",
-        "examples": "water extracted soil",
-        "exportField": {
-          "dev": [
-            {
-              "field": "sample_type"
-            }
-          ]
-        },
-        "schema:ItemList": {
-          "soil": {},
-          "water_extract_soil": {}
-        }
-      },
-      {
-        "fieldName": "Number Technical Replicate",
-        "capitalize": "",
-        "ontology_id": "emsl:technical_reps",
-        "datatype": "xs:nonNegativeInteger",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "recommended",
-        "description": "If sending multiple technical replicates of the same sample, indicate how many replicates are being sent",
-        "guidance": "pattern generalization: {integer}",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "technical_reps"
-            }
-          ]
-        }
-      }
-    ]
-  },
-  {
     "fieldName": "environment field",
     "children": [
       {
@@ -2226,1049 +3232,6 @@ var DATA = [
               "field": "experimental_factor"
             }
           ]
-        }
-      }
-    ]
-  },
-  {
-    "fieldName": "jgi_mg",
-    "children": [
-      {
-        "fieldName": "DNA Absorbance 260/280",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_absorb1",
-        "datatype": "xs:decimal",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "260/280 measurement of sample purity",
-        "guidance": "Recommended value is between 1 and 3. | pattern generalization: {float}",
-        "examples": "2.02",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_absorb1"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Absorbance 260/230",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_absorb2",
-        "datatype": "xs:decimal",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "260/230 measurement of sample purity",
-        "guidance": "Recommended value is between 1 and 3. | pattern generalization: {float}",
-        "examples": "2.02",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_absorb2"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Collection Site",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_collect_site",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Provide information on the site your DNA sample was collected from",
-        "guidance": "pattern generalization: {text}",
-        "examples": "untreated pond water",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_collect_site"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Concentration",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_concentration",
-        "datatype": "xs:decimal",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "0.0",
-        "xs:maxInclusive": "2000.0",
-        "requirement": "required",
-        "description": "Must be calculated using a fluorometric method; value >0 and <2000.",
-        "guidance": "Units should be in ng/uL | pattern generalization: {float}",
-        "examples": "100",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_concentration"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Container Type",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_cont_type",
-        "datatype": "select",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "tube or plate (96-well)",
-        "guidance": "pattern generalization: enumeration",
-        "examples": "plate",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_cont_type"
-            }
-          ]
-        },
-        "schema:ItemList": {
-          "plate": {},
-          "tube": {}
-        }
-      },
-      {
-        "fieldName": "DNA Well Number",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_cont_well",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Corner wells must be blank. For partial plates, fill by columns. Leave blank if the sample will be shipped in a tube.",
-        "guidance": "Required when 'plate' is selected for container type | pattern generalization: {text}",
-        "examples": "B2",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_cont_well"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Container Label",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_container_ID",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Must be unique across all tubes and plates, and <20 characters. All samples in a plate should have the same plate label.",
-        "guidance": "pattern generalization: {text}",
-        "examples": "Pond_MT_041618",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_container_ID"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNAse Treatment DNA",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_dnase",
-        "datatype": "select",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Y/N. Note DNAse treatment is required for all RNA samples.",
-        "guidance": "pattern generalization: enumeration",
-        "examples": "No",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_dnase"
-            }
-          ]
-        },
-        "schema:ItemList": {
-          "no": {},
-          "yes": {}
-        }
-      },
-      {
-        "fieldName": "DNA Isolation Method",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_isolate_meth",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Describe the method/protocol/kit used to extract DNA/RNA.",
-        "guidance": "pattern generalization: {text}",
-        "examples": "phenol/chloroform extraction",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_isolate_meth"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Expected Organisms",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_organisms",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "List any organisms known or suspected to grow in co-culture, as well as estimated % of the organism in that culture.",
-        "guidance": "pattern generalization: {text}",
-        "examples": "expected to contain microbes (59%) fungi (30%), viruses (10%), tadpoles (1%)",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_organisms"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Seq Project Contact",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_project_contact",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Prefilled",
-        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
-        "examples": "John Jones",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_project_contact"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Sample ID",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_samp_ID",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Prefilled",
-        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
-        "examples": "187654",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_samp_ID"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Sample Format",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_sample_format",
-        "datatype": "select",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Choose from the following: Pellet, RNAStable, DNAStable, Ethanol, MDA reaction buffer, PBS, TE, Water, Low EDTA TE, 10 mM Tris-HCl",
-        "guidance": "Identify what the DNA sample is suspended in | pattern generalization: enumeration",
-        "examples": "Water",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_sample_format"
-            }
-          ]
-        },
-        "schema:ItemList": {
-          "10 mM Tris-HCl": {},
-          "DNAStable": {},
-          "Ethanol": {},
-          "Low EDTA TE": {},
-          "MDA reaction buffer": {},
-          "PBS": {},
-          "Pellet": {},
-          "RNAStable": {},
-          "TE": {},
-          "Water": {}
-        }
-      },
-      {
-        "fieldName": "DNA Sample Name",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_sample_name",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Give the DNA sample a name that is meaningful to you. Sample names must be unique across all JGI projects and contain ASCII characters only.",
-        "guidance": "pattern generalization: {text}",
-        "examples": "JGI_pond_041618",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_sample_name"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Seq Project ID",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_seq_project",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Prefilled",
-        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
-        "examples": "1191234",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_seq_project"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Seq Project PI",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_seq_project_PI",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Prefilled",
-        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
-        "examples": "Jane Johnson",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_seq_project_PI"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Seq Project Name",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_seq_project_name",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Prefilled",
-        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
-        "examples": "JGI Pond metagenomics",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_seq_project_name"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Volume",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:dna_volume",
-        "datatype": "xs:decimal",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "0.0",
-        "xs:maxInclusive": "1000.0",
-        "requirement": "required",
-        "description": "Value must be >0 and <1000 (values <25 by special permission only).",
-        "guidance": "Units should be in uL | pattern generalization: {float}",
-        "examples": "25",
-        "exportField": {
-          "dev": [
-            {
-              "field": "dna_volume"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "DNA Proposal ID",
-        "capitalize": "",
-        "ontology_id": "jgi_gen:proposal_dna",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Prefilled",
-        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
-        "examples": "504000",
-        "exportField": {
-          "dev": [
-            {
-              "field": "proposal_dna"
-            }
-          ]
-        }
-      }
-    ]
-  },
-  {
-    "fieldName": "mixs_mod_opt",
-    "children": [
-      {
-        "fieldName": "microbial biomass carbon method",
-        "capitalize": "",
-        "ontology_id": "mixs_modified:micro_biomass_C_meth",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Reference or method used in determining microbial biomass",
-        "guidance": "required if \"microbial_biomass_C\" is provided | pattern generalization: {PMID}|{DOI}|{URL}",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "micro_biomass_C_meth"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "microbial biomass nitrogen method",
-        "capitalize": "",
-        "ontology_id": "mixs_modified:micro_biomass_N_meth",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Reference or method used in determining microbial biomass nitrogen",
-        "guidance": "required if \"microbial_biomass_N\" is provided | pattern generalization: {PMID}|{DOI}|{URL}",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "micro_biomass_N_meth"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "microbial biomass carbon",
-        "capitalize": "",
-        "ontology_id": "mixs_modified:microbial_biomass_C",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "The part of the organic matter in the soil that constitutes living microorganisms smaller than 5-10 micrometer. If you keep this, you would need to have correction factors used for conversion to the final units",
-        "guidance": "pattern generalization: {float} {unit}",
-        "examples": "",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
-        "exportField": {
-          "dev": [
-            {
-              "field": "microbial_biomass_C"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "microbial biomass nitrogen",
-        "capitalize": "",
-        "ontology_id": "mixs_modified:microbial_biomass_N",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "The part of the organic matter in the soil that constitutes living microorganisms smaller than 5-10 micrometer. If you keep this, you would need to have correction factors used for conversion to the final units",
-        "guidance": "pattern generalization: {float} {unit}",
-        "examples": "",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
-        "exportField": {
-          "dev": [
-            {
-              "field": "microbial_biomass_N"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "non-microbial biomass",
-        "capitalize": "",
-        "ontology_id": "mixs_modified:non_microb_biomass",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Amount of biomass; should include the name for the part of biomass measured, e.g.insect, plant, total. Can include multiple measurements separated by ;",
-        "guidance": "pattern generalization: {text};{float} {unit}",
-        "examples": "",
-        "pattern": "\\S*;[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
-        "exportField": {
-          "dev": [
-            {
-              "field": "non_microb_biomass"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "non-microbial biomass method",
-        "capitalize": "",
-        "ontology_id": "mixs_modified:non_microb_biomass_method",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Reference or method used in determining biomass",
-        "guidance": "required if \"non-microbial biomass\" is provided | pattern generalization: {PMID}|{DOI}|{URL}",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "non_microb_biomass_method"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "organic nitrogen method",
-        "capitalize": "",
-        "ontology_id": "mixs_modified:org_nitro_method",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Method used for obtaining organic nitrogen",
-        "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
-        "examples": "required if \"org_nitro_ is provided",
-        "exportField": {
-          "dev": [
-            {
-              "field": "org_nitro_method"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "relationship to oxygen",
-        "capitalize": "",
-        "ontology_id": "mixs_modified:oxygen_relationship",
-        "datatype": "select",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Is this organism an aerobe, anaerobe? Please note that aerobic and anaerobic are valid descriptors for microbial environments",
-        "guidance": "pattern generalization: enumeration",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "oxygen_relationship"
-            }
-          ]
-        },
-        "schema:ItemList": {
-          "aerobe": {},
-          "anaerobe": {},
-          "facultative": {},
-          "microaerophilic": {},
-          "microanaerobe": {},
-          "obligate aerobe": {},
-          "obligate anaerobe": {}
-        }
-      },
-      {
-        "fieldName": "observed biotic relationship",
-        "capitalize": "",
-        "ontology_id": "mixs_modified:samp_biotic_relationship",
-        "datatype": "select",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Description of relationship(s) between the subject organism and other organism(s) it is associated with. E.g., parasite on species X; mutualist with species Y. The target organism is the subject of the relationship, and the other organism(s) is the object",
-        "guidance": "pattern generalization: enumeration",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "samp_biotic_relationship"
-            }
-          ]
-        },
-        "schema:ItemList": {
-          "commensalism": {},
-          "free living": {},
-          "mutualism": {},
-          "parasitism": {},
-          "symbiotic": {}
-        }
-      }
-    ]
-  },
-  {
-    "fieldName": "mixs_mod_rec",
-    "children": [
-      {
-        "fieldName": "Incubation Collection Date",
-        "capitalize": "",
-        "ontology_id": "mixs_modified:collection_date_inc",
-        "datatype": "xs:date",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "recommended",
-        "description": "Date the incubation was harvested/collected/ended. Only relevant for incubation samples.",
-        "guidance": "date should be represented as YYYY-MM-DD. See here for a converter: https://www.worldtimebuddy.com/pst-to-gmt-converter | pattern generalization: {timestamp}",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "collection_date_inc"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "collection time",
-        "capitalize": "",
-        "ontology_id": "mixs_modified:collection_time",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "recommended",
-        "description": "The time of sampling, either as an instance (single point) or interval.",
-        "guidance": "Time should be formatted as HH:MM:SS | pattern generalization: HH:MM:SS",
-        "examples": "Time should be reported in GMT (LINK)",
-        "exportField": {
-          "dev": [
-            {
-              "field": "collection_time"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "Incubation Collection Time",
-        "capitalize": "",
-        "ontology_id": "mixs_modified:collection_time_inc",
-        "datatype": "xs:date",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "recommended",
-        "description": "Time the incubation was harvested/collected/ended. Only relevant for incubation samples.",
-        "guidance": "Time should be represented as HH:MM:SS in GMT. See here for a converter: https://www.worldtimebuddy.com/pst-to-gmt-converter | pattern generalization: {timestamp}",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "collection_time_inc"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "depth",
-        "capitalize": "",
-        "ontology_id": "mixs_modified:depth",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "recommended",
-        "description": "The vertical distance below local surface, e.g. For sediment or soil samples depth is measured from sediment or soil surface, respectively. Depth can be reported as an interval for subsurface samples.",
-        "guidance": "All depths should be reported in meters | pattern generalization: {float}| {float}-{float}",
-        "examples": "0-0.1 OR 1",
-        "exportField": {
-          "dev": [
-            {
-              "field": "depth"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "experimental factor- other",
-        "capitalize": "",
-        "ontology_id": "mixs_modified:experimental_factor_other",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "recommended",
-        "description": "Other details about your sample that you feel can't be accurately represented in the available columns.",
-        "guidance": "pattern generalization: {text}",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "experimental_factor_other"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "Filter Method",
-        "capitalize": "",
-        "ontology_id": "mixs_modified:filter_method",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "recommended",
-        "description": "Type of filter used or how the sample was filteres",
-        "guidance": "pattern generalization: {text}",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "filter_method"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "isotope exposure/addition",
-        "capitalize": "",
-        "ontology_id": "mixs_modified:isotope_exposure",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "recommended",
-        "description": "List isotope exposure or addition applied to your sample.",
-        "guidance": "pattern generalization: {termLabel} {[termID]}; {timestamp}",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "isotope_exposure"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "other treatments",
-        "capitalize": "",
-        "ontology_id": "mixs_modified:other_treatment",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "recommended",
-        "description": "Other treatments applied to your samples that are not applicable to the provided fields",
-        "guidance": "pattern generalization: {text}",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "other_treatment"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "amount or size of sample collected",
-        "capitalize": "",
-        "ontology_id": "mixs_modified:sample_collected",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "recommended",
-        "description": "The total amount or size (volume (ml), mass (g) or area (m2) ) of sample collected.",
-        "guidance": "This referes to the TOTAL amount of sample collected from the experiment. NOT the amount sent to each institution or collected for a specific analysis. | pattern generalization: {float} {unit}",
-        "examples": "5 grams; 10 mL",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
-        "exportField": {
-          "dev": [
-            {
-              "field": "sample_collected"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "sample collection device",
-        "capitalize": "",
-        "ontology_id": "mixs_modified:sample_collection_dev",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "recommended",
-        "description": "The device used to collect an environmental sample. This field accepts terms listed under environmental sampling device (http://purl.obolibrary.org/obo/ENVO). This field also accepts terms listed under specimen collection device (http://purl.obolibrary.org/obo/GENEPIO_0002094).",
-        "guidance": "Report dimensions and details when applicable | pattern generalization: {termLabel} {[termID]}|{text}",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "sample_collection_dev"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "sample collection method",
-        "capitalize": "",
-        "ontology_id": "mixs_modified:sample_collection_method",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "recommended",
-        "description": "The method employed for collecting the sample.",
-        "guidance": "This can be a citation or description | pattern generalization: {PMID}|{DOI}|{URL}|{text}",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "sample_collection_method"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "sample material processing",
-        "capitalize": "",
-        "ontology_id": "mixs_modified:sample_processing",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "recommended",
-        "description": "A brief description of any processing applied to the sample during or after retrieving the sample from environment, or a link to the relevant protocol(s) performed.",
-        "guidance": "pattern generalization: {text}",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "sample_processing"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "Incubation Start Date",
-        "capitalize": "",
-        "ontology_id": "mixs_modified:start_date_inc",
-        "datatype": "xs:date",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "recommended",
-        "description": "Date the incubation was started. Only relevant for incubation samples.",
-        "guidance": "date should be represented as YYYY-MM-DD | pattern generalization: {timestamp}",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "start_date_inc"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "Incubation Start Time",
-        "capitalize": "",
-        "ontology_id": "mixs_modified:start_time_inc",
-        "datatype": "xs:date",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "recommended",
-        "description": "Time the incubation was started. Only relevant for incubation samples.",
-        "guidance": "Time should be represented as HH:MM:SS GMT | pattern generalization: {timestamp}",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "start_time_inc"
-            }
-          ]
-        }
-      }
-    ]
-  },
-  {
-    "fieldName": "mixs_mod_req",
-    "children": [
-      {
-        "fieldName": "Collection Date",
-        "capitalize": "",
-        "ontology_id": "mixs_modified:collection_date",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "The date of sampling, either as an instance (single point) or interval. ",
-        "guidance": "Date should be formatted as YYYY-MM-DD | pattern generalization: YYYY-MM-DD",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "collection_date"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "growth facility",
-        "capitalize": "",
-        "ontology_id": "mixs_modified:growth_facility",
-        "datatype": "select",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Type of facility/location where the sample was harvested; controlled vocabulary: growth chamber, open top chamber, glasshouse, experimental garden, field.",
-        "guidance": "pattern generalization: enumeration",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "growth_facility"
-            }
-          ]
-        },
-        "schema:ItemList": {
-          "experimental_garden": {},
-          "field": {},
-          "field_incubation": {},
-          "glasshouse": {},
-          "greenhouse": {},
-          "growth_chamber": {},
-          "lab_incubation": {},
-          "open_top_chamber": {},
-          "other": {}
-        }
-      },
-      {
-        "fieldName": "pH",
-        "capitalize": "",
-        "ontology_id": "mixs_modified:pH",
-        "datatype": "xs:decimal",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "0.0",
-        "xs:maxInclusive": "14.0",
-        "requirement": "recommended",
-        "description": "Ph measurement of the sample, or liquid portion of sample, or aqueous phase of the fluid",
-        "guidance": "Expected value: measurement value | pattern generalization: {float}",
-        "examples": "7.2",
-        "exportField": {
-          "dev": [
-            {
-              "field": "pH"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "storage conditions",
-        "capitalize": "",
-        "ontology_id": "mixs_modified:storage_condt",
-        "datatype": "select",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Explain how the soil sample is stored (fresh/frozen/other).",
-        "guidance": "pattern generalization: enumeration",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "storage_condt"
-            }
-          ]
-        },
-        "schema:ItemList": {
-          "fresh": {},
-          "frozen": {},
-          "lyophilized": {},
-          "other": {}
         }
       }
     ]

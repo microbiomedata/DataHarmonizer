@@ -11,6 +11,8 @@ from sheet2dataharmonizer.converters.sheet2linkml import Sheet2LinkML
 
 # from linkml_runtime.linkml_model import Annotation
 
+import sheet2dataharmonizer.model_sections as ms
+
 logger = logging.getLogger(__name__)
 
 
@@ -391,12 +393,27 @@ class LinkML2DataHarmonizer:
             selected_class: str,
             default_section: str,
     ):
-        # sort these individually
+        # column ordering
         tl_temp_frame = pd.DataFrame(term_list)
         tltf_sorted = tl_temp_frame.groupby("parent class").apply(
             pd.DataFrame.sort_values, "column_number"
         )
         term_list = tltf_sorted.to_dict(orient='records')
+
+        # section ordering
+        # todo: display section titles not names
+        sl_temp_frame = pd.DataFrame(section_list)
+        # todo this should already be IN the schema!
+        section_schema = ms.build_section_schema()
+        section_frame = ms.build_section_table(section_schema)
+        sections_with_orders = sl_temp_frame.merge(right=section_frame, how="left", left_on="label", right_on="section")
+        # todo: we are generating placeholder section names for mixs and nmdc as-is terms
+        # need to assign the annotations during schema creation
+        sections_with_orders['order'] = sections_with_orders['order'].fillna(999)
+        sections_with_orders['order'] = sections_with_orders['order'].astype(int)
+        sections_with_orders.sort_values('order', inplace=True)
+        section_list = sections_with_orders.to_dict(orient='records')
+
         final_list = section_list + term_list + pv_list
         needs_reordering = pd.DataFrame(final_list)
 

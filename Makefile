@@ -106,7 +106,8 @@ target/soil_biosample_modular_annotated.yaml: target/soil_biosample_modular.yaml
 		--max_cosine 0.1 > $@ 2>> target/annotation.log
 	rm -rf target/temp*yaml
 
-target/data.tsv: target/soil_biosample_modular_annotated.yaml
+#target/soil_biosample_modular_annotated.yaml
+target/data.tsv: target/soil_biosample_modular.yaml
 	poetry run linkml2dataharmonizer --model_file $< --selected_class soil_biosample 2> target/linkml_to_dh_light.log
 
 target/soil_curated_terms.tsv:
