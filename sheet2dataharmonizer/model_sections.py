@@ -57,10 +57,10 @@ def build_section_table(section_schema):
     for i in dh_sections:
         section_class = section_view.get_class(i)
         section_order = section_class.annotations['dh_sect_order']['value']
-        table_rows.append({"section": i, "order": section_order})
+        section_title = section_class.title
+        table_rows.append({"section": i, "order": section_order, "title": section_title})
     section_frame = pd.DataFrame(table_rows)
     return section_frame
 
-
-if __name__ == '__main__':
-    model_sections()
+    if __name__ == '__main__':
+        model_sections()
