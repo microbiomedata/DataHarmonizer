@@ -31,7 +31,7 @@ click_log.basic_config(logger)
 @click.option("--default_section", default="default", show_default=True)
 @click.option("--default_source", default="", show_default=True)
 @click.option("--default_capitalize", default="", show_default=True)
-@click.option("--default_data_status", default="default", show_default=True)
+@click.option("--default_data_status", default="", show_default=True)
 @click.option(
     "--output_file", type=click.Path(), default="target/data.tsv", show_default=True
 )
@@ -228,6 +228,20 @@ def _inject_supplementary(
     default="omit",
     show_default=True,
 )
+@click.option(
+    "--mixs_path",
+    default="mixs-source/model/schema/mixs.yaml",
+    show_default=True,
+    help="location of MIxS LinkML file.",
+    type=click.Path(exists=True),
+)
+@click.option(
+    "--nmdc_path",
+    default="nmdc-schema/src/schema/nmdc.yaml",
+    show_default=True,
+    help="location of NMDC schema LinkML file.",
+    type=click.Path(exists=True),
+)
 def sheet2linkml(
     constructed_schema_name,
     constructed_schema_id,
@@ -237,6 +251,8 @@ def sheet2linkml(
     env_package,
     inc_emsl,
     jgi,
+    mixs_path,
+    nmdc_path,
 ):
     additional_prefixes = {
         "prov": "http://www.w3.org/ns/prov#",
@@ -255,7 +271,7 @@ def sheet2linkml(
 
     tasks = {
         "nmdc": {
-            "yaml": "target/nmdc_generated_no_imports.yaml",
+            "yaml": nmdc_path,
             "title": "nmdc_biosample_slots",
             "focus_class": "biosample",
             "query": """
@@ -269,7 +285,7 @@ def sheet2linkml(
                     """,
         },
         "mixs": {
-            "yaml": "target/mixs_generated_no_imports.yaml",
+            "yaml": mixs_path,
             "title": "mixs_packages_x_slots",
             "focus_class": env_package,
             "query": f"""

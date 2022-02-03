@@ -2,7 +2,8 @@
 
 all: docs/template/dev/data.tsv target/mixs_package_classes.tsv target/soil_biosample_regex_insight.tsv
 
-setup: clean post_clone_submodule_steps target/string_serialization_check.txt target/string_serialization_expected_failure.txt test
+#post_clone_submodule_steps
+setup: clean  target/string_serialization_check.txt target/string_serialization_expected_failure.txt test
 	# this sets the poetry environment, not the poetry application
 	# setting up the poetry application is the user's responsibility
 	# https://python-poetry.org/docs/#installation
@@ -18,11 +19,16 @@ test:
 	# avoiding tests in submodules
 	poetry run pytest -rP tests/ | tee target/test.log
 
-# turbomam/mixs-source
+# turbomam/mixs-source (compared to cmungal fork)
 #   moves "patterns" to string serializastions
-#   removes some comments
-#   still having trouble instantiating annotations for what used to be comments about Occurrence, "This field is used..."
+#   moves some comments to annotations
+#   doesn't create any comments about Occurrence, "This field is used..."
+# error from gen-yaml?
 # yaml.representer.RepresenterError: ('cannot represent an object', JsonObj(Occurrence=Annotation(tag='Occurrence', value='', extensions={}, annotations={})))
+# LOOKS LIKE THESE post_clone_submodule_steps should not be run routinely
+# just want to stay in the main branch of mixs and nmdc schema
+# BUT THESE STEPS DO HAVE TO BE RUN ONE AFTER CLONING THE DH REPO
+# https://stackoverflow.com/questions/1777854/how-can-i-specify-a-branch-tag-when-adding-a-git-submodule
 post_clone_submodule_steps:
 	git submodule init
 	git submodule update
@@ -47,32 +53,38 @@ target/mixs_package_classes.tsv:
 	poetry run mixs_package_map \
 		--model_file mixs-source/model/schema/mixs.yaml --output_file $@
 
-target/mixs_generated.yaml: setup
-	# passing these schemas through the yaml generator ensures(?) prefixed term ids
-	#   and consolidates the model into a single file
-	poetry run gen-yaml mixs-source/model/schema/mixs.yaml > $@ 2>> target/yaml_generation.log
+#target/mixs_generated.yaml: setup
+#	# passing these schemas through the yaml generator ensures(?) prefixed term ids
+#	#   and consolidates the model into a single file
+#	poetry run gen-yaml mixs-source/model/schema/mixs.yaml > $@ 2>> target/yaml_generation.log
+#
+#target/mixs_generated_no_imports.yaml: target/mixs_generated.yaml
+#	# deleting the imports block since we've already generated complete models
+#	#   and SchemaView won't find the imports
+#	yq eval 'del(.imports)' $< > $@
+#
+#target/nmdc_generated.yaml: setup
+#	poetry run gen-yaml nmdc-schema/src/schema/nmdc.yaml > $@  2>> target/yaml_generation.log
+#
+#target/nmdc_generated_no_imports.yaml: target/nmdc_generated.yaml
+#	yq eval 'del(.imports)' $< > $@
 
-target/mixs_generated_no_imports.yaml: target/mixs_generated.yaml
-	# deleting the imports block since we've already generated complete models
-	#   and SchemaView won't find the imports
-	yq eval 'del(.imports)' $< > $@
-
-target/nmdc_generated.yaml: setup
-	poetry run gen-yaml nmdc-schema/src/schema/nmdc.yaml > $@  2>> target/yaml_generation.log
-
-target/nmdc_generated_no_imports.yaml: target/nmdc_generated.yaml
-	yq eval 'del(.imports)' $< > $@
-
-target/soil_biosample_modular.yaml: target/mixs_generated_no_imports.yaml target/nmdc_generated_no_imports.yaml
+# target/mixs_generated_no_imports.yaml target/nmdc_generated_no_imports.yaml
+target/soil_biosample_modular.yaml: setup
 	# combine or mint terms according to the Soil-NMDC-Template_Compiled Google Sheet
 	#   and consulting the generated models above
-	poetry run sheet2linkml --env_package soil --inc_emsl --jgi metagenomics > $@
+	poetry run sheet2linkml \
+		--env_package soil \
+		--inc_emsl \
+		--jgi metagenomics \
+		--mixs_path mixs-source/model/schema/mixs.yaml \
+		--nmdc_path nmdc-schema/src/schema/nmdc.yaml > $@
 	# test for LinkML schema validity
 	# todo see: mangled name already exists #92
-	yq eval 'del(.classes.["quantity value"].attributes)' $@ > target/soil_biosample_modular_no_redundant_mangling.yaml
-	# todo this nis failing due to the annotations created above by combine_schemas (specifically inject_supplementary)
-	poetry run gen-yaml \
-		target/soil_biosample_modular_no_redundant_mangling.yaml > target/soil_biosample_modular_no_redundant_mangling_generated.yaml 2> target/soil_biosample_modular_no_redundant_mangling_generated.log
+#	yq eval 'del(.classes.["quantity value"].attributes)' $@ > target/soil_biosample_modular_no_redundant_mangling.yaml
+#	# todo this nis failing due to the annotations created above by combine_schemas (specifically inject_supplementary)
+#	poetry run gen-yaml \
+#		target/soil_biosample_modular_no_redundant_mangling.yaml > target/soil_biosample_modular_no_redundant_mangling_generated.yaml 2> target/soil_biosample_modular_no_redundant_mangling_generated.log
 
 target/soil_biosample_modular_annotated.yaml: target/soil_biosample_modular.yaml
 	# find EnvO terms to account for FAO soil classes at least
