@@ -1,3 +1,4 @@
+import logging
 from typing import Dict, Any, List
 
 import pygsheets
@@ -9,10 +10,13 @@ from linkml_runtime.linkml_model import (
     Prefix,
     SlotDefinition,
     Example,
+    Annotation
 )
 from linkml_runtime.utils.schemaview import SchemaView
 
 from pandasql import sqldf
+
+logger = logging.getLogger(__name__)
 
 
 class Sheet2LinkML:
@@ -21,7 +25,7 @@ class Sheet2LinkML:
 
     @staticmethod
     def get_gsheet_frame(
-        gauth_file_path: str, sheet_id: str, title: str
+            gauth_file_path: str, sheet_id: str, title: str
     ) -> pd.DataFrame:
         gc = pygsheets.authorize(client_secret=gauth_file_path)
         gsheet = gc.open_by_key(sheet_id)
@@ -56,7 +60,7 @@ class Sheet2LinkML:
 
     @staticmethod
     def get_slot_provenance(
-        slot_list: List[str], helped_schema: Dict[str, List[str]]
+            slot_list: List[str], helped_schema: Dict[str, List[str]]
     ) -> Dict[str, List[str]]:
         provenance_dict = {"class_induced": [], "schema_other": [], "non_schema": []}
         for current_slot in slot_list:
@@ -71,10 +75,10 @@ class Sheet2LinkML:
 
     @staticmethod
     def construct_schema(
-        schema_name: str,
-        schema_id: str,
-        class_name: str,
-        prefix_dict: Dict[str, str],
+            schema_name: str,
+            schema_id: str,
+            class_name: str,
+            prefix_dict: Dict[str, str],
     ) -> SchemaDefinition:
         constructed_schema = SchemaDefinition(name=schema_name, id=schema_id)
         constructed_class = ClassDefinition(name=class_name)
@@ -85,7 +89,7 @@ class Sheet2LinkML:
         return constructed_schema
 
     def modular_exhaust_class(
-        self, dict_to_exhaust: Dict[str, str], helped_schema: Dict[str, str]
+            self, dict_to_exhaust: Dict[str, str], helped_schema: Dict[str, str]
     ) -> Dict[str, str]:
         all_slots_dict = helped_schema["schema_slot_dict"]
         all_class_names = helped_schema["schema_class_names"]
@@ -93,8 +97,8 @@ class Sheet2LinkML:
         all_type_names = helped_schema["schema_type_names"]
 
         if (
-            len(dict_to_exhaust["pending_ranges"]) == 0
-            and len(dict_to_exhaust["pending_slots"]) == 0
+                len(dict_to_exhaust["pending_ranges"]) == 0
+                and len(dict_to_exhaust["pending_slots"]) == 0
         ):
             mvp = helped_schema["view"].schema.prefixes
             mvs = helped_schema["view"].all_subsets()
@@ -118,15 +122,15 @@ class Sheet2LinkML:
                     if v.range is not None:
                         usage_ranges.add(v.range)
             dict_to_exhaust["pending_ranges"] = (
-                dict_to_exhaust["pending_ranges"] - dict_to_exhaust["exhausted_ranges"]
+                    dict_to_exhaust["pending_ranges"] - dict_to_exhaust["exhausted_ranges"]
             )
             for cp in class_parents:
                 if cp not in dict_to_exhaust["exhausted_ranges"]:
                     dict_to_exhaust["pending_ranges"].add(cp)
             for ur in usage_ranges:
                 if (
-                    ur in all_class_names
-                    and ur not in dict_to_exhaust["exhausted_ranges"]
+                        ur in all_class_names
+                        and ur not in dict_to_exhaust["exhausted_ranges"]
                 ):
                     dict_to_exhaust["pending_ranges"].add(ur)
                 if ur in all_type_names:
@@ -150,8 +154,8 @@ class Sheet2LinkML:
                             dict_to_exhaust["exhausted_enums"].add(current_slot_range)
                         if current_slot_range in all_class_names:
                             if (
-                                current_slot_range
-                                not in dict_to_exhaust["exhausted_ranges"]
+                                    current_slot_range
+                                    not in dict_to_exhaust["exhausted_ranges"]
                             ):
                                 dict_to_exhaust["pending_ranges"].add(
                                     current_slot_range
@@ -161,14 +165,14 @@ class Sheet2LinkML:
                     current_slot_domain = current_slot_def.domain
                     if current_slot_domain is not None:
                         if (
-                            current_slot_domain
-                            not in dict_to_exhaust["exhausted_ranges"]
+                                current_slot_domain
+                                not in dict_to_exhaust["exhausted_ranges"]
                         ):
                             dict_to_exhaust["pending_ranges"].add(current_slot_domain)
 
                     dict_to_exhaust["exhausted_slots"].add(ps)
             dict_to_exhaust["pending_slots"] = (
-                dict_to_exhaust["pending_slots"] - dict_to_exhaust["exhausted_slots"]
+                    dict_to_exhaust["pending_slots"] - dict_to_exhaust["exhausted_slots"]
             )
             for parent in isas:
                 dict_to_exhaust["pending_slots"].add(parent)
@@ -176,12 +180,13 @@ class Sheet2LinkML:
             return self.modular_exhaust_class(dict_to_exhaust, helped_schema)
 
     def wrapper(
-        self,
-        schema_alias: str,
-        selected_class: str,
-        selected_slots: List[str],
-        dest_schema: SchemaDefinition,
-        dest_class: str,
+            self,
+            schema_alias: str,
+            selected_class: str,
+            selected_slots: List[str],
+            dest_schema: SchemaDefinition,
+            dest_class: str,
+            col_sects_orders: pd.DataFrame
     ) -> SchemaDefinition:
         helped = self.make_view_helper(schema_alias, selected_class)
 
@@ -218,6 +223,14 @@ class Sheet2LinkML:
 
         # don't forget about possibility of adding induced slots as slot usages
         for i in selected_slots:
+            slot_sect = col_sects_orders.loc[col_sects_orders['slot'].eq(i), 'section'].squeeze()
+            slot_ord = col_sects_orders.loc[col_sects_orders['slot'].eq(i), 'column_order'].squeeze()
+            # logger.warning(i)
+            sect_ann = Annotation(tag="dh:section_name", value=slot_sect)
+            dest_schema.slots[i].annotations["dh:section_name"] = sect_ann
+            ord_ann = Annotation(tag="dh:column_number", value=slot_ord)
+            dest_schema.slots[i].annotations["dh:column_number"] = ord_ann
+            # logger.warning(dest_schema.slots[i])
             dest_schema.classes[dest_class].slots.append(i)
 
         for k, v in exhaustion_res["prefixes"].items():
@@ -230,7 +243,7 @@ class Sheet2LinkML:
 
     @staticmethod
     def subset_slots_from_sheet(
-        secret: str, id_of_sheet: str, sheet_title: str, query: str
+            secret: str, id_of_sheet: str, sheet_title: str, query: str
     ) -> List[str]:
         gsheet_frame = Sheet2LinkML.get_gsheet_frame(secret, id_of_sheet, sheet_title)
         # Local variable 'gsheet_frame' value is not used

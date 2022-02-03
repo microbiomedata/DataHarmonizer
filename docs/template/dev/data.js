@@ -122,6 +122,116 @@ var DATA = [
     ]
   },
   {
+    "fieldName": "nmdc_biosamp_gold",
+    "children": [
+      {
+        "fieldName": "ecosystem",
+        "capitalize": "",
+        "ontology_id": "",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "An ecosystem is a combination of a physical environment (abiotic factors) and all the organisms (biotic factors) that interact with this environment. Ecosystem is in position 1/5 in a GOLD path.",
+        "guidance": "The abiotic factors play a profound role on the type and composition of organisms in a given environment. The GOLD Ecosystem at the top of the five-level classification system is aimed at capturing the broader environment from which an organism or environmental sample is collected. The three broad groups under Ecosystem are Environmental, Host-associated, and Engineered. They represent samples collected from a natural environment or from another organism or from engineered environments like bioreactors respectively.",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "ecosystem"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "ecosystem_category",
+        "capitalize": "",
+        "ontology_id": "",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Ecosystem categories represent divisions within the ecosystem based on specific characteristics of the environment from where an organism or sample is isolated. Ecosystem category is in position 2/5 in a GOLD path.",
+        "guidance": "The Environmental ecosystem (for example) is divided into Air, Aquatic and Terrestrial. Ecosystem categories for Host-associated samples can be individual hosts or phyla and for engineered samples it may be manipulated environments like bioreactors, solid waste etc.",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "ecosystem_category"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "ecosystem_type",
+        "capitalize": "",
+        "ontology_id": "",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Ecosystem types represent things having common characteristics within the Ecosystem Category. These common characteristics based grouping is still broad but specific to the characteristics of a given environment. Ecosystem type is in position 3/5 in a GOLD path.",
+        "guidance": "The Aquatic ecosystem category (for example) may have ecosystem types like Marine or Thermal springs etc. Ecosystem category Air may have Indoor air or Outdoor air as different Ecosystem Types. In the case of Host-associated samples, ecosystem type can represent Respiratory system, Digestive system, Roots etc.",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "ecosystem_type"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "ecosystem_subtype",
+        "capitalize": "",
+        "ontology_id": "",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Ecosystem subtypes represent further subdivision of Ecosystem types into more distinct subtypes. Ecosystem subtype is in position 4/5 in a GOLD path.",
+        "guidance": "Ecosystem Type Marine (Environmental -> Aquatic -> Marine) is further divided (for example) into Intertidal zone, Coastal, Pelagic, Intertidal zone etc. in the Ecosystem subtype category.",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "ecosystem_subtype"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "specific_ecosystem",
+        "capitalize": "",
+        "ontology_id": "",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Specific ecosystems represent specific features of the environment like aphotic zone in an ocean or gastric mucosa within a host digestive system. Specific ecosystem is in position 5/5 in a GOLD path.",
+        "guidance": "Specific ecosystems help to define samples based on very specific characteristics of an environment under the five-level classification system.",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "specific_ecosystem"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
     "fieldName": "emsl",
     "children": [
       {
@@ -763,24 +873,281 @@ var DATA = [
             }
           ]
         }
-      },
+      }
+    ]
+  },
+  {
+    "fieldName": "mixs_asis_req",
+    "children": [
       {
-        "fieldName": "pH",
+        "fieldName": "broad-scale environmental context",
         "capitalize": "",
-        "ontology_id": "mixs_modified:pH",
-        "datatype": "xs:decimal",
+        "ontology_id": "MIXS:0000012",
+        "datatype": "select",
         "source": "",
         "dataStatus": null,
-        "xs:minInclusive": "0.0",
-        "xs:maxInclusive": "14.0",
-        "requirement": "recommended",
-        "description": "Ph measurement of the sample, or liquid portion of sample, or aqueous phase of the fluid",
-        "guidance": "Expected value: measurement value | pattern generalization: {float}",
-        "examples": "7.2",
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Report the major environmental system the sample or specimen came from. The system(s) identified should have a coarse spatial grain, to provide the general environmental context of where the sampling was done (e.g. in the desert or a rainforest). We recommend using subclasses of EnvO\u2019s biome class:  http://purl.obolibrary.org/obo/ENVO_00000428. EnvO documentation about how to use the field: https://github.com/EnvironmentOntology/envo/wiki/Using-ENVO-with-MIxS",
+        "guidance": "pattern generalization: {termLabel} {[termID]}",
+        "examples": "oceanic epipelagic zone biome [ENVO:01000033] for annotating a water sample from the photic zone in middle of the Atlantic Ocean",
         "exportField": {
           "dev": [
             {
-              "field": "pH"
+              "field": "env_broad_scale"
+            }
+          ]
+        },
+        "schema:ItemList": {
+          "alpine biome [ENVO:01001835]": {
+            "ontology_id": "ENVO:01001835"
+          },
+          "__alpine tundra biome [ENVO:01001505]": {
+            "ontology_id": "ENVO:01001505"
+          },
+          "anthropogenic terrestrial biome [ENVO:01000219]": {
+            "ontology_id": "ENVO:01000219"
+          },
+          "__rangeland biome [ENVO:01000247]": {
+            "ontology_id": "ENVO:01000247"
+          },
+          "__village biome [ENVO:01000246]": {
+            "ontology_id": "ENVO:01000246"
+          },
+          "arid biome [ENVO:01001838]": {
+            "ontology_id": "ENVO:01001838"
+          },
+          "mangrove biome [ENVO:01000181]": {
+            "ontology_id": "ENVO:01000181"
+          },
+          "montane biome [ENVO:01001836]": {
+            "ontology_id": "ENVO:01001836"
+          },
+          "__montane savanna biome [ENVO:01000223]": {
+            "ontology_id": "ENVO:01000223"
+          },
+          "__montane shrubland biome [ENVO:01000216]": {
+            "ontology_id": "ENVO:01000216"
+          },
+          "polar biome [ENVO:01000339]": {
+            "ontology_id": "ENVO:01000339"
+          },
+          "shrubland biome [ENVO:01000176]": {
+            "ontology_id": "ENVO:01000176"
+          },
+          "__subtropical shrubland biome [ENVO:01000213]": {
+            "ontology_id": "ENVO:01000213"
+          },
+          "____mediterranean shrubland biome [ENVO:01000217]": {
+            "ontology_id": "ENVO:01000217"
+          },
+          "__temperate shrubland biome [ENVO:01000215]": {
+            "ontology_id": "ENVO:01000215"
+          },
+          "__tropical shrubland biome [ENVO:01000214]": {
+            "ontology_id": "ENVO:01000214"
+          },
+          "subalpine biome [ENVO:01001837]": {
+            "ontology_id": "ENVO:01001837"
+          },
+          "subpolar biome [ENVO:01001834]": {
+            "ontology_id": "ENVO:01001834"
+          },
+          "subtropical biome [ENVO:01001832]": {
+            "ontology_id": "ENVO:01001832"
+          },
+          "__mediterranean biome [ENVO:01001833]": {
+            "ontology_id": "ENVO:01001833"
+          },
+          "____mediterranean savanna biome [ENVO:01000229]": {
+            "ontology_id": "ENVO:01000229"
+          },
+          "____mediterranean woodland biome [ENVO:01000208]": {
+            "ontology_id": "ENVO:01000208"
+          },
+          "__subtropical savanna biome [ENVO:01000187]": {
+            "ontology_id": "ENVO:01000187"
+          },
+          "__subtropical woodland biome [ENVO:01000222]": {
+            "ontology_id": "ENVO:01000222"
+          },
+          "temperate biome [ENVO:01001831]": {
+            "ontology_id": "ENVO:01001831"
+          },
+          "__temperate savanna biome [ENVO:01000189]": {
+            "ontology_id": "ENVO:01000189"
+          },
+          "__temperate woodland biome [ENVO:01000221]": {
+            "ontology_id": "ENVO:01000221"
+          },
+          "tropical biome [ENVO:01001830]": {
+            "ontology_id": "ENVO:01001830"
+          },
+          "__tropical savanna biome [ENVO:01000188]": {
+            "ontology_id": "ENVO:01000188"
+          },
+          "__tropical woodland biome [ENVO:01000220]": {
+            "ontology_id": "ENVO:01000220"
+          },
+          "tundra biome [ENVO:01000180]": {
+            "ontology_id": "ENVO:01000180"
+          },
+          "urban biome [ENVO:01000249]": {
+            "ontology_id": "ENVO:01000249"
+          },
+          "woodland biome [ENVO:01000175]": {
+            "ontology_id": "ENVO:01000175"
+          },
+          "__savanna biome [ENVO:01000178]": {
+            "ontology_id": "ENVO:01000178"
+          },
+          "____flooded savanna biome [ENVO:01000190]": {
+            "ontology_id": "ENVO:01000190"
+          },
+          "____montane savanna biome [ENVO:01000223]": {
+            "ontology_id": "ENVO:01000223"
+          },
+          "____subtropical savanna biome [ENVO:01000187]": {
+            "ontology_id": "ENVO:01000187"
+          },
+          "______mediterranean savanna biome [ENVO:01000229]": {
+            "ontology_id": "ENVO:01000229"
+          },
+          "____temperate savanna biome [ENVO:01000189]": {
+            "ontology_id": "ENVO:01000189"
+          },
+          "____tropical savanna biome [ENVO:01000188]": {
+            "ontology_id": "ENVO:01000188"
+          }
+        }
+      },
+      {
+        "fieldName": "local environmental context",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000013",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Report the entity or entities which are in the sample or specimen\u2019s local vicinity and which you believe have significant causal influences on your sample or specimen. We recommend using EnvO terms which are of smaller spatial grain than your entry for env_broad_scale. Terms, such as anatomical sites, from other OBO Library ontologies which interoperate with EnvO (e.g. UBERON) are accepted in this field. EnvO documentation about how to use the field: https://github.com/EnvironmentOntology/envo/wiki/Using-ENVO-with-MIxS.",
+        "guidance": "pattern generalization: {termLabel} {[termID]}",
+        "examples": "litter layer [ENVO:01000338]; Annotating a pooled sample taken from various vegetation layers in a forest consider: canopy [ENVO:00000047]|herb and fern layer [ENVO:01000337]|litter layer [ENVO:01000338]|understory [01000335]|shrub layer [ENVO:01000336].",
+        "pattern": ".* \\[ENVO:\\d+\\]",
+        "exportField": {
+          "dev": [
+            {
+              "field": "env_local_scale"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "environmental medium",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000014",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Report the environmental material(s) immediately surrounding the sample or specimen at the time of sampling. We recommend using subclasses of 'environmental material' (http://purl.obolibrary.org/obo/ENVO_00010483). EnvO documentation about how to use the field: https://github.com/EnvironmentOntology/envo/wiki/Using-ENVO-with-MIxS . Terms from other OBO ontologies are permissible as long as they reference mass/volume nouns (e.g. air, water, blood) and not discrete, countable entities (e.g. a tree, a leaf, a table top).",
+        "guidance": "pattern generalization: {termLabel} {[termID]}",
+        "examples": "soil [ENVO:00001998]; Annotating a fish swimming in the upper 100 m of the Atlantic Ocean, consider: ocean water [ENVO:00002151]. Example: Annotating a duck on a pond consider: pond water [ENVO:00002228]|air [ENVO_00002005]",
+        "pattern": ".* \\[ENVO:\\d+\\]",
+        "exportField": {
+          "dev": [
+            {
+              "field": "env_medium"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "geographic location (country and/or sea,region)",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000010",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "The geographical origin of the sample as defined by the country or sea name followed by specific region name. Country or sea names should be chosen from the INSDC country list (http://insdc.org/country.html), or the GAZ ontology (http://purl.bioontology.org/ontology/GAZ)",
+        "guidance": "pattern generalization: {term}: {term}, {text}",
+        "examples": "USA: Maryland, Bethesda",
+        "exportField": {
+          "dev": [
+            {
+              "field": "geo_loc_name"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "geographic location (latitude and longitude)",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000009",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "The geographical origin of the sample as defined by latitude and longitude. The values should be reported in decimal degrees and in WGS84 system",
+        "guidance": "pattern generalization: {float} {float}",
+        "examples": "50.586825 6.408977",
+        "exportField": {
+          "dev": [
+            {
+              "field": "lat_lon"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "elevation",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000093",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "required",
+        "description": "Elevation of the sampling site is its height above a fixed reference point, most commonly the mean sea level. Elevation is mainly used when referring to points on the earth's surface, while altitude is used for points above the surface, such as an aircraft in flight or a spacecraft in orbit.",
+        "guidance": "",
+        "examples": "100 meter",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "elev"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "sample storage temperature",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000110",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Temperature at which sample was stored, e.g. -80 degree Celsius",
+        "guidance": "",
+        "examples": "-80 degree Celsius",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "samp_store_temp"
             }
           ]
         }
@@ -1084,6 +1451,287 @@ var DATA = [
             }
           ]
         }
+      },
+      {
+        "fieldName": "pH",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:pH",
+        "datatype": "xs:decimal",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "0.0",
+        "xs:maxInclusive": "14.0",
+        "requirement": "recommended",
+        "description": "Ph measurement of the sample, or liquid portion of sample, or aqueous phase of the fluid",
+        "guidance": "Expected value: measurement value | pattern generalization: {float}",
+        "examples": "7.2",
+        "exportField": {
+          "dev": [
+            {
+              "field": "pH"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "fieldName": "mixs_asis_rec",
+    "children": [
+      {
+        "fieldName": "composite design/sieving",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000322",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Collection design of pooled samples and/or sieve size and amount of sample sieved",
+        "guidance": "pattern generalization: {{text}|{float} {unit}};{float} {unit}",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "sieving"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "size-fraction lower threshold",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000735",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Refers to the mesh/pore size used to pre-filter/pre-sort the sample. Materials larger than the size threshold are excluded from the sample",
+        "guidance": "",
+        "examples": "0.2 micrometer",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "size_frac_low"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "size-fraction upper threshold",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000736",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Refers to the mesh/pore size used to retain the sample. Materials smaller than the size threshold are excluded from the sample",
+        "guidance": "",
+        "examples": "20 micrometer",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "size_frac_up"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "biotic regimen",
+        "capitalize": "",
+        "ontology_id": "MIXS:0001038",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Information about treatment(s) involving use of biotic factors, such as bacteria, viruses or fungi.",
+        "guidance": "pattern generalization: {text}",
+        "examples": "sample inoculated with Rhizobium spp. Culture",
+        "exportField": {
+          "dev": [
+            {
+              "field": "biotic_regm"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "air temperature regimen",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000551",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Information about treatment involving an exposure to varying temperatures; should include the temperature, treatment regimen including how many times the treatment was repeated, how long each treatment lasted, and the start and end time of the entire treatment; can include different temperature regimens",
+        "guidance": "pattern generalization: {float} {unit};{Rn/start_time/end_time/duration}",
+        "examples": "25 degree Celsius;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M",
+        "exportField": {
+          "dev": [
+            {
+              "field": "air_temp_regm"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "chemical administration",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000751",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "List of chemical compounds administered to the host or site where sampling occurred, and when (e.g. Antibiotics, n fertilizer, air filter); can include multiple compounds. For chemical entities of biological interest ontology (chebi) (v 163), http://purl.bioontology.org/ontology/chebi",
+        "guidance": "pattern generalization: {termLabel} {[termID]};{timestamp}",
+        "examples": "agar [CHEBI:2509];2018-05-11T20:00Z",
+        "exportField": {
+          "dev": [
+            {
+              "field": "chem_administration"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "climate environment",
+        "capitalize": "",
+        "ontology_id": "MIXS:0001040",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Treatment involving an exposure to a particular climate; treatment regimen including how many times the treatment was repeated, how long each treatment lasted, and the start and end time of the entire treatment; can include multiple climates",
+        "guidance": "pattern generalization: {text};{Rn/start_time/end_time/duration}",
+        "examples": "tropical climate;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M",
+        "exportField": {
+          "dev": [
+            {
+              "field": "climate_environment"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "gaseous environment",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000558",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Use of conditions with differing gaseous environments; should include the name of gaseous compound, amount administered, treatment duration, interval and total experimental duration; can include multiple gaseous environment regimens",
+        "guidance": "pattern generalization: {text};{float} {unit};{Rn/start_time/end_time/duration}",
+        "examples": "nitric oxide;0.5 micromole per liter;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M",
+        "exportField": {
+          "dev": [
+            {
+              "field": "gaseous_environment"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "humidity regimen",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000568",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Information about treatment involving an exposure to varying degree of humidity; information about treatment involving use of growth hormones; should include amount of humidity administered, treatment regimen including how many times the treatment was repeated, how long each treatment lasted, and the start and end time of the entire treatment; can include multiple regimens",
+        "guidance": "pattern generalization: {float} {unit};{Rn/start_time/end_time/duration}",
+        "examples": "25 gram per cubic meter;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M",
+        "exportField": {
+          "dev": [
+            {
+              "field": "humidity_regm"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "light regimen",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000569",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Information about treatment(s) involving exposure to light, including both light intensity and quality.",
+        "guidance": "pattern generalization: {text};{float} {unit};{float} {unit}",
+        "examples": "incandescant light;10 lux;450 nanometer",
+        "exportField": {
+          "dev": [
+            {
+              "field": "light_regm"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "watering regimen",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000591",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Information about treatment involving an exposure to watering frequencies, treatment regimen including how many times the treatment was repeated, how long each treatment lasted, and the start and end time of the entire treatment; can include multiple regimens",
+        "guidance": "pattern generalization: {float} {unit};{Rn/start_time/end_time/duration}",
+        "examples": "1 liter;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M",
+        "exportField": {
+          "dev": [
+            {
+              "field": "watering_regm"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "altitude",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000094",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Altitude is a term used to identify heights of objects such as airplanes, space shuttles, rockets, atmospheric balloons and heights of places such as atmospheric layers and clouds. It is used to measure the height of an object which is above the earth's surface. In this context, the altitude measurement is the vertical distance between the earth's surface above sea level and the sampled position in the air",
+        "guidance": "",
+        "examples": "100 meter",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "alt"
+            }
+          ]
+        }
       }
     ]
   },
@@ -1301,8 +1949,30 @@ var DATA = [
     ]
   },
   {
-    "fieldName": "core field",
+    "fieldName": "mixs_asis_opt",
     "children": [
+      {
+        "fieldName": "slope aspect",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000647",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "The direction a slope faces. While looking down a slope use a compass to record the direction you are facing (direction or degrees); e.g., nw or 315 degrees. This measure provides an indication of sun and wind exposure that will influence soil temperature and evapotranspiration.",
+        "guidance": "",
+        "examples": "",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "slope_aspect"
+            }
+          ]
+        }
+      },
       {
         "fieldName": "history/agrochemical additions",
         "capitalize": "",
@@ -1320,27 +1990,6 @@ var DATA = [
           "dev": [
             {
               "field": "agrochem_addition"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "air temperature regimen",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000551",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Information about treatment involving an exposure to varying temperatures; should include the temperature, treatment regimen including how many times the treatment was repeated, how long each treatment lasted, and the start and end time of the entire treatment; can include different temperature regimens",
-        "guidance": "pattern generalization: {float} {unit};{Rn/start_time/end_time/duration}",
-        "examples": "25 degree Celsius;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M",
-        "exportField": {
-          "dev": [
-            {
-              "field": "air_temp_regm"
             }
           ]
         }
@@ -1428,91 +2077,6 @@ var DATA = [
           "dev": [
             {
               "field": "annual_temp"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "biotic regimen",
-        "capitalize": "",
-        "ontology_id": "MIXS:0001038",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Information about treatment(s) involving use of biotic factors, such as bacteria, viruses or fungi.",
-        "guidance": "pattern generalization: {text}",
-        "examples": "sample inoculated with Rhizobium spp. Culture",
-        "exportField": {
-          "dev": [
-            {
-              "field": "biotic_regm"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "carbon/nitrogen ratio",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000310",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Ratio of amount or concentrations of carbon to nitrogen",
-        "guidance": "",
-        "examples": "0.417361111",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
-        "exportField": {
-          "dev": [
-            {
-              "field": "carb_nitro_ratio"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "chemical administration",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000751",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "List of chemical compounds administered to the host or site where sampling occurred, and when (e.g. Antibiotics, n fertilizer, air filter); can include multiple compounds. For chemical entities of biological interest ontology (chebi) (v 163), http://purl.bioontology.org/ontology/chebi",
-        "guidance": "pattern generalization: {termLabel} {[termID]};{timestamp}",
-        "examples": "agar [CHEBI:2509];2018-05-11T20:00Z",
-        "exportField": {
-          "dev": [
-            {
-              "field": "chem_administration"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "climate environment",
-        "capitalize": "",
-        "ontology_id": "MIXS:0001040",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Treatment involving an exposure to a particular climate; treatment regimen including how many times the treatment was repeated, how long each treatment lasted, and the start and end time of the entire treatment; can include multiple climates",
-        "guidance": "pattern generalization: {text};{Rn/start_time/end_time/duration}",
-        "examples": "tropical climate;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M",
-        "exportField": {
-          "dev": [
-            {
-              "field": "climate_environment"
             }
           ]
         }
@@ -1668,6 +2232,27 @@ var DATA = [
         }
       },
       {
+        "fieldName": "experimental factor",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000008",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Experimental factors are essentially the variable aspects of an experiment design which can be used to describe an experiment, or set of experiments, in an increasingly detailed manner. This field accepts ontology terms from Experimental Factor Ontology (EFO) and/or Ontology for Biomedical Investigations (OBI). For a browser of EFO (v 2.95) terms, please see http://purl.bioontology.org/ontology/EFO; for a browser of OBI (v 2018-02-12) terms please see http://purl.bioontology.org/ontology/OBI",
+        "guidance": "pattern generalization: {termLabel} {[termID]}|{text}",
+        "examples": "time series design [EFO:EFO_0001779]",
+        "exportField": {
+          "dev": [
+            {
+              "field": "experimental_factor"
+            }
+          ]
+        }
+      },
+      {
         "fieldName": "history/extreme events",
         "capitalize": "",
         "ontology_id": "MIXS:0000320",
@@ -1780,27 +2365,6 @@ var DATA = [
         }
       },
       {
-        "fieldName": "gaseous environment",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000558",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Use of conditions with differing gaseous environments; should include the name of gaseous compound, amount administered, treatment duration, interval and total experimental duration; can include multiple gaseous environment regimens",
-        "guidance": "pattern generalization: {text};{float} {unit};{Rn/start_time/end_time/duration}",
-        "examples": "nitric oxide;0.5 micromole per liter;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M",
-        "exportField": {
-          "dev": [
-            {
-              "field": "gaseous_environment"
-            }
-          ]
-        }
-      },
-      {
         "fieldName": "extreme_unusual_properties/heavy metals",
         "capitalize": "",
         "ontology_id": "MIXS:0000652",
@@ -1860,48 +2424,6 @@ var DATA = [
           "dev": [
             {
               "field": "horizon_meth"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "humidity regimen",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000568",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Information about treatment involving an exposure to varying degree of humidity; information about treatment involving use of growth hormones; should include amount of humidity administered, treatment regimen including how many times the treatment was repeated, how long each treatment lasted, and the start and end time of the entire treatment; can include multiple regimens",
-        "guidance": "pattern generalization: {float} {unit};{Rn/start_time/end_time/duration}",
-        "examples": "25 gram per cubic meter;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M",
-        "exportField": {
-          "dev": [
-            {
-              "field": "humidity_regm"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "light regimen",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000569",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Information about treatment(s) involving exposure to light, including both light intensity and quality.",
-        "guidance": "pattern generalization: {text};{float} {unit};{float} {unit}",
-        "examples": "incandescant light;10 lux;450 nanometer",
-        "exportField": {
-          "dev": [
-            {
-              "field": "light_regm"
             }
           ]
         }
@@ -1991,49 +2513,6 @@ var DATA = [
         }
       },
       {
-        "fieldName": "microbial biomass method",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000339",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Reference or method used in determining microbial biomass",
-        "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "micro_biomass_meth"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "microbial biomass",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000650",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "The part of the organic matter in the soil that constitutes living microorganisms smaller than 5-10 micrometer. If you keep this, you would need to have correction factors used for conversion to the final units",
-        "guidance": "",
-        "examples": "",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
-        "exportField": {
-          "dev": [
-            {
-              "field": "microbial_biomass"
-            }
-          ]
-        }
-      },
-      {
         "fieldName": "miscellaneous parameter",
         "capitalize": "",
         "ontology_id": "MIXS:0000752",
@@ -2051,50 +2530,6 @@ var DATA = [
           "dev": [
             {
               "field": "misc_param"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "organic matter",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000204",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Concentration of organic matter",
-        "guidance": "",
-        "examples": "1.75 milligram per cubic meter",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
-        "exportField": {
-          "dev": [
-            {
-              "field": "org_matter"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "organic nitrogen",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000205",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Concentration of organic nitrogen",
-        "guidance": "",
-        "examples": "4 micromole per liter",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
-        "exportField": {
-          "dev": [
-            {
-              "field": "org_nitro"
             }
           ]
         }
@@ -2123,49 +2558,6 @@ var DATA = [
           "aerobic": {},
           "anaerobic": {},
           "other": {}
-        }
-      },
-      {
-        "fieldName": "pH method",
-        "capitalize": "",
-        "ontology_id": "MIXS:0001106",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Reference or method used in determining ph",
-        "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "ph_meth"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "phosphate",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000505",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Concentration of phosphate",
-        "guidance": "",
-        "examples": "0.7 micromole per liter",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
-        "exportField": {
-          "dev": [
-            {
-              "field": "phosphate"
-            }
-          ]
         }
       },
       {
@@ -2239,71 +2631,6 @@ var DATA = [
         }
       },
       {
-        "fieldName": "salinity",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000183",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "The total concentration of all dissolved salts in a liquid or solid sample. While salinity can be measured by a complete chemical analysis, this method is difficult and time consuming. More often, it is instead derived from the conductivity measurement. This is known as practical salinity. These derivations compare the specific conductance of the sample to a salinity standard such as seawater.",
-        "guidance": "",
-        "examples": "25 practical salinity unit",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
-        "exportField": {
-          "dev": [
-            {
-              "field": "salinity"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "salinity method",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000341",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Reference or method used in determining salinity",
-        "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "salinity_meth"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "sample storage temperature",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000110",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Temperature at which sample was stored, e.g. -80 degree Celsius",
-        "guidance": "",
-        "examples": "-80 degree Celsius",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
-        "exportField": {
-          "dev": [
-            {
-              "field": "samp_store_temp"
-            }
-          ]
-        }
-      },
-      {
         "fieldName": "mean seasonal precipitation",
         "capitalize": "",
         "ontology_id": "MIXS:0000645",
@@ -2343,93 +2670,6 @@ var DATA = [
           "dev": [
             {
               "field": "season_temp"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "composite design/sieving",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000322",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Collection design of pooled samples and/or sieve size and amount of sample sieved",
-        "guidance": "pattern generalization: {{text}|{float} {unit}};{float} {unit}",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "sieving"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "size-fraction lower threshold",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000735",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Refers to the mesh/pore size used to pre-filter/pre-sort the sample. Materials larger than the size threshold are excluded from the sample",
-        "guidance": "",
-        "examples": "0.2 micrometer",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
-        "exportField": {
-          "dev": [
-            {
-              "field": "size_frac_low"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "size-fraction upper threshold",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000736",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Refers to the mesh/pore size used to retain the sample. Materials smaller than the size threshold are excluded from the sample",
-        "guidance": "",
-        "examples": "20 micrometer",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
-        "exportField": {
-          "dev": [
-            {
-              "field": "size_frac_up"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "slope aspect",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000647",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "The direction a slope faces. While looking down a slope use a compass to record the direction you are facing (direction or degrees); e.g., nw or 315 degrees. This measure provides an indication of sun and wind exposure that will influence soil temperature and evapotranspiration.",
-        "guidance": "",
-        "examples": "",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
-        "exportField": {
-          "dev": [
-            {
-              "field": "slope_aspect"
             }
           ]
         }
@@ -2573,6 +2813,28 @@ var DATA = [
         }
       },
       {
+        "fieldName": "temperature",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000113",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Temperature of the sample at the time of sampling.",
+        "guidance": "",
+        "examples": "25 degree Celsius",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "temp"
+            }
+          ]
+        }
+      },
+      {
         "fieldName": "history/tillage",
         "capitalize": "",
         "ontology_id": "MIXS:0001081",
@@ -2605,6 +2867,179 @@ var DATA = [
         }
       },
       {
+        "fieldName": "water content",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000185",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Water content measurement",
+        "guidance": "",
+        "examples": "",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "water_content"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "water content method",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000323",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Reference or method used in determining the water content of soil",
+        "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "water_cont_soil_meth"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "pH method",
+        "capitalize": "",
+        "ontology_id": "MIXS:0001106",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Reference or method used in determining ph",
+        "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "ph_meth"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "microbial biomass",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000650",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "The part of the organic matter in the soil that constitutes living microorganisms smaller than 5-10 micrometer. If you keep this, you would need to have correction factors used for conversion to the final units",
+        "guidance": "",
+        "examples": "",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "microbial_biomass"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "microbial biomass method",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000339",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Reference or method used in determining microbial biomass",
+        "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "micro_biomass_meth"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "carbon/nitrogen ratio",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000310",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Ratio of amount or concentrations of carbon to nitrogen",
+        "guidance": "",
+        "examples": "0.417361111",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "carb_nitro_ratio"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "organic matter",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000204",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Concentration of organic matter",
+        "guidance": "",
+        "examples": "1.75 milligram per cubic meter",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "org_matter"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "organic nitrogen",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000205",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Concentration of organic nitrogen",
+        "guidance": "",
+        "examples": "4 micromole per liter",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "org_nitro"
+            }
+          ]
+        }
+      },
+      {
         "fieldName": "total carbon",
         "capitalize": "",
         "ontology_id": "MIXS:0000525",
@@ -2622,27 +3057,6 @@ var DATA = [
           "dev": [
             {
               "field": "tot_carb"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "total nitrogen content method",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000338",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Reference or method used in determining the total nitrogen",
-        "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "tot_nitro_cont_meth"
             }
           ]
         }
@@ -2670,22 +3084,22 @@ var DATA = [
         }
       },
       {
-        "fieldName": "total organic carbon method",
+        "fieldName": "total nitrogen content method",
         "capitalize": "",
-        "ontology_id": "MIXS:0000337",
+        "ontology_id": "MIXS:0000338",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "",
-        "description": "Reference or method used in determining total organic carbon",
+        "description": "Reference or method used in determining the total nitrogen",
         "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
         "examples": "",
         "exportField": {
           "dev": [
             {
-              "field": "tot_org_c_meth"
+              "field": "tot_nitro_cont_meth"
             }
           ]
         }
@@ -2713,6 +3127,27 @@ var DATA = [
         }
       },
       {
+        "fieldName": "total organic carbon method",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000337",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Reference or method used in determining total organic carbon",
+        "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "tot_org_c_meth"
+            }
+          ]
+        }
+      },
+      {
         "fieldName": "total phosphorus",
         "capitalize": "",
         "ontology_id": "MIXS:0000117",
@@ -2735,501 +3170,66 @@ var DATA = [
         }
       },
       {
-        "fieldName": "water content method",
+        "fieldName": "phosphate",
         "capitalize": "",
-        "ontology_id": "MIXS:0000323",
+        "ontology_id": "MIXS:0000505",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "",
-        "description": "Reference or method used in determining the water content of soil",
+        "description": "Concentration of phosphate",
+        "guidance": "",
+        "examples": "0.7 micromole per liter",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "phosphate"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "salinity",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000183",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "The total concentration of all dissolved salts in a liquid or solid sample. While salinity can be measured by a complete chemical analysis, this method is difficult and time consuming. More often, it is instead derived from the conductivity measurement. This is known as practical salinity. These derivations compare the specific conductance of the sample to a salinity standard such as seawater.",
+        "guidance": "",
+        "examples": "25 practical salinity unit",
+        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "exportField": {
+          "dev": [
+            {
+              "field": "salinity"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "salinity method",
+        "capitalize": "",
+        "ontology_id": "MIXS:0000341",
+        "datatype": "xs:token",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Reference or method used in determining salinity",
         "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
         "examples": "",
         "exportField": {
           "dev": [
             {
-              "field": "water_cont_soil_meth"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "water content",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000185",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Water content measurement",
-        "guidance": "",
-        "examples": "",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
-        "exportField": {
-          "dev": [
-            {
-              "field": "water_content"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "watering regimen",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000591",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Information about treatment involving an exposure to watering frequencies, treatment regimen including how many times the treatment was repeated, how long each treatment lasted, and the start and end time of the entire treatment; can include multiple regimens",
-        "guidance": "pattern generalization: {float} {unit};{Rn/start_time/end_time/duration}",
-        "examples": "1 liter;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M",
-        "exportField": {
-          "dev": [
-            {
-              "field": "watering_regm"
-            }
-          ]
-        }
-      }
-    ]
-  },
-  {
-    "fieldName": "environment field",
-    "children": [
-      {
-        "fieldName": "altitude",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000094",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Altitude is a term used to identify heights of objects such as airplanes, space shuttles, rockets, atmospheric balloons and heights of places such as atmospheric layers and clouds. It is used to measure the height of an object which is above the earth's surface. In this context, the altitude measurement is the vertical distance between the earth's surface above sea level and the sampled position in the air",
-        "guidance": "",
-        "examples": "100 meter",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
-        "exportField": {
-          "dev": [
-            {
-              "field": "alt"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "elevation",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000093",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Elevation of the sampling site is its height above a fixed reference point, most commonly the mean sea level. Elevation is mainly used when referring to points on the earth's surface, while altitude is used for points above the surface, such as an aircraft in flight or a spacecraft in orbit.",
-        "guidance": "",
-        "examples": "100 meter",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
-        "exportField": {
-          "dev": [
-            {
-              "field": "elev"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "broad-scale environmental context",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000012",
-        "datatype": "select",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Report the major environmental system the sample or specimen came from. The system(s) identified should have a coarse spatial grain, to provide the general environmental context of where the sampling was done (e.g. in the desert or a rainforest). We recommend using subclasses of EnvO\u2019s biome class:  http://purl.obolibrary.org/obo/ENVO_00000428. EnvO documentation about how to use the field: https://github.com/EnvironmentOntology/envo/wiki/Using-ENVO-with-MIxS",
-        "guidance": "pattern generalization: {termLabel} {[termID]}",
-        "examples": "oceanic epipelagic zone biome [ENVO:01000033] for annotating a water sample from the photic zone in middle of the Atlantic Ocean",
-        "exportField": {
-          "dev": [
-            {
-              "field": "env_broad_scale"
-            }
-          ]
-        },
-        "schema:ItemList": {
-          "alpine biome [ENVO:01001835]": {
-            "ontology_id": "ENVO:01001835"
-          },
-          "__alpine tundra biome [ENVO:01001505]": {
-            "ontology_id": "ENVO:01001505"
-          },
-          "anthropogenic terrestrial biome [ENVO:01000219]": {
-            "ontology_id": "ENVO:01000219"
-          },
-          "__rangeland biome [ENVO:01000247]": {
-            "ontology_id": "ENVO:01000247"
-          },
-          "__village biome [ENVO:01000246]": {
-            "ontology_id": "ENVO:01000246"
-          },
-          "arid biome [ENVO:01001838]": {
-            "ontology_id": "ENVO:01001838"
-          },
-          "mangrove biome [ENVO:01000181]": {
-            "ontology_id": "ENVO:01000181"
-          },
-          "montane biome [ENVO:01001836]": {
-            "ontology_id": "ENVO:01001836"
-          },
-          "__montane savanna biome [ENVO:01000223]": {
-            "ontology_id": "ENVO:01000223"
-          },
-          "__montane shrubland biome [ENVO:01000216]": {
-            "ontology_id": "ENVO:01000216"
-          },
-          "polar biome [ENVO:01000339]": {
-            "ontology_id": "ENVO:01000339"
-          },
-          "shrubland biome [ENVO:01000176]": {
-            "ontology_id": "ENVO:01000176"
-          },
-          "__subtropical shrubland biome [ENVO:01000213]": {
-            "ontology_id": "ENVO:01000213"
-          },
-          "____mediterranean shrubland biome [ENVO:01000217]": {
-            "ontology_id": "ENVO:01000217"
-          },
-          "__temperate shrubland biome [ENVO:01000215]": {
-            "ontology_id": "ENVO:01000215"
-          },
-          "__tropical shrubland biome [ENVO:01000214]": {
-            "ontology_id": "ENVO:01000214"
-          },
-          "subalpine biome [ENVO:01001837]": {
-            "ontology_id": "ENVO:01001837"
-          },
-          "subpolar biome [ENVO:01001834]": {
-            "ontology_id": "ENVO:01001834"
-          },
-          "subtropical biome [ENVO:01001832]": {
-            "ontology_id": "ENVO:01001832"
-          },
-          "__mediterranean biome [ENVO:01001833]": {
-            "ontology_id": "ENVO:01001833"
-          },
-          "____mediterranean savanna biome [ENVO:01000229]": {
-            "ontology_id": "ENVO:01000229"
-          },
-          "____mediterranean woodland biome [ENVO:01000208]": {
-            "ontology_id": "ENVO:01000208"
-          },
-          "__subtropical savanna biome [ENVO:01000187]": {
-            "ontology_id": "ENVO:01000187"
-          },
-          "__subtropical woodland biome [ENVO:01000222]": {
-            "ontology_id": "ENVO:01000222"
-          },
-          "temperate biome [ENVO:01001831]": {
-            "ontology_id": "ENVO:01001831"
-          },
-          "__temperate savanna biome [ENVO:01000189]": {
-            "ontology_id": "ENVO:01000189"
-          },
-          "__temperate woodland biome [ENVO:01000221]": {
-            "ontology_id": "ENVO:01000221"
-          },
-          "tropical biome [ENVO:01001830]": {
-            "ontology_id": "ENVO:01001830"
-          },
-          "__tropical savanna biome [ENVO:01000188]": {
-            "ontology_id": "ENVO:01000188"
-          },
-          "__tropical woodland biome [ENVO:01000220]": {
-            "ontology_id": "ENVO:01000220"
-          },
-          "tundra biome [ENVO:01000180]": {
-            "ontology_id": "ENVO:01000180"
-          },
-          "urban biome [ENVO:01000249]": {
-            "ontology_id": "ENVO:01000249"
-          },
-          "woodland biome [ENVO:01000175]": {
-            "ontology_id": "ENVO:01000175"
-          },
-          "__savanna biome [ENVO:01000178]": {
-            "ontology_id": "ENVO:01000178"
-          },
-          "____flooded savanna biome [ENVO:01000190]": {
-            "ontology_id": "ENVO:01000190"
-          },
-          "____montane savanna biome [ENVO:01000223]": {
-            "ontology_id": "ENVO:01000223"
-          },
-          "____subtropical savanna biome [ENVO:01000187]": {
-            "ontology_id": "ENVO:01000187"
-          },
-          "______mediterranean savanna biome [ENVO:01000229]": {
-            "ontology_id": "ENVO:01000229"
-          },
-          "____temperate savanna biome [ENVO:01000189]": {
-            "ontology_id": "ENVO:01000189"
-          },
-          "____tropical savanna biome [ENVO:01000188]": {
-            "ontology_id": "ENVO:01000188"
-          }
-        }
-      },
-      {
-        "fieldName": "local environmental context",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000013",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Report the entity or entities which are in the sample or specimen\u2019s local vicinity and which you believe have significant causal influences on your sample or specimen. We recommend using EnvO terms which are of smaller spatial grain than your entry for env_broad_scale. Terms, such as anatomical sites, from other OBO Library ontologies which interoperate with EnvO (e.g. UBERON) are accepted in this field. EnvO documentation about how to use the field: https://github.com/EnvironmentOntology/envo/wiki/Using-ENVO-with-MIxS.",
-        "guidance": "pattern generalization: {termLabel} {[termID]}",
-        "examples": "litter layer [ENVO:01000338]; Annotating a pooled sample taken from various vegetation layers in a forest consider: canopy [ENVO:00000047]|herb and fern layer [ENVO:01000337]|litter layer [ENVO:01000338]|understory [01000335]|shrub layer [ENVO:01000336].",
-        "pattern": ".* \\[ENVO:\\d+\\]",
-        "exportField": {
-          "dev": [
-            {
-              "field": "env_local_scale"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "environmental medium",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000014",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "required",
-        "description": "Report the environmental material(s) immediately surrounding the sample or specimen at the time of sampling. We recommend using subclasses of 'environmental material' (http://purl.obolibrary.org/obo/ENVO_00010483). EnvO documentation about how to use the field: https://github.com/EnvironmentOntology/envo/wiki/Using-ENVO-with-MIxS . Terms from other OBO ontologies are permissible as long as they reference mass/volume nouns (e.g. air, water, blood) and not discrete, countable entities (e.g. a tree, a leaf, a table top).",
-        "guidance": "pattern generalization: {termLabel} {[termID]}",
-        "examples": "soil [ENVO:00001998]; Annotating a fish swimming in the upper 100 m of the Atlantic Ocean, consider: ocean water [ENVO:00002151]. Example: Annotating a duck on a pond consider: pond water [ENVO:00002228]|air [ENVO_00002005]",
-        "pattern": ".* \\[ENVO:\\d+\\]",
-        "exportField": {
-          "dev": [
-            {
-              "field": "env_medium"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "geographic location (country and/or sea,region)",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000010",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "The geographical origin of the sample as defined by the country or sea name followed by specific region name. Country or sea names should be chosen from the INSDC country list (http://insdc.org/country.html), or the GAZ ontology (http://purl.bioontology.org/ontology/GAZ)",
-        "guidance": "pattern generalization: {term}: {term}, {text}",
-        "examples": "USA: Maryland, Bethesda",
-        "exportField": {
-          "dev": [
-            {
-              "field": "geo_loc_name"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "geographic location (latitude and longitude)",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000009",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "The geographical origin of the sample as defined by latitude and longitude. The values should be reported in decimal degrees and in WGS84 system",
-        "guidance": "pattern generalization: {float} {float}",
-        "examples": "50.586825 6.408977",
-        "exportField": {
-          "dev": [
-            {
-              "field": "lat_lon"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "temperature",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000113",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Temperature of the sample at the time of sampling.",
-        "guidance": "",
-        "examples": "25 degree Celsius",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
-        "exportField": {
-          "dev": [
-            {
-              "field": "temp"
-            }
-          ]
-        }
-      }
-    ]
-  },
-  {
-    "fieldName": "gold_path_field",
-    "children": [
-      {
-        "fieldName": "ecosystem",
-        "capitalize": "",
-        "ontology_id": "",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "An ecosystem is a combination of a physical environment (abiotic factors) and all the organisms (biotic factors) that interact with this environment. Ecosystem is in position 1/5 in a GOLD path.",
-        "guidance": "The abiotic factors play a profound role on the type and composition of organisms in a given environment. The GOLD Ecosystem at the top of the five-level classification system is aimed at capturing the broader environment from which an organism or environmental sample is collected. The three broad groups under Ecosystem are Environmental, Host-associated, and Engineered. They represent samples collected from a natural environment or from another organism or from engineered environments like bioreactors respectively.",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "ecosystem"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "ecosystem_category",
-        "capitalize": "",
-        "ontology_id": "",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Ecosystem categories represent divisions within the ecosystem based on specific characteristics of the environment from where an organism or sample is isolated. Ecosystem category is in position 2/5 in a GOLD path.",
-        "guidance": "The Environmental ecosystem (for example) is divided into Air, Aquatic and Terrestrial. Ecosystem categories for Host-associated samples can be individual hosts or phyla and for engineered samples it may be manipulated environments like bioreactors, solid waste etc.",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "ecosystem_category"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "ecosystem_subtype",
-        "capitalize": "",
-        "ontology_id": "",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Ecosystem subtypes represent further subdivision of Ecosystem types into more distinct subtypes. Ecosystem subtype is in position 4/5 in a GOLD path.",
-        "guidance": "Ecosystem Type Marine (Environmental -> Aquatic -> Marine) is further divided (for example) into Intertidal zone, Coastal, Pelagic, Intertidal zone etc. in the Ecosystem subtype category.",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "ecosystem_subtype"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "ecosystem_type",
-        "capitalize": "",
-        "ontology_id": "",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Ecosystem types represent things having common characteristics within the Ecosystem Category. These common characteristics based grouping is still broad but specific to the characteristics of a given environment. Ecosystem type is in position 3/5 in a GOLD path.",
-        "guidance": "The Aquatic ecosystem category (for example) may have ecosystem types like Marine or Thermal springs etc. Ecosystem category Air may have Indoor air or Outdoor air as different Ecosystem Types. In the case of Host-associated samples, ecosystem type can represent Respiratory system, Digestive system, Roots etc.",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "ecosystem_type"
-            }
-          ]
-        }
-      },
-      {
-        "fieldName": "specific_ecosystem",
-        "capitalize": "",
-        "ontology_id": "",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Specific ecosystems represent specific features of the environment like aphotic zone in an ocean or gastric mucosa within a host digestive system. Specific ecosystem is in position 5/5 in a GOLD path.",
-        "guidance": "Specific ecosystems help to define samples based on very specific characteristics of an environment under the five-level classification system.",
-        "examples": "",
-        "exportField": {
-          "dev": [
-            {
-              "field": "specific_ecosystem"
-            }
-          ]
-        }
-      }
-    ]
-  },
-  {
-    "fieldName": "investigation field",
-    "children": [
-      {
-        "fieldName": "experimental factor",
-        "capitalize": "",
-        "ontology_id": "MIXS:0000008",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Experimental factors are essentially the variable aspects of an experiment design which can be used to describe an experiment, or set of experiments, in an increasingly detailed manner. This field accepts ontology terms from Experimental Factor Ontology (EFO) and/or Ontology for Biomedical Investigations (OBI). For a browser of EFO (v 2.95) terms, please see http://purl.bioontology.org/ontology/EFO; for a browser of OBI (v 2018-02-12) terms please see http://purl.bioontology.org/ontology/OBI",
-        "guidance": "pattern generalization: {termLabel} {[termID]}|{text}",
-        "examples": "time series design [EFO:EFO_0001779]",
-        "exportField": {
-          "dev": [
-            {
-              "field": "experimental_factor"
+              "field": "salinity_meth"
             }
           ]
         }

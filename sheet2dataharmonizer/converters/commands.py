@@ -37,13 +37,13 @@ click_log.basic_config(logger)
     "--output_file", type=click.Path(), default="target/data.tsv", show_default=True
 )
 def linkml2dataharmonizer(
-    model_file,
-    selected_class,
-    default_section,
-    default_source,
-    default_capitalize,
-    default_data_status,
-    output_file,
+        model_file,
+        selected_class,
+        default_section,
+        default_source,
+        default_capitalize,
+        default_data_status,
+        output_file,
 ):
     lml_dh = LinkML2DataHarmonizer(linkml_model_path=model_file)
 
@@ -69,14 +69,29 @@ def linkml2dataharmonizer(
         click.echo(consolidated_list)
 
 
+def get_col_sects_orders(client_secret_json, sheet_id, sheet_title):
+    col_sects_orders = Sheet2LinkML.get_gsheet_frame(client_secret_json, sheet_id, sheet_title)
+    # todo check both section AND column_order for both "" AND None type
+    col_sects_orders = col_sects_orders.loc[col_sects_orders['section'] != ""]
+    if "slot" in col_sects_orders.columns:
+        col_sects_orders = col_sects_orders[['slot', 'section', 'column_order']]
+    elif 'name' in col_sects_orders.columns:
+        col_sects_orders = col_sects_orders[['name', 'section', 'column_order']]
+    col_sects_orders.columns = ['slot', 'section', 'column_order']
+    return col_sects_orders
+
+
 def _wrap_schema(
-    client_secret_json, sheet_id, tasks, constructed_class_name, new_schema
+        client_secret_json, sheet_id, tasks, constructed_class_name, new_schema
 ):
     """TODO: Decide on more appropriate name and fill in docstring."""
     for title, task in tasks.items():
         pysqldf_slot_list = Sheet2LinkML.subset_slots_from_sheet(
             client_secret_json, sheet_id, task["title"], task["query"]
         )
+
+        col_sects_orders = get_col_sects_orders(client_secret_json, sheet_id, task["title"])
+        # logger.info(col_sects_orders)
 
         sheet2linkml = Sheet2LinkML(task["yaml"])
         new_schema = sheet2linkml.wrapper(
@@ -85,22 +100,23 @@ def _wrap_schema(
             pysqldf_slot_list,
             new_schema,
             constructed_class_name,
+            col_sects_orders
         )
 
     return new_schema
 
 
 def _inject_supplementary(
-    secret,
-    supplementary_id,
-    enum_sheet,
-    supplementary_tab_title,
-    schema,
-    prefix,
-    class_name,
-    rule_col=None,
-    rule_val=None,
-    overwrite=False,
+        secret,
+        supplementary_id,
+        enum_sheet,
+        supplementary_tab_title,
+        schema,
+        prefix,
+        class_name,
+        rule_col=None,
+        rule_val=None,
+        overwrite=False,
 ):
     """TODO: Decide on more appropriate name and fill in docstring."""
     enums_names = list(set(list(enum_sheet["enum"])))
@@ -108,10 +124,10 @@ def _inject_supplementary(
         secret, supplementary_id, supplementary_tab_title
     )
     if (
-        rule_col != ""
-        and rule_col is not None
-        and rule_val != ""
-        and rule_val is not None
+            rule_col != ""
+            and rule_col is not None
+            and rule_val != ""
+            and rule_val is not None
     ):
         logger.info(f"Requiring {rule_col} to equal {rule_val}")
         current_sheet = current_sheet.loc[current_sheet[rule_col].eq(rule_val)]
@@ -126,8 +142,8 @@ def _inject_supplementary(
             new_slot = SlotDefinition(
                 name=i_s, slot_uri=prefix + ":" + i_s, title=i["name"]
             )
-            
-            ann_list = []   # list of section, column pair annotations
+
+            ann_list = []  # list of section, column pair annotations
             if 'section' in i:
                 tag_name = "dh:section_name"
                 ghsheet_header = 'section'
@@ -146,7 +162,7 @@ def _inject_supplementary(
                     val_name = "to_be_annotated"
                 ann = Annotation(tag=tag_name, value=val_name)
                 ann_list.append(ann)
-            
+
             # assign list of annotations to slot's annotations attribute
             new_slot.annotations = ann_list
 
@@ -185,8 +201,8 @@ def _inject_supplementary(
                             # logger.info(f"{i_s} {es_row}")
                             temp_pv = PermissibleValue(text=es_row["permissible_value"])
                             if (
-                                es_row["term_id"] != ""
-                                and es_row["term_id"] is not None
+                                    es_row["term_id"] != ""
+                                    and es_row["term_id"] is not None
                             ):
                                 temp_pv.meaning = es_row["term_id"]
                             temp_enum.permissible_values[
@@ -268,16 +284,16 @@ def _inject_supplementary(
     type=click.Path(exists=True),
 )
 def sheet2linkml(
-    constructed_schema_name,
-    constructed_schema_id,
-    constructed_class_name,
-    client_secret_json,
-    sheet_id,
-    env_package,
-    inc_emsl,
-    jgi,
-    mixs_path,
-    nmdc_path,
+        constructed_schema_name,
+        constructed_schema_id,
+        constructed_class_name,
+        client_secret_json,
+        sheet_id,
+        env_package,
+        inc_emsl,
+        jgi,
+        mixs_path,
+        nmdc_path,
 ):
     additional_prefixes = {
         "prov": "http://www.w3.org/ns/prov#",
@@ -472,7 +488,7 @@ def mixs_package_map(model_file, output_file):
     mims_package_classes = mixs_class_frame["class_name"].loc[
         mixs_class_frame["mixins_used"].eq("MIMS")
         & mixs_class_frame["is_a_parent"].isin(package_classes)
-    ]
+        ]
     mims_package_classes = list(mims_package_classes)
     mims_package_classes.sort()
 
@@ -543,7 +559,7 @@ def range_str_ser(model_file, selected_class, output_file):
         if row_dict["string_serialization"] == "enumeration":
             row_dict["enum_string_ser"] = True
         row_dict["enum_discrepancy"] = (
-            row_dict["enum_range"] != row_dict["enum_string_ser"]
+                row_dict["enum_range"] != row_dict["enum_string_ser"]
         )
         row_list.append(row_dict)
 
@@ -586,7 +602,7 @@ def range_str_ser(model_file, selected_class, output_file):
               do you want do extract curated enums??""",
 )
 def tidy_triad_curations(
-    client_secret, sheet_id, tab_title, curated_tsv_out, env_package
+        client_secret, sheet_id, tab_title, curated_tsv_out, env_package
 ):
     raw = Sheet2LinkML.get_gsheet_frame(client_secret, sheet_id, tab_title)
 

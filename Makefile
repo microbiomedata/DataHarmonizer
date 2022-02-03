@@ -43,9 +43,10 @@ target/string_serialization_check.txt:
 target/string_serialization_expected_failure.txt:
 	- egrep "pattern:.*{PMID}|{DOI}|{URL}" mixs-source/model/schema/*yaml > $@
 
+# target/soil_biosample_modular_annotated.yaml
 target/soil_biosample_regex_insight.tsv: target/soil_biosample_modular.yaml
 	poetry run range_str_ser \
-		--model_file target/soil_biosample_modular_annotated.yaml \
+		--model_file $< \
 		--selected_class soil_biosample \
 		--output_file $@
 
@@ -82,7 +83,7 @@ target/soil_biosample_modular.yaml: setup
 	# test for LinkML schema validity
 	# todo see: mangled name already exists #92
 #	yq eval 'del(.classes.["quantity value"].attributes)' $@ > target/soil_biosample_modular_no_redundant_mangling.yaml
-#	# todo this nis failing due to the annotations created above by combine_schemas (specifically inject_supplementary)
+#	# todo this is failing due to the annotations created above by combine_schemas (specifically inject_supplementary)
 #	poetry run gen-yaml \
 #		target/soil_biosample_modular_no_redundant_mangling.yaml > target/soil_biosample_modular_no_redundant_mangling_generated.yaml 2> target/soil_biosample_modular_no_redundant_mangling_generated.log
 
