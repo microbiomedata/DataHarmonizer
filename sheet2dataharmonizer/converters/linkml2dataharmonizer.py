@@ -149,9 +149,6 @@ class LinkML2DataHarmonizer:
             ia_jsonobj = i.annotations
             ijd = ia_jsonobj.__dict__
             if i.annotations and "dh:section_name" in ijd:
-                # todo no, there are terms with annotations but no section_name
-                # _inject_supplementary is adding the annotations for emls, jgi, mixs modified terms etc
-                # by XXX also needs to add annotations for mixs and nmdc as-is etc terms
                 relevant_isa = i.annotations._get("dh:section_name").value
             elif i.is_a:
                 relevant_isa = i.is_a
