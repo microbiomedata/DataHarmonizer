@@ -11,6 +11,7 @@ setup: clean post_clone_submodule_steps target/string_serialization_check.txt ta
 clean:
 	rm -f target/*.yaml
 	rm -f target/*.tsv
+	rm -f target/*.txt
 	rm -f target/*.log
 
 test:

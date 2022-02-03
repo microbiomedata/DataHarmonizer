@@ -3,6 +3,8 @@ import pandas as pd
 import pygsheets
 import pytest
 from linkml_runtime.utils.schemaview import SchemaView
+from git_root import git_root
+import os
 
 # import pprint
 
@@ -29,6 +31,8 @@ from linkml_runtime.utils.schemaview import SchemaView
 # enumerations
 
 # ---
+
+git_root_val = git_root()
 
 
 # where to put these configuration values?
@@ -61,7 +65,6 @@ expected_tabs = [
     "JGI_sample_slots",
     "Sections_order",
     "enums_long",
-    "mock_section_defs",
     "envo_terms_for_mixs_env_triad",
     "validation_converter",
     "soil_biosample_regex_insight_snapshot",
@@ -133,7 +136,9 @@ expected_mixs_soil_ind_slot_names = [
     "misc_param",
 ]
 
-mixs_yaml = "mixs-source/model/schema/mixs.yaml"
+mixs_rel = "mixs-source/model/schema/mixs.yaml"
+
+mixs_yaml = os.path.join(git_root_val, mixs_rel)
 
 
 # ---
