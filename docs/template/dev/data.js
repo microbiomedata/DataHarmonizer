@@ -1064,29 +1064,6 @@ var DATA = [
         }
       },
       {
-        "fieldName": "pH",
-        "capitalize": "",
-        "ontology_id": "MIXS:0001001",
-        "datatype": "xs:decimal",
-        "source": "",
-        "dataStatus": [
-          "default"
-        ],
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Ph measurement of the sample, or liquid portion of sample, or aqueous phase of the fluid",
-        "guidance": "Expected value: measurement value",
-        "examples": "7.2",
-        "exportField": {
-          "dev": [
-            {
-              "field": "ph"
-            }
-          ]
-        }
-      },
-      {
         "fieldName": "pH method",
         "capitalize": "",
         "ontology_id": "MIXS:0001106",
@@ -2814,7 +2791,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "recommended",
         "description": "Date the incubation was harvested/collected/ended. Only relevant for incubation samples.",
-        "guidance": "date and time should be represented as YYYY-MM-DDTHH:MM:SS in GMT. See here for a converter: https://www.worldtimebuddy.com/pst-to-gmt-converter | pattern generalization: {timestamp}",
+        "guidance": "date should be represented as YYYY-MM-DD. See here for a converter: https://www.worldtimebuddy.com/pst-to-gmt-converter | pattern generalization: {timestamp}",
         "examples": "",
         "exportField": {
           "dev": [
@@ -2843,6 +2820,29 @@ var DATA = [
           "dev": [
             {
               "field": "collection_time"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "Incubation Collection Time",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:collection_time_inc",
+        "datatype": "xs:date",
+        "source": "",
+        "dataStatus": [
+          "default"
+        ],
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "recommended",
+        "description": "Time the incubation was harvested/collected/ended. Only relevant for incubation samples.",
+        "guidance": "Time should be represented as HH:MM:SS in GMT. See here for a converter: https://www.worldtimebuddy.com/pst-to-gmt-converter | pattern generalization: {timestamp}",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "collection_time_inc"
             }
           ]
         }
@@ -3351,12 +3351,35 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "recommended",
         "description": "Date the incubation was started. Only relevant for incubation samples.",
-        "guidance": "date and time should be represented as YYYY-MM-DDTHH:MM:SS GMT | pattern generalization: {timestamp}",
+        "guidance": "date should be represented as YYYY-MM-DD | pattern generalization: {timestamp}",
         "examples": "",
         "exportField": {
           "dev": [
             {
               "field": "start_date_inc"
+            }
+          ]
+        }
+      },
+      {
+        "fieldName": "Incubation Start Time",
+        "capitalize": "",
+        "ontology_id": "mixs_modified:start_time_inc",
+        "datatype": "xs:date",
+        "source": "",
+        "dataStatus": [
+          "default"
+        ],
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "recommended",
+        "description": "Time the incubation was started. Only relevant for incubation samples.",
+        "guidance": "Time should be represented as HH:MM:SS GMT | pattern generalization: {timestamp}",
+        "examples": "",
+        "exportField": {
+          "dev": [
+            {
+              "field": "start_time_inc"
             }
           ]
         }

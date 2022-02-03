@@ -16,10 +16,10 @@ strsimpy = "*"
 dpath = "^2.0.5"
 pandasql = "^0.7.3"
 linkml-model-enrichment = "^0.0.4"
-hident = "^0.1.4"
+hident = "^0.1.7"
 
 [tool.poetry.dev-dependencies]
-black = "*"
+# black = "*"
 click-log = "*"
 pytest = "*"
 jupyter = "*"
