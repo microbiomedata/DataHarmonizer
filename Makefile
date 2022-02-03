@@ -41,7 +41,7 @@ target/string_serialization_check.txt:
 
 # demonstrating that a failed step terminates the make process
 target/string_serialization_expected_failure.txt:
-	- egrep "pattern:.*{PMID}|{DOI}|{URL}" ../mixs-source/model/schema/*yaml > $@
+	- egrep "pattern:.*{PMID}|{DOI}|{URL}" mixs-source/model/schema/*yaml > $@
 
 target/soil_biosample_regex_insight.tsv: target/soil_biosample_modular.yaml
 	poetry run range_str_ser \

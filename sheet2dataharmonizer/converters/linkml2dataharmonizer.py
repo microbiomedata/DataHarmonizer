@@ -9,18 +9,9 @@ import pandas as pd
 from linkml_runtime.utils.schemaview import SchemaView
 from sheet2dataharmonizer.converters.sheet2linkml import Sheet2LinkML
 
-from linkml_runtime.linkml_model import Annotation
+# from linkml_runtime.linkml_model import Annotation
 
 logger = logging.getLogger(__name__)
-
-
-# model_file = "target/soil_biosample_interleaved.yaml"
-# selected_class = "soil_biosample_class"
-# default_section = "default"
-# default_source = ""  # for reuse of enums?
-# default_capitalize = ""
-# default_data_status = ""
-# output_file = "target/data.tsv"
 
 
 class ValidationConverter:
@@ -400,48 +391,16 @@ class LinkML2DataHarmonizer:
             selected_class: str,
             default_section: str,
     ):
+        # sort these individually
+        tl_temp_frame = pd.DataFrame(term_list)
+        tltf_sorted = tl_temp_frame.groupby("parent class").apply(
+            pd.DataFrame.sort_values, "column_number"
+        )
+        term_list = tltf_sorted.to_dict(orient='records')
         final_list = section_list + term_list + pv_list
         needs_reordering = pd.DataFrame(final_list)
 
-        slot_review = self.model_sv.class_induced_slots(selected_class)
-        identifier_slots = []
-        for i in slot_review:
-            if i.identifier:
-                identifier_slots.append(i.name)
-
-        isa_dict = self._get_is_a_struct(selected_class, default_section)
-        identifier_sections = []
-        for i in identifier_slots:
-            identifier_sections.append(isa_dict[i])
-
-        stolen_label_rows = needs_reordering.loc[
-            needs_reordering["label"].isin(identifier_sections)
-        ]
-        nr_leftovers = needs_reordering.loc[
-            ~needs_reordering["label"].isin(identifier_sections)
-        ]
-        stolen_parent_rows = needs_reordering.loc[
-            needs_reordering["parent class"].isin(identifier_sections)
-        ]
-        nr_leftovers = nr_leftovers.loc[
-            ~nr_leftovers["parent class"].isin(identifier_sections)
-        ]
-        cream_of_crop = stolen_parent_rows.loc[
-            stolen_parent_rows["label"].isin(identifier_slots)
-        ]
-        coc_leftovers = stolen_parent_rows.loc[
-            ~stolen_parent_rows["label"].isin(identifier_slots)
-        ]
-
-        reunited = stolen_label_rows.append(cream_of_crop)
-        reunited = reunited.append(coc_leftovers)
-        reunited = reunited.append(nr_leftovers)
-
-        # group columns by sections in the template and order the columns
-        # by column_number field
-        reunited = reunited.groupby("parent class").apply(
-            pd.DataFrame.sort_values, "column_number"
-        )
+        reunited = needs_reordering
 
         self.log_tally(
             self.range_tally,
@@ -453,19 +412,3 @@ class LinkML2DataHarmonizer:
         )
 
         return reunited
-
-# # soil biosample
-# ranges that could be interpreted as datatypes or patterns
-# I already did quantity value
-# I have the following rules for any range that is defined as an enum...???
-# string                   39
-# quantity value           16
-# external identifier       3
-# date                      3
-# cur_land_use_enum         1
-# drainage_class_enum       1
-# fao_class_enum            1
-# double                    1
-# profile_position_enum     1
-# soil_horizon_enum         1
-# tillage_enum              1

@@ -113,7 +113,7 @@ def _inject_supplementary(
         and rule_val != ""
         and rule_val is not None
     ):
-        logger.info(f"requiring {rule_col} to equal {rule_val}")
+        logger.info(f"Requiring {rule_col} to equal {rule_val}")
         current_sheet = current_sheet.loc[current_sheet[rule_col].eq(rule_val)]
 
     current_dict = current_sheet.to_dict(orient="records")
@@ -365,7 +365,7 @@ def sheet2linkml(
     # haven't documented whether anything else comes along with those overrides yet
 
     if inc_emsl:
-        logger.info("including EMSL terms")
+        logger.info("Including EMSL terms")
         new_schema = _inject_supplementary(
             client_secret_json,
             sheet_id,
@@ -377,7 +377,7 @@ def sheet2linkml(
         )
 
     if jgi == "metagenomics":
-        logger.info("would extract JGI metagenomics terms")
+        logger.info("Including JGI metagenomics terms")
         new_schema = _inject_supplementary(
             client_secret_json,
             sheet_id,
@@ -390,7 +390,7 @@ def sheet2linkml(
             rule_val="metagenomics",
         )
     elif jgi == "metatranscriptomics":
-        logger.info("would extract JGI metatranscriptomics terms")
+        logger.info("Including JGI metatranscriptomics terms")
         new_schema = _inject_supplementary(
             client_secret_json,
             sheet_id,
@@ -403,9 +403,9 @@ def sheet2linkml(
             rule_val="metatranscriptomics",
         )
     elif jgi == "omit":
-        logger.info("would skip JGI terms")
+        logger.info("Skipping JGI terms")
     else:
-        logger.info("unexpected JGI processing option")
+        logger.info("Unexpected JGI processing option")
 
     # can be executed in runtime
     # consider moving into __name__ == "__main__"
