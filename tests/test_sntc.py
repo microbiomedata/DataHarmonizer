@@ -1,16 +1,12 @@
-# from itertools import dropwhile
 import re
 import pandas as pd
 import pygsheets
 import pytest
-# from linkml.generators.yamlgen import YAMLGenerator
-# from linkml_runtime.dumpers import yaml_dumper
-# from linkml_runtime.linkml_model import ClassDefinition
 from linkml_runtime.utils.schemaview import SchemaView
+from git_root import git_root
+import os
 
-# import linkml_round_trips.old.just_exacts as je
-
-import pprint
+# import pprint
 
 # test for no gaps and no repeats in column orders
 
@@ -36,49 +32,113 @@ import pprint
 
 # ---
 
+git_root_val = git_root()
+
 
 # where to put these configuration values?
 client_secret_json = "../local/client_secret.apps.googleusercontent.com.json"
-sntc_id = '1pSmxX6XGOxmoA7S7rKyj5OaEl3PmAl4jAOlROuNHrU0'
+sntc_id = "1pSmxX6XGOxmoA7S7rKyj5OaEl3PmAl4jAOlROuNHrU0"
 
-expected_SI_frame_cols = ['sheet_name', 'notes', 'input for soil DH template generation']
+expected_SI_frame_cols = [
+    "sheet_name",
+    "notes",
+    "input for soil DH template generation",
+]
 
-expected_enums_frame_cols = ['env_package', 'enum', 'permissible_value']
+expected_enums_frame_cols = ["env_package", "enum", "permissible_value"]
 
 # all the MIxS env package classed?
-# plus the derived ones from EMSL? Montana can helo with that?
-allowed_env_packs = ['soil']
-enum_check_env_pack = 'soil'
+# plus the derived ones from EMSL? Montana can help with that?
+allowed_env_packs = ["soil"]
+enum_check_env_pack = "soil"
 
 enum_suffix = "_enum"
 
-expected_tabs = ['SheetIdentification',
-                 'Example Use',
-                 'mixs_packages_x_slots',
-                 'mixs_modified_slots',
-                 'biosample_identification_slots',
-                 'nmdc_biosample_slots',
-                 'EMSL_sample_slots',
-                 'JGI_sample_slots',
-                 'Sections_order',
-                 'enums_long', 'mock_section_defs']
+expected_tabs = [
+    "SheetIdentification",
+    "Example Use",
+    "mixs_packages_x_slots",
+    "mixs_modified_slots",
+    "biosample_identification_slots",
+    "nmdc_biosample_slots",
+    "EMSL_sample_slots",
+    "JGI_sample_slots",
+    "Sections_order",
+    "enums_long",
+    "envo_terms_for_mixs_env_triad",
+    "validation_converter",
+    "soil_biosample_regex_insight_snapshot",
+]
+
 
 # order matters
-expected_mixs_soil_ind_slot_names = ['lat_lon', 'depth', 'alt', 'elev', 'temp', 'geo_loc_name', 'collection_date',
-                                     'env_broad_scale', 'env_local_scale', 'env_medium', 'cur_land_use',
-                                     'cur_vegetation', 'cur_vegetation_meth', 'previous_land_use', 'prev_land_use_meth',
-                                     'crop_rotation', 'agrochem_addition', 'tillage', 'fire', 'flooding',
-                                     'extreme_event', 'soil_horizon', 'horizon_meth', 'sieving', 'water_content',
-                                     'water_cont_soil_meth', 'pool_dna_extracts', 'store_cond', 'link_climate_info',
-                                     'annual_temp', 'season_temp', 'annual_precpt', 'season_precpt', 'link_class_info',
-                                     'fao_class', 'local_class', 'local_class_meth', 'soil_type', 'soil_type_meth',
-                                     'slope_gradient', 'slope_aspect', 'profile_position', 'drainage_class',
-                                     'soil_text_measure', 'soil_texture_meth', 'ph', 'ph_meth', 'tot_org_carb',
-                                     'tot_org_c_meth', 'tot_nitro_content', 'tot_nitro_cont_meth', 'microbial_biomass',
-                                     'micro_biomass_meth', 'link_addit_analys', 'extreme_salinity', 'salinity_meth',
-                                     'heavy_metals', 'heavy_metals_meth', 'al_sat', 'al_sat_meth', 'misc_param']
+expected_mixs_soil_ind_slot_names = [
+    "lat_lon",
+    "depth",
+    "alt",
+    "elev",
+    "temp",
+    "geo_loc_name",
+    "collection_date",
+    "env_broad_scale",
+    "env_local_scale",
+    "env_medium",
+    "cur_land_use",
+    "cur_vegetation",
+    "cur_vegetation_meth",
+    "previous_land_use",
+    "prev_land_use_meth",
+    "crop_rotation",
+    "agrochem_addition",
+    "tillage",
+    "fire",
+    "flooding",
+    "extreme_event",
+    "soil_horizon",
+    "horizon_meth",
+    "sieving",
+    "water_content",
+    "water_cont_soil_meth",
+    "pool_dna_extracts",
+    "store_cond",
+    "link_climate_info",
+    "annual_temp",
+    "season_temp",
+    "annual_precpt",
+    "season_precpt",
+    "link_class_info",
+    "fao_class",
+    "local_class",
+    "local_class_meth",
+    "soil_type",
+    "soil_type_meth",
+    "slope_gradient",
+    "slope_aspect",
+    "profile_position",
+    "drainage_class",
+    "soil_text_measure",
+    "soil_texture_meth",
+    "ph",
+    "ph_meth",
+    "tot_org_carb",
+    "tot_org_c_meth",
+    "tot_nitro_content",
+    "tot_nitro_cont_meth",
+    "microbial_biomass",
+    "micro_biomass_meth",
+    "link_addit_analys",
+    "extreme_salinity",
+    "salinity_meth",
+    "heavy_metals",
+    "heavy_metals_meth",
+    "al_sat",
+    "al_sat_meth",
+    "misc_param",
+]
 
-mixs_yaml = "mixs-source/model/schema/mixs.yaml"
+mixs_rel = "mixs-source/model/schema/mixs.yaml"
+
+mixs_yaml = os.path.join(git_root_val, mixs_rel)
 
 
 # ---
@@ -124,7 +184,7 @@ def test_sntc_gsheet_accessible(sntc_gsheet):
 
 @pytest.fixture(scope="module")
 def SI_tab(sntc_gsheet):
-    SI_tab = sntc_gsheet.worksheet("title", 'SheetIdentification')
+    SI_tab = sntc_gsheet.worksheet("title", "SheetIdentification")
     return SI_tab
 
 
@@ -152,7 +212,7 @@ def tabs_list(sntc_gsheet):
 
 
 def test_ST_frame_sheet_name_col_vs_tabs(tabs_list, SI_frame):
-    ST_frame_sheet_name_val_list = list(SI_frame['sheet_name'])
+    ST_frame_sheet_name_val_list = list(SI_frame["sheet_name"])
     assert ST_frame_sheet_name_val_list == tabs_list
 
 
@@ -190,9 +250,10 @@ def test_tabs_vs_previous(tabs_list):
 #     wks_write.frozen_rows = 1
 #     assert True
 
+
 @pytest.fixture(scope="module")
 def enums_tab(sntc_gsheet):
-    enums_tab = sntc_gsheet.worksheet("title", 'enums_long')
+    enums_tab = sntc_gsheet.worksheet("title", "enums_long")
     return enums_tab
 
 
@@ -233,7 +294,9 @@ def test_mixs_has_enums(mixs_enums):
 def test_report_enum_diffs(mixs_enums, enums_frame):
     mixs_enum_keys = mixs_enums.keys()
     mixs_enum_names = list(mixs_enum_keys)
-    sntc_enum_col = enums_frame.loc[enums_frame['env_package'].eq(enum_check_env_pack), 'enum']
+    sntc_enum_col = enums_frame.loc[
+        enums_frame["env_package"].eq(enum_check_env_pack), "enum"
+    ]
     sntc_enums = list(set(list(sntc_enum_col)))
     sntc_enums = [i + enum_suffix for i in sntc_enums]
     mixs_enum_names_only = get_list_diif(mixs_enum_names, sntc_enums)
@@ -254,8 +317,10 @@ def test_report_enum_diffs(mixs_enums, enums_frame):
         mixs_pvs = list(mixs_enums[i].permissible_values.keys())
         mixs_pvs.sort()
         sntc_pvs_series = enums_frame.loc[
-            enums_frame['env_package'].eq(enum_check_env_pack) & enums_frame['enum'].eq(
-                enum_suff_stripped), 'permissible_value']
+            enums_frame["env_package"].eq(enum_check_env_pack)
+            & enums_frame["enum"].eq(enum_suff_stripped),
+            "permissible_value",
+        ]
         sntc_pvs = list(sntc_pvs_series)
         sntc_pvs.sort()
         mixs_only = get_list_diif(mixs_pvs, sntc_pvs)
@@ -277,7 +342,7 @@ def test_report_enum_diffs(mixs_enums, enums_frame):
 @pytest.fixture(scope="module")
 def Terms_mixs(Terms_tab):
     Terms_frame = Terms_tab.get_as_df()
-    col_contents = Terms_frame['mixs_6_slot_name']
+    col_contents = Terms_frame["mixs_6_slot_name"]
     return col_contents
 
 
@@ -329,6 +394,7 @@ def get_mixs_all_slots(mixs_view):
     slots = mixs_view.all_slots()
     slotnames = [str(k) for k, v in slots.items()]
     return slotnames
+
 
 # # Moot
 # # no longer processing the Terms tab

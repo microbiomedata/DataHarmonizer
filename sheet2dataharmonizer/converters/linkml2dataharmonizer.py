@@ -1,3 +1,4 @@
+from __future__ import annotations
 import re
 import logging
 
@@ -6,16 +7,31 @@ from typing import Any, Dict, List
 import pandas as pd
 
 from linkml_runtime.utils.schemaview import SchemaView
+from sheet2dataharmonizer.converters.sheet2linkml import Sheet2LinkML
+
+# from linkml_runtime.linkml_model import Annotation
+
+import sheet2dataharmonizer.model_sections as ms
 
 logger = logging.getLogger(__name__)
 
-# model_file = "target/soil_biosample_interleaved.yaml"
-# selected_class = "soil_biosample_class"
-# default_section = "default"
-# default_source = ""  # for reuse of enums?
-# default_capitalize = ""
-# default_data_status = ""
-# output_file = "target/data.tsv"
+
+class ValidationConverter:
+    """
+    structure for looking up DH datatypes and regular expressions
+    based on MIxS string serializations and ranges
+    """
+
+    def __init__(self) -> None:
+        # parameterize these
+        selected_cols = ["from_val", "from_type", "to_type", "to_val"]
+        sheet_id = "1pSmxX6XGOxmoA7S7rKyj5OaEl3PmAl4jAOlROuNHrU0"
+        tab_title = "validation_converter"
+        client_secret = "../../local/client_secret.apps.googleusercontent.com.json"
+        raw = Sheet2LinkML.get_gsheet_frame(client_secret, sheet_id, tab_title)
+        sc_frame = raw[selected_cols]
+        vc_lod = sc_frame.to_dict(orient="records")
+        self.vc_dod = {i["from_val"]: i for i in vc_lod}
 
 
 class LinkML2DataHarmonizer:
@@ -24,7 +40,6 @@ class LinkML2DataHarmonizer:
 
     def __init__(self, linkml_model_path: str) -> None:
         self.model_sv = SchemaView(linkml_model_path)
-        self.prefix_tally = []
         self.range_tally = []
         self.string_ser_tally = []
 
@@ -123,27 +138,25 @@ class LinkML2DataHarmonizer:
         return {"required": req_from_usage, "recommended": rec_from_usage}
 
     def _get_is_a_struct(
-        self, selected_class: str, default_section: str, as_a: str = "dictionary"
+            self, selected_class: str, default_section: str, as_a: str = "dictionary"
     ):
         relevant_slots = self.model_sv.class_induced_slots(selected_class)
         isa_dict = {}
         isa_set = set()
 
         for i in relevant_slots:
-            prefix_portion = ""
-            if i.slot_uri is None or i.slot_uri == "":
-                # section_prefix = ""
-                pass
+            # block that adds appropriate section names to the data.tsv
+            ia_jsonobj = i.annotations
+            ijd = ia_jsonobj.__dict__
+            if i.annotations and "dh:section_name" in ijd:
+                # todo no, there are terms with annotations but no section_name
+                # _inject_supplementary is adding the annotations for emls, jgi, mixs modified terms etc
+                # by XXX also needs to add annotations for mixs and nmdc as-is etc terms
+                relevant_isa = i.annotations._get("dh:section_name").value
+            elif i.is_a:
+                relevant_isa = i.is_a
             else:
-                # what if the slot uri is a full uri, not a curie?
-                prefix_portion = i.slot_uri.split(":")[0] + ":"
-                logger.info(f"saw the prefix {prefix_portion}")
-                self.prefix_tally.append(prefix_portion)
-
-            if i.is_a is None:
-                relevant_isa = prefix_portion + default_section
-            else:
-                relevant_isa = prefix_portion + i.is_a
+                relevant_isa = "undef_sect"
 
             isa_dict[i.name] = relevant_isa
             isa_set.add(relevant_isa)
@@ -170,12 +183,12 @@ class LinkML2DataHarmonizer:
         return section_list
 
     def _get_term_pv_list(
-        self,
-        selected_class: str,
-        default_section: str,
-        default_source: str,
-        default_capitalize: str,
-        default_data_status: str,
+            self,
+            selected_class: str,
+            default_section: str,
+            default_source: str,
+            default_capitalize: str,
+            default_data_status: str,
     ):
         blank_row = {i: "" for i in self.table_columns()}
 
@@ -197,6 +210,7 @@ class LinkML2DataHarmonizer:
             logger.info(f"processing {i}")
             current_row = blank_row.copy()
             current_sd = rs_dict[i]
+
             current_row["Ontology ID"] = current_sd.slot_uri
             if current_sd.title is not None and len(current_sd.title) > 0:
                 current_row["label"] = current_sd.title
@@ -218,6 +232,17 @@ class LinkML2DataHarmonizer:
                 temp = re.sub(r"['\]\"]*$", "", temp)
                 current_row["description"] = temp
 
+            # block that adds column information to the data.tsv
+            # the int() is necessary to convert the column number from str type to int so
+            # pandas can sort
+            try:
+                current_row["column_number"] = int(
+                    current_sd.annotations._get("dh:column_number").value
+                )
+            except AttributeError:
+                logger.debug(f"No annotations associated with slot {current_sd.name}")
+                pass
+
             # guidance: I have moved slot used in...  out of the MIxS comments
             #  Occurrence is still in there
             #   ~ half of the MixS soil/NMDC biosample fields lack comments for "guidance"
@@ -230,35 +255,35 @@ class LinkML2DataHarmonizer:
 
             if current_sd.pattern is not None and current_sd.pattern != "":
                 if (
-                    current_row["guidance"] is not None
-                    and current_row["guidance"] != ""
+                        current_row["guidance"] is not None
+                        and current_row["guidance"] != ""
                 ):
                     current_row["guidance"] = (
-                        current_row["guidance"]
-                        + " | pattern as regular expression: "
-                        + current_sd.pattern
+                            current_row["guidance"]
+                            + " | pattern as regular expression: "
+                            + current_sd.pattern
                     )
                 else:
                     current_row["guidance"] = (
-                        "pattern as regular expression: " + current_sd.pattern
+                            "pattern as regular expression: " + current_sd.pattern
                     )
 
             if (
-                current_sd.string_serialization is not None
-                and current_sd.string_serialization != ""
+                    current_sd.string_serialization is not None
+                    and current_sd.string_serialization != ""
             ):
                 if (
-                    current_row["guidance"] is not None
-                    and current_row["guidance"] != ""
+                        current_row["guidance"] is not None
+                        and current_row["guidance"] != ""
                 ):
                     current_row["guidance"] = (
-                        current_row["guidance"]
-                        + " | pattern generalization: "
-                        + current_sd.string_serialization
+                            current_row["guidance"]
+                            + " | pattern generalization: "
+                            + current_sd.string_serialization
                     )
                 else:
                     current_row["guidance"] = (
-                        "pattern generalization: " + current_sd.string_serialization
+                            "pattern generalization: " + current_sd.string_serialization
                     )
                 # if current_sd.string_serialization == '{float}':
                 #     current_row["datatype"] = "xs:decimal"
@@ -268,8 +293,8 @@ class LinkML2DataHarmonizer:
             self.range_tally.append(current_sd.range)
 
             if (
-                current_sd.string_serialization is not None
-                and current_sd.string_serialization != ""
+                    current_sd.string_serialization is not None
+                    and current_sd.string_serialization != ""
             ):
                 self.string_ser_tally.append(current_sd.string_serialization[0:99])
             else:
@@ -361,54 +386,39 @@ class LinkML2DataHarmonizer:
         return {"term": term_list, "pv": pv_list}
 
     def _combined_list(
-        self,
-        section_list: List[str],
-        term_list: List[str],
-        pv_list: List[str],
-        selected_class: str,
-        default_section: str,
+            self,
+            section_list: List[str],
+            term_list: List[str],
+            pv_list: List[str],
+            selected_class: str,
+            default_section: str,
     ):
+        # column ordering
+        tl_temp_frame = pd.DataFrame(term_list)
+        tltf_sorted = tl_temp_frame.groupby("parent class").apply(
+            pd.DataFrame.sort_values, "column_number"
+        )
+        term_list = tltf_sorted.to_dict(orient='records')
+
+        # section ordering
+        # todo: display section titles not names
+        sl_temp_frame = pd.DataFrame(section_list)
+        # todo this should already be IN the schema!
+        section_schema = ms.build_section_schema()
+        section_frame = ms.build_section_table(section_schema)
+        sections_with_orders = sl_temp_frame.merge(right=section_frame, how="left", left_on="label", right_on="section")
+        # todo: we are generating placeholder section names for mixs and nmdc as-is terms
+        # need to assign the annotations during schema creation
+        sections_with_orders['order'] = sections_with_orders['order'].fillna(999)
+        sections_with_orders['order'] = sections_with_orders['order'].astype(int)
+        sections_with_orders.sort_values('order', inplace=True)
+        section_list = sections_with_orders.to_dict(orient='records')
+
         final_list = section_list + term_list + pv_list
         needs_reordering = pd.DataFrame(final_list)
 
-        slot_review = self.model_sv.class_induced_slots(selected_class)
-        identifier_slots = []
-        for i in slot_review:
-            if i.identifier:
-                identifier_slots.append(i.name)
+        reunited = needs_reordering
 
-        isa_dict = self._get_is_a_struct(selected_class, default_section)
-        identifier_sections = []
-        for i in identifier_slots:
-            identifier_sections.append(isa_dict[i])
-
-        stolen_label_rows = needs_reordering.loc[
-            needs_reordering["label"].isin(identifier_sections)
-        ]
-        nr_leftovers = needs_reordering.loc[
-            ~needs_reordering["label"].isin(identifier_sections)
-        ]
-        stolen_parent_rows = needs_reordering.loc[
-            needs_reordering["parent class"].isin(identifier_sections)
-        ]
-        nr_leftovers = nr_leftovers.loc[
-            ~nr_leftovers["parent class"].isin(identifier_sections)
-        ]
-        cream_of_crop = stolen_parent_rows.loc[
-            stolen_parent_rows["label"].isin(identifier_slots)
-        ]
-        coc_leftovers = stolen_parent_rows.loc[
-            ~stolen_parent_rows["label"].isin(identifier_slots)
-        ]
-
-        reunited = stolen_label_rows.append(cream_of_crop)
-        reunited = reunited.append(coc_leftovers)
-        reunited = reunited.append(nr_leftovers)
-
-        self.log_tally(
-            self.prefix_tally,
-            "TABULATION OF TERM PREFIXES, for prioritizing range->regex conversion",
-        )
         self.log_tally(
             self.range_tally,
             "TABULATION OF SLOT RANGES, for prioritizing range->regex conversion",
@@ -419,20 +429,3 @@ class LinkML2DataHarmonizer:
         )
 
         return reunited
-
-
-# # soil biosample
-# ranges that could be interpreted as datatypes or patterns
-# I already did quantity value
-# I have the following rules for any range that is defined as an enum...???
-# string                   39
-# quantity value           16
-# external identifier       3
-# date                      3
-# cur_land_use_enum         1
-# drainage_class_enum       1
-# fao_class_enum            1
-# double                    1
-# profile_position_enum     1
-# soil_horizon_enum         1
-# tillage_enum              1

@@ -9,13 +9,17 @@ from linkml_runtime.linkml_model import (
     Example,
     EnumDefinition,
     PermissibleValue,
+    Annotation
 )
 from linkml_runtime.utils.schemaview import SchemaView
 from linkml_runtime.dumpers import yaml_dumper
 
-from sheet2dataharmonizer.converters.linkml2dataharmonizer import LinkML2DataHarmonizer
+from sheet2dataharmonizer.converters.linkml2dataharmonizer import (
+    LinkML2DataHarmonizer,
+    ValidationConverter,
+)
 from sheet2dataharmonizer.converters.sheet2linkml import Sheet2LinkML
-
+import pprint
 
 logger = logging.getLogger(__name__)
 click_log.basic_config(logger)
@@ -28,7 +32,7 @@ click_log.basic_config(logger)
 @click.option("--default_section", default="default", show_default=True)
 @click.option("--default_source", default="", show_default=True)
 @click.option("--default_capitalize", default="", show_default=True)
-@click.option("--default_data_status", default="default", show_default=True)
+@click.option("--default_data_status", default="", show_default=True)
 @click.option(
     "--output_file", type=click.Path(), default="target/data.tsv", show_default=True
 )
@@ -41,7 +45,6 @@ def linkml2dataharmonizer(
     default_data_status,
     output_file,
 ):
-
     lml_dh = LinkML2DataHarmonizer(linkml_model_path=model_file)
 
     section_list = lml_dh._get_section_list(selected_class, default_section)
@@ -110,7 +113,7 @@ def _inject_supplementary(
         and rule_val != ""
         and rule_val is not None
     ):
-        logger.info(f"requiring {rule_col} to equal {rule_val}")
+        logger.info(f"Requiring {rule_col} to equal {rule_val}")
         current_sheet = current_sheet.loc[current_sheet[rule_col].eq(rule_val)]
 
     current_dict = current_sheet.to_dict(orient="records")
@@ -123,6 +126,30 @@ def _inject_supplementary(
             new_slot = SlotDefinition(
                 name=i_s, slot_uri=prefix + ":" + i_s, title=i["name"]
             )
+            
+            ann_list = []   # list of section, column pair annotations
+            if 'section' in i:
+                tag_name = "dh:section_name"
+                ghsheet_header = 'section'
+                val_name = i[ghsheet_header]
+                if not val_name:
+                    logger.warning(f"The header {ghsheet_header} could not be found.")
+                    val_name = "to_be_annotated"
+                ann = Annotation(tag=tag_name, value=val_name)
+                ann_list.append(ann)
+            if 'column_order' in i:
+                tag_name = "dh:column_number"
+                ghsheet_header = 'column_order'
+                val_name = i[ghsheet_header]
+                if not val_name:
+                    logger.warning(f"The header {ghsheet_header} could not be found.")
+                    val_name = "to_be_annotated"
+                ann = Annotation(tag=tag_name, value=val_name)
+                ann_list.append(ann)
+            
+            # assign list of annotations to slot's annotations attribute
+            new_slot.annotations = ann_list
+
             if i["requirement status"] == "required":
                 new_slot.required = True
             if i["requirement status"] == "recommended":
@@ -226,6 +253,20 @@ def _inject_supplementary(
     default="omit",
     show_default=True,
 )
+@click.option(
+    "--mixs_path",
+    default="mixs-source/model/schema/mixs.yaml",
+    show_default=True,
+    help="location of MIxS LinkML file.",
+    type=click.Path(exists=True),
+)
+@click.option(
+    "--nmdc_path",
+    default="nmdc-schema/src/schema/nmdc.yaml",
+    show_default=True,
+    help="location of NMDC schema LinkML file.",
+    type=click.Path(exists=True),
+)
 def sheet2linkml(
     constructed_schema_name,
     constructed_schema_id,
@@ -235,6 +276,8 @@ def sheet2linkml(
     env_package,
     inc_emsl,
     jgi,
+    mixs_path,
+    nmdc_path,
 ):
     additional_prefixes = {
         "prov": "http://www.w3.org/ns/prov#",
@@ -242,6 +285,7 @@ def sheet2linkml(
         "schema": "http://schema.org/",
         "xsd": "http://www.w3.org/2001/XMLSchema#",
         "UO": "http://purl.obolibrary.org/obo/UO_",
+        "dh": "https://github.com/cidgoh/DataHarmonizer/wiki"
     }
 
     new_schema = Sheet2LinkML.construct_schema(
@@ -253,7 +297,7 @@ def sheet2linkml(
 
     tasks = {
         "nmdc": {
-            "yaml": "target/nmdc_generated_no_imports.yaml",
+            "yaml": nmdc_path,
             "title": "nmdc_biosample_slots",
             "focus_class": "biosample",
             "query": """
@@ -267,7 +311,7 @@ def sheet2linkml(
                     """,
         },
         "mixs": {
-            "yaml": "target/mixs_generated_no_imports.yaml",
+            "yaml": mixs_path,
             "title": "mixs_packages_x_slots",
             "focus_class": env_package,
             "query": f"""
@@ -321,7 +365,7 @@ def sheet2linkml(
     # haven't documented whether anything else comes along with those overrides yet
 
     if inc_emsl:
-        logger.info("including EMSL terms")
+        logger.info("Including EMSL terms")
         new_schema = _inject_supplementary(
             client_secret_json,
             sheet_id,
@@ -333,7 +377,7 @@ def sheet2linkml(
         )
 
     if jgi == "metagenomics":
-        logger.info("would extract JGI metagenomics terms")
+        logger.info("Including JGI metagenomics terms")
         new_schema = _inject_supplementary(
             client_secret_json,
             sheet_id,
@@ -346,7 +390,7 @@ def sheet2linkml(
             rule_val="metagenomics",
         )
     elif jgi == "metatranscriptomics":
-        logger.info("would extract JGI metatranscriptomics terms")
+        logger.info("Including JGI metatranscriptomics terms")
         new_schema = _inject_supplementary(
             client_secret_json,
             sheet_id,
@@ -359,9 +403,9 @@ def sheet2linkml(
             rule_val="metatranscriptomics",
         )
     elif jgi == "omit":
-        logger.info("would skip JGI terms")
+        logger.info("Skipping JGI terms")
     else:
-        logger.info("unexpected JGI processing option")
+        logger.info("Unexpected JGI processing option")
 
     # can be executed in runtime
     # consider moving into __name__ == "__main__"
@@ -537,7 +581,7 @@ def range_str_ser(model_file, selected_class, output_file):
 )
 @click.option(
     "--env_package",
-    default="Soil",
+    default="soil",
     help="""for which environmental packages (as expressed in the google sheet) 
               do you want do extract curated enums??""",
 )
@@ -546,41 +590,63 @@ def tidy_triad_curations(
 ):
     raw = Sheet2LinkML.get_gsheet_frame(client_secret, sheet_id, tab_title)
 
-    raw.columns = ["enum", "raw_id", "permissible_value", "definition", "env_package"]
+    # raw.columns = ["enum", "raw_id", "permissible_value", "definition", "env_package"]
+    #
+    # raw["partial"] = raw["raw_id"].str.replace(
+    #     "<http://purl.obolibrary.org/obo/ENVO_", "ENVO:", regex=True
+    # )
+    #
+    # raw["term_id"] = raw["partial"].str.replace(">", "", regex=True)
+    #
+    # raw = raw[["env_package", "enum", "permissible_value", "term_id"]]
+    #
+    # raw["env_package"] = raw["env_package"].str.split("|", expand=False)
 
-    raw["partial"] = raw["raw_id"].str.replace(
-        "<http://purl.obolibrary.org/obo/ENVO_", "ENVO:", regex=True
-    )
-
-    raw["term_id"] = raw["partial"].str.replace(">", "", regex=True)
-
-    raw = raw[["env_package", "enum", "permissible_value", "term_id"]]
-
-    raw["env_package"] = raw["env_package"].str.split("|", expand=False)
+    raw["env_package"] = raw["packages_consensus"].str.split("|", expand=False)
 
     df_explode = raw.explode("env_package")
 
     df_explode = df_explode.loc[df_explode["env_package"].eq(env_package)]
 
-    df_explode["env_package"] = df_explode["env_package"].str.lower()
+    # logger.info(df_explode)
+
+    # df_explode["env_package"] = df_explode["env_package"].str.lower()
 
     df_explode.to_csv(curated_tsv_out, sep="\t", index=False)
 
+
 @click.command()
 @click_log.simple_verbosity_option(logger)
-@click.option('--data_tsv_in', default="target/data.tsv", type=click.Path(exists=True),
-              help='path to DataHarmonizer data.tsv input', show_default=True)
-@click.option('--data_tsv_out', default="target/data_promoted.tsv", type=click.Path(),
-              help='destination for modified data.tsv', show_default=True)
-@click.option('--promote', multiple=True, help='which columns should be promoted to select type?')
-@click.option('--extra_row_files', multiple=True, type=click.Path(exists=True),
-              help='path to files defining the new select/enum column(s) etc.', show_default=True)
+@click.option(
+    "--data_tsv_in",
+    default="target/data.tsv",
+    type=click.Path(exists=True),
+    help="path to DataHarmonizer data.tsv input",
+    show_default=True,
+)
+@click.option(
+    "--data_tsv_out",
+    default="target/data_promoted.tsv",
+    type=click.Path(),
+    help="destination for modified data.tsv",
+    show_default=True,
+)
+@click.option(
+    "--promote", multiple=True, help="which columns should be promoted to select type?"
+)
+@click.option(
+    "--extra_row_files",
+    multiple=True,
+    type=click.Path(exists=True),
+    help="path to files defining the new select/enum column(s) etc.",
+    show_default=True,
+)
 def promote_to_select(data_tsv_in, data_tsv_out, promote, extra_row_files):
     data_in = pd.read_csv(data_tsv_in, sep="\t")
     for i in promote:
         logger.info(i)
-        data_in.loc[data_in['label'].eq(i), 'datatype'] = 'select'
-        data_in.loc[data_in['label'].eq(i), 'pattern'] = ''
+        data_in.loc[data_in["label"].eq(i), "datatype"] = "select"
+        data_in.loc[data_in["label"].eq(i), "pattern"] = ""
     to_concat = [data_in]
     for i in extra_row_files:
         logger.info(i)
@@ -588,3 +654,8 @@ def promote_to_select(data_tsv_in, data_tsv_out, promote, extra_row_files):
         to_concat.append(temp)
     catted = pd.concat(to_concat)
     catted.to_csv(data_tsv_out, sep="\t", index=False)
+
+
+def validation_converter():
+    throwaway = ValidationConverter()
+    pprint.pprint(throwaway.vc_dod["{float}"])
