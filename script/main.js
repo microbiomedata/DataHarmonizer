@@ -1808,13 +1808,26 @@ const launch = (template_folder, DATA) => {
  *
  * This method is called when a new template is launched.
  */
+const overrideGetColumnCoordinates = (data) => {
+  const ret = {};
+  let column_ptr = 0;
+  for (section of data) {
+    ret[section.fieldName] = { '': column_ptr };
+    for (column of section.children) {
+      ret[section.fieldName][column.fieldName] = column_ptr;
+      column_ptr++;
+    }
+  }
+  return ret;
+};
+
 const launch_additions = () => {
-  const fieldYCoordinates = getFieldYCoordinates(window.DATA);
-  updateParentState(fieldYCoordinates, window.INVALID_CELLS);
+  updateParentState(window.INVALID_CELLS);
 }
 
-const updateParentState = (fieldYCoordinates, INVALID_CELLS) => {
-  window.parent.postMessage({ type: 'update', fieldYCoordinates, INVALID_CELLS }, "*");
+const updateParentState = (INVALID_CELLS) => {
+  const columnCoordinates = overrideGetColumnCoordinates(window.DATA);
+  window.parent.postMessage({ type: 'update', INVALID_CELLS, columnCoordinates }, "*");
 };
 
 /**
@@ -1846,7 +1859,6 @@ const setupMessageInterface = () => {
 
     window.addEventListener("message", async (event) => {
       console.log('child received event', event.data.type);
-      const fieldYCoordinates = getFieldYCoordinates(DATA);
       switch (event.data.type) {
         case 'setupTemplate':
           setupTemplate(event.data.folder);
@@ -1857,6 +1869,7 @@ const setupMessageInterface = () => {
           break;
 
         case 'validate':
+          const selected = window.HOT.deselectCell();
           runBehindLoadingScreen(() => {
             window.INVALID_CELLS = getInvalidCells(HOT, DATA);
             HOT.render();
@@ -1868,30 +1881,37 @@ const setupMessageInterface = () => {
             else
               $('#next-error-button').hide();
 
-            updateParentState(fieldYCoordinates, window.INVALID_CELLS);
+            updateParentState(window.INVALID_CELLS);
           });
           break;
 
-        case 'jumpTo':
-          const column = fieldYCoordinates[event.data.columnName];
-          scrollTo(0, column, window.DATA, window.HOT);
-          break;
         case 'jumpToRowCol':
           scrollTo(event.data.row, event.data.column, DATA, HOT);
           break;
+
         case 'changeVisibility':
-          changeColVisibility(`show-${event.data.value}-cols-dropdown-item`, DATA, HOT);
+          if (['all', 'required', 'recommended'].includes(event.data.value)) {
+            changeColVisibility(`show-${event.data.value}-cols-dropdown-item`, DATA, HOT);
+          } else {
+            const ptr = Object.keys(overrideGetColumnCoordinates(window.DATA))
+              .indexOf(event.data.value);
+            console.log(ptr);
+            changeColVisibility(`show-section-${ptr}`, DATA, HOT);
+          }
           break;
+
         case 'exportJson':
           const value = getTrimmedData(HOT)
           window.parent.postMessage({ type: 'exportJson', value }, "*");
           break;
+
         case 'loadData':
           while (!window.HOT) {
             await new Promise((resolve) => window.setTimeout(resolve, 100));
           }
           HOT.loadData(event.data.data);
           break;
+
         default:
           console.log('Unknown Type', event.data.type);
       }
