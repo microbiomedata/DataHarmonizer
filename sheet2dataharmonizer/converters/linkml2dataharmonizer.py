@@ -1,3 +1,4 @@
+from __future__ import annotations
 import re
 import logging
 
@@ -45,7 +46,6 @@ class LinkML2DataHarmonizer:
 
     def __init__(self, linkml_model_path: str) -> None:
         self.model_sv = SchemaView(linkml_model_path)
-        self.prefix_tally = []
         self.range_tally = []
         self.string_ser_tally = []
 
@@ -151,20 +151,11 @@ class LinkML2DataHarmonizer:
         isa_set = set()
 
         for i in relevant_slots:
-            prefix_portion = ""
-            if i.slot_uri is None or i.slot_uri == "":
-                # section_prefix = ""
-                pass
+            # block that adds approporiate section names to the data.tsv
+            if i.annotations:
+                relevant_isa = i.annotations._get("dh:section_name").value
             else:
-                # what if the slot uri is a full uri, not a curie?
-                prefix_portion = i.slot_uri.split(":")[0] + ":"
-                logger.info(f"saw the prefix {prefix_portion}")
-                self.prefix_tally.append(prefix_portion)
-
-            if i.is_a is None:
-                relevant_isa = prefix_portion + default_section
-            else:
-                relevant_isa = prefix_portion + i.is_a
+                relevant_isa = i.is_a
 
             isa_dict[i.name] = relevant_isa
             isa_set.add(relevant_isa)
@@ -218,6 +209,7 @@ class LinkML2DataHarmonizer:
             logger.info(f"processing {i}")
             current_row = blank_row.copy()
             current_sd = rs_dict[i]
+
             current_row["Ontology ID"] = current_sd.slot_uri
             if current_sd.title is not None and len(current_sd.title) > 0:
                 current_row["label"] = current_sd.title
@@ -238,6 +230,17 @@ class LinkML2DataHarmonizer:
                 temp = re.sub(r"^[\['\"]*", "", temp)
                 temp = re.sub(r"['\]\"]*$", "", temp)
                 current_row["description"] = temp
+
+            # block that adds column information to the data.tsv
+            # the int() is necessary to convert the column number from str type to int so
+            # pandas can sort
+            try:
+                current_row["column_number"] = int(
+                    current_sd.annotations._get("dh:column_number").value
+                )
+            except AttributeError:
+                logger.debug(f"No annotations associated with slot {current_sd.name}")
+                pass
 
             # guidance: I have moved slot used in...  out of the MIxS comments
             #  Occurrence is still in there
@@ -426,10 +429,12 @@ class LinkML2DataHarmonizer:
         reunited = reunited.append(coc_leftovers)
         reunited = reunited.append(nr_leftovers)
 
-        self.log_tally(
-            self.prefix_tally,
-            "TABULATION OF TERM PREFIXES, for prioritizing range->regex conversion",
+        # group columns by sections in the template and order the columns
+        # by column_number field
+        reunited = reunited.groupby("parent class").apply(
+            pd.DataFrame.sort_values, "column_number"
         )
+
         self.log_tally(
             self.range_tally,
             "TABULATION OF SLOT RANGES, for prioritizing range->regex conversion",
