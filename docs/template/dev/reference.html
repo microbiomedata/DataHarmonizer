@@ -31,89 +31,44 @@
 			<!-- python search and replace does this part -->	
   			
 						<tr class="section">
-							<td colspan="5"><h3>biosample_id</h3></td>
+							<td colspan="5"><h3>Sample ID</h3></td>
 						</tr>
 						
 						<tr class="section">
-							<td colspan="5"><h3>nmdc_biosamp_gold</h3></td>
+							<td colspan="5"><h3>NMDC biosample esp. GOLD paths</h3></td>
 						</tr>
 						
 						<tr class="section">
-							<td colspan="5"><h3>emsl</h3></td>
+							<td colspan="5"><h3>EMSL</h3></td>
 						</tr>
 						
 						<tr class="section">
-							<td colspan="5"><h3>jgi_mg</h3></td>
+							<td colspan="5"><h3>JGI-Metagenomics</h3></td>
 						</tr>
 						
 						<tr class="section">
-							<td colspan="5"><h3>mixs_mod_req</h3></td>
+							<td colspan="5"><h3>Metadata- MIxS Modified Required</h3></td>
 						</tr>
 						
 						<tr class="section">
-							<td colspan="5"><h3>mixs_asis_req</h3></td>
+							<td colspan="5"><h3>Metadata- MIxS Required</h3></td>
 						</tr>
 						
 						<tr class="section">
-							<td colspan="5"><h3>mixs_mod_rec</h3></td>
+							<td colspan="5"><h3>Metadata- MIxS Modified Required Where Applicable</h3></td>
 						</tr>
 						
 						<tr class="section">
-							<td colspan="5"><h3>mixs_asis_rec</h3></td>
+							<td colspan="5"><h3>Metadata- MIxS Required Where Applicable</h3></td>
 						</tr>
 						
 						<tr class="section">
-							<td colspan="5"><h3>mixs_mod_opt</h3></td>
+							<td colspan="5"><h3>Metadata- MIxS Modified Optional</h3></td>
 						</tr>
 						
 						<tr class="section">
-							<td colspan="5"><h3>mixs_asis_opt</h3></td>
+							<td colspan="5"><h3>Metadata- MIxS Optional</h3></td>
 						</tr>
-						
-						<tr>
-							<td class="label">Globally Unique ID</td>
-							<td>A globally unique identifier assigned to the biological sample to link all analytes and subsamples derived from it.</td>
-							<td>Field REQUIRED for ALL sample submission. Options: IGSN- http://www.geosamples.org/getigsn ; UUID- https://www.uuidgenerator.net/ | pattern generalization: {text}:{text}</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">sample name</td>
-							<td>A local identifier or name that for the material sample collected. Refers to the original material collected or to any derived sub-samples. It can have any format, but we suggest that you make it concise, unique and consistent within your lab, and as informative as possible.</td>
-							<td>Should be human readable | pattern generalization: {text}</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">environmental package</td>
-							<td>MIxS extension for reporting of measurements and observations obtained from one or more of the environments where the sample was obtained. All environmental packages listed here are further defined in separate subtables. By giving the name of the environmental package, a selection of fields can be made from the subtables and can be reported</td>
-							<td>pattern generalization: enumeration</td>
-							<td>soil</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">Analysis/Data Type</td>
-							<td>Include all the data types associated or available for this biosample, this field can have multiple values separated by a ;</td>
-							<td>This field is constrained to contain only a set of limited terms indicate the types of data that were generated. | pattern generalization: enumeration</td>
-							<td>metagenomics; metabolomics; proteomics</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">sample linkage</td>
-							<td>A unique identifier to assign parent-child, subsample, or sibling samples. This is relevant when a sample or other material was used to generate the new sample. This field allows multiple entries separated by ; (Examples: Soil collected from the field will link with the soil used in an incubation. The soil a plant was grown in links to the plant sample. An original culture sample was transferred to a new vial and generated a new sample)</td>
-							<td>Multiple identifiers can be provided, separated by a ; | pattern generalization: {text}:{text}</td>
-							<td>IGSN:DSJ0284</td>
-							<td>None</td>
-						</tr>
-
 						
 						<tr>
 							<td class="label">Project ID</td>
@@ -336,6 +291,249 @@
 							<td>Prefilled</td>
 							<td>Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}</td>
 							<td>504000</td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">observed biotic relationship</td>
+							<td>Description of relationship(s) between the subject organism and other organism(s) it is associated with. E.g., parasite on species X; mutualist with species Y. The target organism is the subject of the relationship, and the other organism(s) is the object</td>
+							<td>pattern generalization: enumeration</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">relationship to oxygen</td>
+							<td>Is this organism an aerobe, anaerobe? Please note that aerobic and anaerobic are valid descriptors for microbial environments</td>
+							<td>pattern generalization: enumeration</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">non-microbial biomass</td>
+							<td>Amount of biomass; should include the name for the part of biomass measured, e.g.insect, plant, total. Can include multiple measurements separated by ;</td>
+							<td>pattern generalization: {text};{float} {unit}</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">non-microbial biomass method</td>
+							<td>Reference or method used in determining biomass</td>
+							<td>required if "non-microbial biomass" is provided | pattern generalization: {PMID}|{DOI}|{URL}</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">microbial biomass carbon</td>
+							<td>The part of the organic matter in the soil that constitutes living microorganisms smaller than 5-10 micrometer. If you keep this, you would need to have correction factors used for conversion to the final units</td>
+							<td>pattern generalization: {float} {unit}</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">microbial biomass carbon method</td>
+							<td>Reference or method used in determining microbial biomass</td>
+							<td>required if "microbial_biomass_C" is provided | pattern generalization: {PMID}|{DOI}|{URL}</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">microbial biomass nitrogen</td>
+							<td>The part of the organic matter in the soil that constitutes living microorganisms smaller than 5-10 micrometer. If you keep this, you would need to have correction factors used for conversion to the final units</td>
+							<td>pattern generalization: {float} {unit}</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">microbial biomass nitrogen method</td>
+							<td>Reference or method used in determining microbial biomass nitrogen</td>
+							<td>required if "microbial_biomass_N" is provided | pattern generalization: {PMID}|{DOI}|{URL}</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">organic nitrogen method</td>
+							<td>Method used for obtaining organic nitrogen</td>
+							<td>pattern generalization: {PMID}|{DOI}|{URL}</td>
+							<td>required if "org_nitro_ is provided</td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">growth facility</td>
+							<td>Type of facility/location where the sample was harvested; controlled vocabulary: growth chamber, open top chamber, glasshouse, experimental garden, field.</td>
+							<td>pattern generalization: enumeration</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">storage conditions</td>
+							<td>Explain how the soil sample is stored (fresh/frozen/other).</td>
+							<td>pattern generalization: enumeration</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">Collection Date</td>
+							<td>The date of sampling, either as an instance (single point) or interval. </td>
+							<td>Date should be formatted as YYYY-MM-DD | pattern generalization: YYYY-MM-DD</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">collection time</td>
+							<td>The time of sampling, either as an instance (single point) or interval.</td>
+							<td>Time should be formatted as HH:MM:SS | pattern generalization: HH:MM:SS</td>
+							<td>Time should be reported in GMT (LINK)</td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">Incubation Collection Date</td>
+							<td>Date the incubation was harvested/collected/ended. Only relevant for incubation samples.</td>
+							<td>date should be represented as YYYY-MM-DD. See here for a converter: https://www.worldtimebuddy.com/pst-to-gmt-converter | pattern generalization: {timestamp}</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">Incubation Collection Time</td>
+							<td>Time the incubation was harvested/collected/ended. Only relevant for incubation samples.</td>
+							<td>Time should be represented as HH:MM:SS in GMT. See here for a converter: https://www.worldtimebuddy.com/pst-to-gmt-converter | pattern generalization: {timestamp}</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">Incubation Start Date</td>
+							<td>Date the incubation was started. Only relevant for incubation samples.</td>
+							<td>date should be represented as YYYY-MM-DD | pattern generalization: {timestamp}</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">Incubation Start Time</td>
+							<td>Time the incubation was started. Only relevant for incubation samples.</td>
+							<td>Time should be represented as HH:MM:SS GMT | pattern generalization: {timestamp}</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">depth</td>
+							<td>The vertical distance below local surface, e.g. For sediment or soil samples depth is measured from sediment or soil surface, respectively. Depth can be reported as an interval for subsurface samples.</td>
+							<td>All depths should be reported in meters | pattern generalization: {float}| {float}-{float}</td>
+							<td>0-0.1 OR 1</td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">sample material processing</td>
+							<td>A brief description of any processing applied to the sample during or after retrieving the sample from environment, or a link to the relevant protocol(s) performed.</td>
+							<td>pattern generalization: {text}</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">sample collection device</td>
+							<td>The device used to collect an environmental sample. This field accepts terms listed under environmental sampling device (http://purl.obolibrary.org/obo/ENVO). This field also accepts terms listed under specimen collection device (http://purl.obolibrary.org/obo/GENEPIO_0002094).</td>
+							<td>Report dimensions and details when applicable | pattern generalization: {termLabel} {[termID]}|{text}</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">sample collection method</td>
+							<td>The method employed for collecting the sample.</td>
+							<td>This can be a citation or description | pattern generalization: {PMID}|{DOI}|{URL}|{text}</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">Filter Method</td>
+							<td>Type of filter used or how the sample was filteres</td>
+							<td>pattern generalization: {text}</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">amount or size of sample collected</td>
+							<td>The total amount or size (volume (ml), mass (g) or area (m2) ) of sample collected.</td>
+							<td>This referes to the TOTAL amount of sample collected from the experiment. NOT the amount sent to each institution or collected for a specific analysis. | pattern generalization: {float} {unit}</td>
+							<td>5 grams; 10 mL</td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">experimental factor- other</td>
+							<td>Other details about your sample that you feel can't be accurately represented in the available columns.</td>
+							<td>pattern generalization: {text}</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">other treatments</td>
+							<td>Other treatments applied to your samples that are not applicable to the provided fields</td>
+							<td>pattern generalization: {text}</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">isotope exposure/addition</td>
+							<td>List isotope exposure or addition applied to your sample.</td>
+							<td>pattern generalization: {termLabel} {[termID]}; {timestamp}</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">pH</td>
+							<td>Ph measurement of the sample, or liquid portion of sample, or aqueous phase of the fluid</td>
+							<td>Expected value: measurement value | pattern generalization: {float}</td>
+							<td>7.2</td>
 							<td>None</td>
 						</tr>
 
@@ -836,6 +1034,69 @@
 
 						
 						<tr>
+							<td class="label">broad-scale environmental context</td>
+							<td>Report the major environmental system the sample or specimen came from. The system(s) identified should have a coarse spatial grain, to provide the general environmental context of where the sampling was done (e.g. in the desert or a rainforest). We recommend using subclasses of EnvO’s biome class:  http://purl.obolibrary.org/obo/ENVO_00000428. EnvO documentation about how to use the field: https://github.com/EnvironmentOntology/envo/wiki/Using-ENVO-with-MIxS</td>
+							<td>pattern generalization: {termLabel} {[termID]}</td>
+							<td>oceanic epipelagic zone biome [ENVO:01000033] for annotating a water sample from the photic zone in middle of the Atlantic Ocean</td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">local environmental context</td>
+							<td>Report the entity or entities which are in the sample or specimen’s local vicinity and which you believe have significant causal influences on your sample or specimen. We recommend using EnvO terms which are of smaller spatial grain than your entry for env_broad_scale. Terms, such as anatomical sites, from other OBO Library ontologies which interoperate with EnvO (e.g. UBERON) are accepted in this field. EnvO documentation about how to use the field: https://github.com/EnvironmentOntology/envo/wiki/Using-ENVO-with-MIxS.</td>
+							<td>pattern generalization: {termLabel} {[termID]}</td>
+							<td>litter layer [ENVO:01000338]; Annotating a pooled sample taken from various vegetation layers in a forest consider: canopy [ENVO:00000047]|herb and fern layer [ENVO:01000337]|litter layer [ENVO:01000338]|understory [01000335]|shrub layer [ENVO:01000336].</td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">environmental medium</td>
+							<td>Report the environmental material(s) immediately surrounding the sample or specimen at the time of sampling. We recommend using subclasses of 'environmental material' (http://purl.obolibrary.org/obo/ENVO_00010483). EnvO documentation about how to use the field: https://github.com/EnvironmentOntology/envo/wiki/Using-ENVO-with-MIxS . Terms from other OBO ontologies are permissible as long as they reference mass/volume nouns (e.g. air, water, blood) and not discrete, countable entities (e.g. a tree, a leaf, a table top).</td>
+							<td>pattern generalization: {termLabel} {[termID]}</td>
+							<td>soil [ENVO:00001998]; Annotating a fish swimming in the upper 100 m of the Atlantic Ocean, consider: ocean water [ENVO:00002151]. Example: Annotating a duck on a pond consider: pond water [ENVO:00002228]|air [ENVO_00002005]</td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">geographic location (country and/or sea,region)</td>
+							<td>The geographical origin of the sample as defined by the country or sea name followed by specific region name. Country or sea names should be chosen from the INSDC country list (http://insdc.org/country.html), or the GAZ ontology (http://purl.bioontology.org/ontology/GAZ)</td>
+							<td>pattern generalization: {term}: {term}, {text}</td>
+							<td>USA: Maryland, Bethesda</td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">geographic location (latitude and longitude)</td>
+							<td>The geographical origin of the sample as defined by latitude and longitude. The values should be reported in decimal degrees and in WGS84 system</td>
+							<td>pattern generalization: {float} {float}</td>
+							<td>50.586825 6.408977</td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">elevation</td>
+							<td>Elevation of the sampling site is its height above a fixed reference point, most commonly the mean sea level. Elevation is mainly used when referring to points on the earth's surface, while altitude is used for points above the surface, such as an aircraft in flight or a spacecraft in orbit.</td>
+							<td></td>
+							<td>100 meter</td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">sample storage temperature</td>
+							<td>Temperature at which sample was stored, e.g. -80 degree Celsius</td>
+							<td></td>
+							<td>-80 degree Celsius</td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
 							<td class="label">composite design/sieving</td>
 							<td>Collection design of pooled samples and/or sieve size and amount of sample sieved</td>
 							<td>pattern generalization: {{text}|{float} {unit}};{float} {unit}</td>
@@ -944,312 +1205,6 @@
 
 						
 						<tr>
-							<td class="label">broad-scale environmental context</td>
-							<td>Report the major environmental system the sample or specimen came from. The system(s) identified should have a coarse spatial grain, to provide the general environmental context of where the sampling was done (e.g. in the desert or a rainforest). We recommend using subclasses of EnvO’s biome class:  http://purl.obolibrary.org/obo/ENVO_00000428. EnvO documentation about how to use the field: https://github.com/EnvironmentOntology/envo/wiki/Using-ENVO-with-MIxS</td>
-							<td>pattern generalization: {termLabel} {[termID]}</td>
-							<td>oceanic epipelagic zone biome [ENVO:01000033] for annotating a water sample from the photic zone in middle of the Atlantic Ocean</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">local environmental context</td>
-							<td>Report the entity or entities which are in the sample or specimen’s local vicinity and which you believe have significant causal influences on your sample or specimen. We recommend using EnvO terms which are of smaller spatial grain than your entry for env_broad_scale. Terms, such as anatomical sites, from other OBO Library ontologies which interoperate with EnvO (e.g. UBERON) are accepted in this field. EnvO documentation about how to use the field: https://github.com/EnvironmentOntology/envo/wiki/Using-ENVO-with-MIxS.</td>
-							<td>pattern generalization: {termLabel} {[termID]}</td>
-							<td>litter layer [ENVO:01000338]; Annotating a pooled sample taken from various vegetation layers in a forest consider: canopy [ENVO:00000047]|herb and fern layer [ENVO:01000337]|litter layer [ENVO:01000338]|understory [01000335]|shrub layer [ENVO:01000336].</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">environmental medium</td>
-							<td>Report the environmental material(s) immediately surrounding the sample or specimen at the time of sampling. We recommend using subclasses of 'environmental material' (http://purl.obolibrary.org/obo/ENVO_00010483). EnvO documentation about how to use the field: https://github.com/EnvironmentOntology/envo/wiki/Using-ENVO-with-MIxS . Terms from other OBO ontologies are permissible as long as they reference mass/volume nouns (e.g. air, water, blood) and not discrete, countable entities (e.g. a tree, a leaf, a table top).</td>
-							<td>pattern generalization: {termLabel} {[termID]}</td>
-							<td>soil [ENVO:00001998]; Annotating a fish swimming in the upper 100 m of the Atlantic Ocean, consider: ocean water [ENVO:00002151]. Example: Annotating a duck on a pond consider: pond water [ENVO:00002228]|air [ENVO_00002005]</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">geographic location (country and/or sea,region)</td>
-							<td>The geographical origin of the sample as defined by the country or sea name followed by specific region name. Country or sea names should be chosen from the INSDC country list (http://insdc.org/country.html), or the GAZ ontology (http://purl.bioontology.org/ontology/GAZ)</td>
-							<td>pattern generalization: {term}: {term}, {text}</td>
-							<td>USA: Maryland, Bethesda</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">geographic location (latitude and longitude)</td>
-							<td>The geographical origin of the sample as defined by latitude and longitude. The values should be reported in decimal degrees and in WGS84 system</td>
-							<td>pattern generalization: {float} {float}</td>
-							<td>50.586825 6.408977</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">elevation</td>
-							<td>Elevation of the sampling site is its height above a fixed reference point, most commonly the mean sea level. Elevation is mainly used when referring to points on the earth's surface, while altitude is used for points above the surface, such as an aircraft in flight or a spacecraft in orbit.</td>
-							<td></td>
-							<td>100 meter</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">sample storage temperature</td>
-							<td>Temperature at which sample was stored, e.g. -80 degree Celsius</td>
-							<td></td>
-							<td>-80 degree Celsius</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">observed biotic relationship</td>
-							<td>Description of relationship(s) between the subject organism and other organism(s) it is associated with. E.g., parasite on species X; mutualist with species Y. The target organism is the subject of the relationship, and the other organism(s) is the object</td>
-							<td>pattern generalization: enumeration</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">relationship to oxygen</td>
-							<td>Is this organism an aerobe, anaerobe? Please note that aerobic and anaerobic are valid descriptors for microbial environments</td>
-							<td>pattern generalization: enumeration</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">non-microbial biomass</td>
-							<td>Amount of biomass; should include the name for the part of biomass measured, e.g.insect, plant, total. Can include multiple measurements separated by ;</td>
-							<td>pattern generalization: {text};{float} {unit}</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">non-microbial biomass method</td>
-							<td>Reference or method used in determining biomass</td>
-							<td>required if "non-microbial biomass" is provided | pattern generalization: {PMID}|{DOI}|{URL}</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">microbial biomass carbon</td>
-							<td>The part of the organic matter in the soil that constitutes living microorganisms smaller than 5-10 micrometer. If you keep this, you would need to have correction factors used for conversion to the final units</td>
-							<td>pattern generalization: {float} {unit}</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">microbial biomass carbon method</td>
-							<td>Reference or method used in determining microbial biomass</td>
-							<td>required if "microbial_biomass_C" is provided | pattern generalization: {PMID}|{DOI}|{URL}</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">microbial biomass nitrogen</td>
-							<td>The part of the organic matter in the soil that constitutes living microorganisms smaller than 5-10 micrometer. If you keep this, you would need to have correction factors used for conversion to the final units</td>
-							<td>pattern generalization: {float} {unit}</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">microbial biomass nitrogen method</td>
-							<td>Reference or method used in determining microbial biomass nitrogen</td>
-							<td>required if "microbial_biomass_N" is provided | pattern generalization: {PMID}|{DOI}|{URL}</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">organic nitrogen method</td>
-							<td>Method used for obtaining organic nitrogen</td>
-							<td>pattern generalization: {PMID}|{DOI}|{URL}</td>
-							<td>required if "org_nitro_ is provided</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">collection time</td>
-							<td>The time of sampling, either as an instance (single point) or interval.</td>
-							<td>Time should be formatted as HH:MM:SS | pattern generalization: HH:MM:SS</td>
-							<td>Time should be reported in GMT (LINK)</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">Incubation Collection Date</td>
-							<td>Date the incubation was harvested/collected/ended. Only relevant for incubation samples.</td>
-							<td>date should be represented as YYYY-MM-DD. See here for a converter: https://www.worldtimebuddy.com/pst-to-gmt-converter | pattern generalization: {timestamp}</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">Incubation Collection Time</td>
-							<td>Time the incubation was harvested/collected/ended. Only relevant for incubation samples.</td>
-							<td>Time should be represented as HH:MM:SS in GMT. See here for a converter: https://www.worldtimebuddy.com/pst-to-gmt-converter | pattern generalization: {timestamp}</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">Incubation Start Date</td>
-							<td>Date the incubation was started. Only relevant for incubation samples.</td>
-							<td>date should be represented as YYYY-MM-DD | pattern generalization: {timestamp}</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">Incubation Start Time</td>
-							<td>Time the incubation was started. Only relevant for incubation samples.</td>
-							<td>Time should be represented as HH:MM:SS GMT | pattern generalization: {timestamp}</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">depth</td>
-							<td>The vertical distance below local surface, e.g. For sediment or soil samples depth is measured from sediment or soil surface, respectively. Depth can be reported as an interval for subsurface samples.</td>
-							<td>All depths should be reported in meters | pattern generalization: {float}| {float}-{float}</td>
-							<td>0-0.1 OR 1</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">sample material processing</td>
-							<td>A brief description of any processing applied to the sample during or after retrieving the sample from environment, or a link to the relevant protocol(s) performed.</td>
-							<td>pattern generalization: {text}</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">sample collection device</td>
-							<td>The device used to collect an environmental sample. This field accepts terms listed under environmental sampling device (http://purl.obolibrary.org/obo/ENVO). This field also accepts terms listed under specimen collection device (http://purl.obolibrary.org/obo/GENEPIO_0002094).</td>
-							<td>Report dimensions and details when applicable | pattern generalization: {termLabel} {[termID]}|{text}</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">sample collection method</td>
-							<td>The method employed for collecting the sample.</td>
-							<td>This can be a citation or description | pattern generalization: {PMID}|{DOI}|{URL}|{text}</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">Filter Method</td>
-							<td>Type of filter used or how the sample was filteres</td>
-							<td>pattern generalization: {text}</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">amount or size of sample collected</td>
-							<td>The total amount or size (volume (ml), mass (g) or area (m2) ) of sample collected.</td>
-							<td>This referes to the TOTAL amount of sample collected from the experiment. NOT the amount sent to each institution or collected for a specific analysis. | pattern generalization: {float} {unit}</td>
-							<td>5 grams; 10 mL</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">experimental factor- other</td>
-							<td>Other details about your sample that you feel can't be accurately represented in the available columns.</td>
-							<td>pattern generalization: {text}</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">other treatments</td>
-							<td>Other treatments applied to your samples that are not applicable to the provided fields</td>
-							<td>pattern generalization: {text}</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">isotope exposure/addition</td>
-							<td>List isotope exposure or addition applied to your sample.</td>
-							<td>pattern generalization: {termLabel} {[termID]}; {timestamp}</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">pH</td>
-							<td>Ph measurement of the sample, or liquid portion of sample, or aqueous phase of the fluid</td>
-							<td>Expected value: measurement value | pattern generalization: {float}</td>
-							<td>7.2</td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">growth facility</td>
-							<td>Type of facility/location where the sample was harvested; controlled vocabulary: growth chamber, open top chamber, glasshouse, experimental garden, field.</td>
-							<td>pattern generalization: enumeration</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">storage conditions</td>
-							<td>Explain how the soil sample is stored (fresh/frozen/other).</td>
-							<td>pattern generalization: enumeration</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">Collection Date</td>
-							<td>The date of sampling, either as an instance (single point) or interval. </td>
-							<td>Date should be formatted as YYYY-MM-DD | pattern generalization: YYYY-MM-DD</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
 							<td class="label">ecosystem</td>
 							<td>An ecosystem is a combination of a physical environment (abiotic factors) and all the organisms (biotic factors) that interact with this environment. Ecosystem is in position 1/5 in a GOLD path.</td>
 							<td>The abiotic factors play a profound role on the type and composition of organisms in a given environment. The GOLD Ecosystem at the top of the five-level classification system is aimed at capturing the broader environment from which an organism or environmental sample is collected. The three broad groups under Ecosystem are Environmental, Host-associated, and Engineered. They represent samples collected from a natural environment or from another organism or from engineered environments like bioreactors respectively.</td>
@@ -1290,6 +1245,51 @@
 							<td>Specific ecosystems represent specific features of the environment like aphotic zone in an ocean or gastric mucosa within a host digestive system. Specific ecosystem is in position 5/5 in a GOLD path.</td>
 							<td>Specific ecosystems help to define samples based on very specific characteristics of an environment under the five-level classification system.</td>
 							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">Globally Unique ID</td>
+							<td>A globally unique identifier assigned to the biological sample to link all analytes and subsamples derived from it.</td>
+							<td>Field REQUIRED for ALL sample submission. Options: IGSN- http://www.geosamples.org/getigsn ; UUID- https://www.uuidgenerator.net/ | pattern generalization: {text}:{text}</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">sample name</td>
+							<td>A local identifier or name that for the material sample collected. Refers to the original material collected or to any derived sub-samples. It can have any format, but we suggest that you make it concise, unique and consistent within your lab, and as informative as possible.</td>
+							<td>Should be human readable | pattern generalization: {text}</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">environmental package</td>
+							<td>MIxS extension for reporting of measurements and observations obtained from one or more of the environments where the sample was obtained. All environmental packages listed here are further defined in separate subtables. By giving the name of the environmental package, a selection of fields can be made from the subtables and can be reported</td>
+							<td>pattern generalization: enumeration</td>
+							<td>soil</td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">Analysis/Data Type</td>
+							<td>Include all the data types associated or available for this biosample, this field can have multiple values separated by a ;</td>
+							<td>This field is constrained to contain only a set of limited terms indicate the types of data that were generated. | pattern generalization: enumeration</td>
+							<td>metagenomics; metabolomics; proteomics</td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">sample linkage</td>
+							<td>A unique identifier to assign parent-child, subsample, or sibling samples. This is relevant when a sample or other material was used to generate the new sample. This field allows multiple entries separated by ; (Examples: Soil collected from the field will link with the soil used in an incubation. The soil a plant was grown in links to the plant sample. An original culture sample was transferred to a new vial and generated a new sample)</td>
+							<td>Multiple identifiers can be provided, separated by a ; | pattern generalization: {text}:{text}</td>
+							<td>IGSN:DSJ0284</td>
 							<td>None</td>
 						</tr>
 

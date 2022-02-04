@@ -1,6 +1,6 @@
 var DATA = [
   {
-    "fieldName": "biosample_id",
+    "fieldName": "Sample ID",
     "children": [
       {
         "fieldName": "Globally Unique ID",
@@ -122,7 +122,7 @@ var DATA = [
     ]
   },
   {
-    "fieldName": "nmdc_biosamp_gold",
+    "fieldName": "NMDC biosample esp. GOLD paths",
     "children": [
       {
         "fieldName": "ecosystem",
@@ -232,7 +232,7 @@ var DATA = [
     ]
   },
   {
-    "fieldName": "emsl",
+    "fieldName": "EMSL",
     "children": [
       {
         "fieldName": "Project ID",
@@ -368,7 +368,7 @@ var DATA = [
     ]
   },
   {
-    "fieldName": "jgi_mg",
+    "fieldName": "JGI-Metagenomics",
     "children": [
       {
         "fieldName": "DNA Seq Project ID",
@@ -792,7 +792,7 @@ var DATA = [
     ]
   },
   {
-    "fieldName": "mixs_mod_req",
+    "fieldName": "Metadata- MIxS Modified Required",
     "children": [
       {
         "fieldName": "growth facility",
@@ -877,7 +877,7 @@ var DATA = [
     ]
   },
   {
-    "fieldName": "mixs_asis_req",
+    "fieldName": "Metadata- MIxS Required",
     "children": [
       {
         "fieldName": "broad-scale environmental context",
@@ -1155,7 +1155,7 @@ var DATA = [
     ]
   },
   {
-    "fieldName": "mixs_mod_rec",
+    "fieldName": "Metadata- MIxS Modified Required Where Applicable",
     "children": [
       {
         "fieldName": "collection time",
@@ -1476,7 +1476,7 @@ var DATA = [
     ]
   },
   {
-    "fieldName": "mixs_asis_rec",
+    "fieldName": "Metadata- MIxS Required Where Applicable",
     "children": [
       {
         "fieldName": "composite design/sieving",
@@ -1736,7 +1736,7 @@ var DATA = [
     ]
   },
   {
-    "fieldName": "mixs_mod_opt",
+    "fieldName": "Metadata- MIxS Modified Optional",
     "children": [
       {
         "fieldName": "observed biotic relationship",
@@ -1949,7 +1949,7 @@ var DATA = [
     ]
   },
   {
-    "fieldName": "mixs_asis_opt",
+    "fieldName": "Metadata- MIxS Optional",
     "children": [
       {
         "fieldName": "slope aspect",
