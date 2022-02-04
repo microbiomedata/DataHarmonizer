@@ -6,10 +6,12 @@ import pandas as pd
 
 from linkml_runtime.linkml_model import (
     SlotDefinition,
+    ClassDefinition,
+    Annotation,
     Example,
     EnumDefinition,
     PermissibleValue,
-    Annotation
+    Annotation,
 )
 from linkml_runtime.utils.schemaview import SchemaView
 from linkml_runtime.dumpers import yaml_dumper
@@ -144,18 +146,19 @@ def _inject_supplementary(
             )
 
             ann_list = []  # list of section, column pair annotations
-            if 'section' in i:
+
+            if "section" in i:
                 tag_name = "dh:section_name"
-                ghsheet_header = 'section'
+                ghsheet_header = "section"
                 val_name = i[ghsheet_header]
                 if not val_name:
                     logger.warning(f"The header {ghsheet_header} could not be found.")
                     val_name = "to_be_annotated"
                 ann = Annotation(tag=tag_name, value=val_name)
                 ann_list.append(ann)
-            if 'column_order' in i:
+            if "column_order" in i:
                 tag_name = "dh:column_number"
-                ghsheet_header = 'column_order'
+                ghsheet_header = "column_order"
                 val_name = i[ghsheet_header]
                 if not val_name:
                     logger.warning(f"The header {ghsheet_header} could not be found.")
@@ -219,6 +222,29 @@ def _inject_supplementary(
                     # try to standardize where "enumeration" is expressed... expected value comment/guidance?
 
             schema.slots[i_s] = new_slot
+
+            # retreive section and section order information from Sections_order tab
+            section_sheet = Sheet2LinkML.get_gsheet_frame(
+                title="Sections_order",
+                sheet_id=supplementary_id,
+                gauth_file_path=secret,
+            )
+            section_lod = section_sheet.to_dict(orient="records")
+
+            dh_section_class = ClassDefinition(name="dh_section")
+            schema.classes["dh_section"] = dh_section_class
+            for i in section_lod:
+                sn = i["section_name"]
+                st = i["section_title"]
+                current_class = ClassDefinition(name=sn, title=st)
+                if i["notes"] != "" and i["notes"] is not None:
+                    current_class.comments.append(i["notes"])
+                current_class.annotations["dh:section_order"] = Annotation(
+                    tag="dh:section_order", value=i["section_order"]
+                )
+                current_class.is_a = "dh_section"
+                schema.classes[sn] = current_class
+
             schema.classes[class_name].slots.append(i_s)
 
     return schema
@@ -301,7 +327,7 @@ def sheet2linkml(
         "schema": "http://schema.org/",
         "xsd": "http://www.w3.org/2001/XMLSchema#",
         "UO": "http://purl.obolibrary.org/obo/UO_",
-        "dh": "https://github.com/cidgoh/DataHarmonizer/wiki"
+        "dh": "https://github.com/cidgoh/DataHarmonizer/wiki",
     }
 
     new_schema = Sheet2LinkML.construct_schema(

@@ -3,6 +3,7 @@ import re
 import logging
 
 from typing import Any, Dict, List
+from importlib_metadata import PathDistribution
 
 import pandas as pd
 
@@ -11,7 +12,7 @@ from sheet2dataharmonizer.converters.sheet2linkml import Sheet2LinkML
 
 # from linkml_runtime.linkml_model import Annotation
 
-import sheet2dataharmonizer.model_sections as ms
+# import sheet2dataharmonizer.model_sections as ms
 
 logger = logging.getLogger(__name__)
 
@@ -138,7 +139,7 @@ class LinkML2DataHarmonizer:
         return {"required": req_from_usage, "recommended": rec_from_usage}
 
     def _get_is_a_struct(
-            self, selected_class: str, default_section: str, as_a: str = "dictionary"
+        self, selected_class: str, default_section: str, as_a: str = "dictionary"
     ):
         relevant_slots = self.model_sv.class_induced_slots(selected_class)
         isa_dict = {}
@@ -180,12 +181,12 @@ class LinkML2DataHarmonizer:
         return section_list
 
     def _get_term_pv_list(
-            self,
-            selected_class: str,
-            default_section: str,
-            default_source: str,
-            default_capitalize: str,
-            default_data_status: str,
+        self,
+        selected_class: str,
+        default_section: str,
+        default_source: str,
+        default_capitalize: str,
+        default_data_status: str,
     ):
         blank_row = {i: "" for i in self.table_columns()}
 
@@ -252,35 +253,35 @@ class LinkML2DataHarmonizer:
 
             if current_sd.pattern is not None and current_sd.pattern != "":
                 if (
-                        current_row["guidance"] is not None
-                        and current_row["guidance"] != ""
+                    current_row["guidance"] is not None
+                    and current_row["guidance"] != ""
                 ):
                     current_row["guidance"] = (
-                            current_row["guidance"]
-                            + " | pattern as regular expression: "
-                            + current_sd.pattern
+                        current_row["guidance"]
+                        + " | pattern as regular expression: "
+                        + current_sd.pattern
                     )
                 else:
                     current_row["guidance"] = (
-                            "pattern as regular expression: " + current_sd.pattern
+                        "pattern as regular expression: " + current_sd.pattern
                     )
 
             if (
-                    current_sd.string_serialization is not None
-                    and current_sd.string_serialization != ""
+                current_sd.string_serialization is not None
+                and current_sd.string_serialization != ""
             ):
                 if (
-                        current_row["guidance"] is not None
-                        and current_row["guidance"] != ""
+                    current_row["guidance"] is not None
+                    and current_row["guidance"] != ""
                 ):
                     current_row["guidance"] = (
-                            current_row["guidance"]
-                            + " | pattern generalization: "
-                            + current_sd.string_serialization
+                        current_row["guidance"]
+                        + " | pattern generalization: "
+                        + current_sd.string_serialization
                     )
                 else:
                     current_row["guidance"] = (
-                            "pattern generalization: " + current_sd.string_serialization
+                        "pattern generalization: " + current_sd.string_serialization
                     )
                 # if current_sd.string_serialization == '{float}':
                 #     current_row["datatype"] = "xs:decimal"
@@ -290,8 +291,8 @@ class LinkML2DataHarmonizer:
             self.range_tally.append(current_sd.range)
 
             if (
-                    current_sd.string_serialization is not None
-                    and current_sd.string_serialization != ""
+                current_sd.string_serialization is not None
+                and current_sd.string_serialization != ""
             ):
                 self.string_ser_tally.append(current_sd.string_serialization[0:99])
             else:
@@ -382,34 +383,45 @@ class LinkML2DataHarmonizer:
 
         return {"term": term_list, "pv": pv_list}
 
+    def build_section_table(self):
+        table_rows = []
+        dh_sections = self.model_sv.class_children("dh_section")
+        for i in dh_sections:
+            section_class = self.model_sv.get_class(i)
+            section_order = section_class.annotations['dh:section_order']['value']
+            section_title = section_class.title
+            table_rows.append({"section": i, "title": section_title, "order": section_order, })
+        section_frame = pd.DataFrame(table_rows)
+        return section_frame
+
     def _combined_list(
-            self,
-            section_list: List[str],
-            term_list: List[str],
-            pv_list: List[str],
-            selected_class: str,
-            default_section: str,
+        self,
+        section_list: List[str],
+        term_list: List[str],
+        pv_list: List[str],
+        selected_class: str,
+        default_section: str,
     ):
         # column ordering
         tl_temp_frame = pd.DataFrame(term_list)
         tltf_sorted = tl_temp_frame.groupby("parent class").apply(
             pd.DataFrame.sort_values, "column_number"
         )
-        term_list = tltf_sorted.to_dict(orient='records')
+        term_list = tltf_sorted.to_dict(orient="records")
 
         # section ordering
         # todo: display section titles not names
         sl_temp_frame = pd.DataFrame(section_list)
-        # todo this should already be IN the schema!
-        section_schema = ms.build_section_schema()
-        section_frame = ms.build_section_table(section_schema)
-        sections_with_orders = sl_temp_frame.merge(right=section_frame, how="left", left_on="label", right_on="section")
+        section_frame = self.build_section_table()
+        sections_with_orders = sl_temp_frame.merge(
+            right=section_frame, how="left", left_on="label", right_on="section"
+        )
         # todo: we are generating placeholder section names for mixs and nmdc as-is terms
         # need to assign the annotations during schema creation
-        sections_with_orders['order'] = sections_with_orders['order'].fillna(999)
-        sections_with_orders['order'] = sections_with_orders['order'].astype(int)
-        sections_with_orders.sort_values('order', inplace=True)
-        section_list = sections_with_orders.to_dict(orient='records')
+        sections_with_orders["order"] = sections_with_orders["order"].fillna(999)
+        sections_with_orders["order"] = sections_with_orders["order"].astype(int)
+        sections_with_orders.sort_values("order", inplace=True)
+        section_list = sections_with_orders.to_dict(orient="records")
 
         final_list = section_list + term_list + pv_list
         needs_reordering = pd.DataFrame(final_list)
