@@ -14,8 +14,7 @@
 const VERSION = '0.15.1';
 const VERSION_TEXT = 'DataHarmonizer provenance: v' + VERSION;
 const TEMPLATES = {
-  'MAM NMDC Dev Template': {'folder': 'dev', 'status': 'published'},
-  'CanCOGeN Covid-19': {'folder': 'canada_covid19', 'status': 'published'}
+  'Soil for EMSL and JGI metagenomics': {'folder': 'soil_emsl_jgi_mg', 'status': 'published'}
 };
 // Currently selected cell range[row,col,row2,col2]
 CURRENT_SELECTION = [null,null,null,null];
@@ -1386,7 +1385,7 @@ $(document).ready(() => {
   setupMessageInterface();
 
   // Default template
-  let template_label = 'MAM NMDC Dev Template';
+  let template_label = 'Soil for EMSL and JGI metagenomics';
   let template_folder = TEMPLATES[template_label].folder;
 
   // Allow URL parameter ?template=xxx_yyy to select template on page load.

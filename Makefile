@@ -1,6 +1,6 @@
 .PHONY: all setup clean post_clone_submodule_steps test
 
-all: docs/template/dev/data.tsv target/mixs_package_classes.tsv target/soil_biosample_regex_insight.tsv
+all: docs/template/soil_emsl_jgi_mg/data.tsv target/mixs_package_classes.tsv target/soil_biosample_regex_insight.tsv
 
 #post_clone_submodule_steps
 setup: clean  target/string_serialization_check.txt target/string_serialization_expected_failure.txt test
@@ -147,9 +147,9 @@ target/data_promoted.tsv: target/data.tsv target/soil_ebs_terms_indented.tsv
 
 # this converts data.tsv to a data harmonizer main.html + main.js etc.
 #  and then stages it in the docs folder which will be exposed via GH pages
-docs/template/dev/data.tsv: target/data_promoted.tsv
-	cp $< template/dev/data.tsv
-	cd template/dev && poetry run python ../../script/make_data.py 2> make_data.log && cd -
+docs/template/soil_emsl_jgi_mg/data.tsv: target/data_promoted.tsv
+	cp $< template/soil_emsl_jgi_mg/data.tsv
+	cd template/soil_emsl_jgi_mg && poetry run python ../../script/make_data.py 2> make_data.log && cd -
 	cp -r libraries docs
 	cp -r script docs
 	cp -r template docs
@@ -166,8 +166,8 @@ docs/template/dev/data.tsv: target/data_promoted.tsv
 # todo: check export results
 #   the column headers in the exported file should use slot names, not slot titles
 #   corresponding to mixs_6_slot_name (etc)  and "Column Header" from the Soil-NMDC-Template_Compiled google sheet
-#   or EXPORT_dev and label from the DH template
-# data.tsv has an EXPORT_dev column populated with slot names
+#   or EXPORT_soil_emsl_jgi_mg and label from the DH template
+# data.tsv has an EXPORT_soil_emsl_jgi_mg column populated with slot names
 # export.js was pasted in based a default-case advice from Damion
 
 # todo: slots with identifier=True are now required/unique. check that they appear on the left hand side of template
