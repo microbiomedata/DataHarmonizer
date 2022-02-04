@@ -40,7 +40,8 @@ def build_section_schema(auth_file="local/client_secret.apps.googleusercontent.c
     section_schema.classes['dh_section'] = dh_section_class
     for i in section_lod:
         sn = i['section_name']
-        st = i['section_title']
+        # st = i['section_title']
+        st = i['section_name']
         current_class = ClassDefinition(name=sn, title=st)
         if i['notes'] != "" and i['notes'] is not None:
             current_class.comments.append(i['notes'])
