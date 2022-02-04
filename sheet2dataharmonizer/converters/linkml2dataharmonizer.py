@@ -65,7 +65,7 @@ class LinkML2DataHarmonizer:
             "data status",
             "max value",
             "min value",
-            "EXPORT_dev",
+            "EXPORT_soil_emsl_jgi_mg",
         ]
 
     def range_data_types(self) -> Dict[str, str]:
@@ -352,7 +352,7 @@ class LinkML2DataHarmonizer:
             current_row["max value"] = current_sd.maximum_value
             current_row["min value"] = current_sd.minimum_value
             # old issue... export menu saves a file but not with the briefer LinkML names (as opposed to titles)
-            current_row["EXPORT_dev"] = current_sd.name
+            current_row["EXPORT_soil_emsl_jgi_mg"] = current_sd.name
 
             range_data_types = self.range_data_types()
             str_ser_data_types = self.str_ser_data_types()
