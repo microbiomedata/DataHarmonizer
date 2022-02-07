@@ -12,9 +12,9 @@ var DATA = [
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "required",
-        "description": "A globally unique identifier assigned to the biological sample to link all analytes and subsamples derived from it.",
-        "guidance": "Field REQUIRED for ALL sample submission. Options: IGSN- http://www.geosamples.org/getigsn ; UUID- https://www.uuidgenerator.net/ | pattern generalization: {text}:{text}",
-        "examples": "",
+        "description": "A globally unique identifier assigned to the biological sample.",
+        "guidance": "Identifiers must me prefixed. IGSNs (http://www.geosamples.org/getigsn) are unique and FAIR. UUIDs (https://www.uuidgenerator.net/) are globally unique but not FAIR. These IDs enable linking to derrived analytes and subsamples. | Pattern hint: {text}:{text}",
+        "examples": "IGSN:AU1243",
         "pattern": "[^\\:\\n\\r]+\\:[^\\:\\n\\r]+",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -34,9 +34,9 @@ var DATA = [
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "required",
-        "description": "A local identifier or name that for the material sample collected. Refers to the original material collected or to any derived sub-samples. It can have any format, but we suggest that you make it concise, unique and consistent within your lab, and as informative as possible.",
-        "guidance": "Should be human readable | pattern generalization: {text}",
-        "examples": "",
+        "description": "A local identifier or name that for the material sample collected. Refers to the original material collected or to any derived sub-samples.",
+        "guidance": "It can have any format, but we suggest that you make it concise, unique and consistent within your lab, and as informative as possible. | Pattern hint: {text}",
+        "examples": "Rock core CB1178(5-6) from NSW",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -55,8 +55,8 @@ var DATA = [
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "required",
-        "description": "MIxS extension for reporting of measurements and observations obtained from one or more of the environments where the sample was obtained. All environmental packages listed here are further defined in separate subtables. By giving the name of the environmental package, a selection of fields can be made from the subtables and can be reported",
-        "guidance": "pattern generalization: enumeration",
+        "description": "Select the MIxS enviromental package that best describes the environemtn from which you sample was collected.",
+        "guidance": "Pattern hint: enumeration",
         "examples": "soil",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -79,8 +79,8 @@ var DATA = [
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "required",
-        "description": "Include all the data types associated or available for this biosample, this field can have multiple values separated by a ;",
-        "guidance": "This field is constrained to contain only a set of limited terms indicate the types of data that were generated. | pattern generalization: enumeration",
+        "description": "Select all the data types associated or available for this biosample",
+        "guidance": "Pattern hint: enumeration",
         "examples": "metagenomics; metabolomics; proteomics",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -107,8 +107,8 @@ var DATA = [
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "recommended",
-        "description": "A unique identifier to assign parent-child, subsample, or sibling samples. This is relevant when a sample or other material was used to generate the new sample. This field allows multiple entries separated by ; (Examples: Soil collected from the field will link with the soil used in an incubation. The soil a plant was grown in links to the plant sample. An original culture sample was transferred to a new vial and generated a new sample)",
-        "guidance": "Multiple identifiers can be provided, separated by a ; | pattern generalization: {text}:{text}",
+        "description": "A unique identifier to assign parent-child, subsample, or sibling samples. This is relevant when a sample or other material was used to generate the new sample. ",
+        "guidance": "This field allows multiple entries separated by ; (Examples: Soil collected from the field will link with the soil used in an incubation. The soil a plant was grown in links to the plant sample. An original culture sample was transferred to a new vial and generated a new sample) | Pattern hint: {text}:{text}",
         "examples": "IGSN:DSJ0284",
         "pattern": "[^\\:\\n\\r]+\\:[^\\:\\n\\r]+",
         "exportField": {
@@ -122,20 +122,20 @@ var DATA = [
     ]
   },
   {
-    "fieldName": "NMDC biosample esp. GOLD paths",
+    "fieldName": "NMDC fields esp. GOLD paths",
     "children": [
       {
         "fieldName": "ecosystem",
         "capitalize": "",
-        "ontology_id": "",
-        "datatype": "xs:token",
+        "ontology_id": "samp_id:ecosystem",
+        "datatype": "select",
         "source": "",
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "An ecosystem is a combination of a physical environment (abiotic factors) and all the organisms (biotic factors) that interact with this environment. Ecosystem is in position 1/5 in a GOLD path.",
-        "guidance": "The abiotic factors play a profound role on the type and composition of organisms in a given environment. The GOLD Ecosystem at the top of the five-level classification system is aimed at capturing the broader environment from which an organism or environmental sample is collected. The three broad groups under Ecosystem are Environmental, Host-associated, and Engineered. They represent samples collected from a natural environment or from another organism or from engineered environments like bioreactors respectively.",
+        "guidance": "The abiotic factors play a profound role on the type and composition of organisms in a given environment. The GOLD Ecosystem at the top of the five-level classification system is aimed at capturing the broader environment from which an organism or environmental sample is collected. The three broad groups under Ecosystem are Environmental, Host-associated, and Engineered. They represent samples collected from a natural environment or from another organism or from engineered environments like bioreactors respectively. | Pattern hint: enumeration",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -143,20 +143,23 @@ var DATA = [
               "field": "ecosystem"
             }
           ]
+        },
+        "schema:ItemList": {
+          "Environmental": {}
         }
       },
       {
         "fieldName": "ecosystem_category",
         "capitalize": "",
-        "ontology_id": "",
-        "datatype": "xs:token",
+        "ontology_id": "samp_id:ecosystem_category",
+        "datatype": "select",
         "source": "",
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Ecosystem categories represent divisions within the ecosystem based on specific characteristics of the environment from where an organism or sample is isolated. Ecosystem category is in position 2/5 in a GOLD path.",
-        "guidance": "The Environmental ecosystem (for example) is divided into Air, Aquatic and Terrestrial. Ecosystem categories for Host-associated samples can be individual hosts or phyla and for engineered samples it may be manipulated environments like bioreactors, solid waste etc.",
+        "guidance": "The Environmental ecosystem (for example) is divided into Air, Aquatic and Terrestrial. Ecosystem categories for Host-associated samples can be individual hosts or phyla and for engineered samples it may be manipulated environments like bioreactors, solid waste etc. | Pattern hint: enumeration",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -164,41 +167,23 @@ var DATA = [
               "field": "ecosystem_category"
             }
           ]
-        }
-      },
-      {
-        "fieldName": "ecosystem_type",
-        "capitalize": "",
-        "ontology_id": "",
-        "datatype": "xs:token",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Ecosystem types represent things having common characteristics within the Ecosystem Category. These common characteristics based grouping is still broad but specific to the characteristics of a given environment. Ecosystem type is in position 3/5 in a GOLD path.",
-        "guidance": "The Aquatic ecosystem category (for example) may have ecosystem types like Marine or Thermal springs etc. Ecosystem category Air may have Indoor air or Outdoor air as different Ecosystem Types. In the case of Host-associated samples, ecosystem type can represent Respiratory system, Digestive system, Roots etc.",
-        "examples": "",
-        "exportField": {
-          "soil_emsl_jgi_mg": [
-            {
-              "field": "ecosystem_type"
-            }
-          ]
+        },
+        "schema:ItemList": {
+          "Terrestrial": {}
         }
       },
       {
         "fieldName": "ecosystem_subtype",
         "capitalize": "",
-        "ontology_id": "",
-        "datatype": "xs:token",
+        "ontology_id": "samp_id:ecosystem_subtype",
+        "datatype": "select",
         "source": "",
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Ecosystem subtypes represent further subdivision of Ecosystem types into more distinct subtypes. Ecosystem subtype is in position 4/5 in a GOLD path.",
-        "guidance": "Ecosystem Type Marine (Environmental -> Aquatic -> Marine) is further divided (for example) into Intertidal zone, Coastal, Pelagic, Intertidal zone etc. in the Ecosystem subtype category.",
+        "guidance": "Ecosystem Type Marine (Environmental -> Aquatic -> Marine) is further divided (for example) into Intertidal zone, Coastal, Pelagic, Intertidal zone etc. in the Ecosystem subtype category. | Pattern hint: enumeration",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -206,6 +191,45 @@ var DATA = [
               "field": "ecosystem_subtype"
             }
           ]
+        },
+        "schema:ItemList": {
+          "Soil": {}
+        }
+      },
+      {
+        "fieldName": "ecosystem_type",
+        "capitalize": "",
+        "ontology_id": "samp_id:ecosystem_type",
+        "datatype": "select",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Ecosystem types represent things having common characteristics within the Ecosystem Category. These common characteristics based grouping is still broad but specific to the characteristics of a given environment. Ecosystem type is in position 3/5 in a GOLD path.",
+        "guidance": "The Aquatic ecosystem category (for example) may have ecosystem types like Marine or Thermal springs etc. Ecosystem category Air may have Indoor air or Outdoor air as different Ecosystem Types. In the case of Host-associated samples, ecosystem type can represent Respiratory system, Digestive system, Roots etc. | Pattern hint: enumeration",
+        "examples": "",
+        "exportField": {
+          "soil_emsl_jgi_mg": [
+            {
+              "field": "ecosystem_type"
+            }
+          ]
+        },
+        "schema:ItemList": {
+          "Biocrust": {},
+          "Biofilm": {},
+          "Clay": {},
+          "Desert": {},
+          "Forest": {},
+          "Garden": {},
+          "Gravesite": {},
+          "Meadow": {},
+          "Pature": {},
+          "Ranch": {},
+          "Sand": {},
+          "Silt": {},
+          "Tundra": {}
         }
       },
       {
@@ -245,7 +269,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "Proposal IDs or names associated with dataset",
-        "guidance": "pattern generalization: {text}",
+        "guidance": "Pattern hint: {text}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -266,7 +290,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "Type of sample being submitted",
-        "guidance": "This can vary from 'environmental package' if the sample is an extraction. | pattern generalization: enumeration",
+        "guidance": "This can vary from 'environmental package' if the sample is an extraction. | Pattern hint: enumeration",
         "examples": "water extracted soil",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -291,9 +315,9 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "The total amount or size (volume (ml), mass (g) or area (m2) ) of sample sent to EMSL",
-        "guidance": "pattern generalization: {float} {unit}",
+        "guidance": "Pattern hint: {float} {unit}",
         "examples": "",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -303,7 +327,7 @@ var DATA = [
         }
       },
       {
-        "fieldName": "EMSL Sample Storage Temperature",
+        "fieldName": "EMSL Sample Storage Temperature, deg. C",
         "capitalize": "",
         "ontology_id": "emsl:EMSL_store_temp",
         "datatype": "xs:decimal",
@@ -313,7 +337,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "Temperature at which the sample sent to EMSL should be stored",
-        "guidance": "Enter a temperature in celsius. Numeric portion only. | pattern generalization: {float}",
+        "guidance": "Enter a temperature in celsius. Numeric portion only. | Pattern hint: {float}",
         "examples": "-80",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -334,7 +358,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "recommended",
         "description": "If sending multiple technical replicates of the same sample, indicate how many replicates are being sent",
-        "guidance": "pattern generalization: {integer}",
+        "guidance": "Pattern hint: {integer}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -355,7 +379,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "recommended",
         "description": "If sending biological replicates, indicate the rep number here.",
-        "guidance": "This will guide staff in ensuring your samples are block & randomized correctly | pattern generalization: {integer}",
+        "guidance": "This will guide staff in ensuring your samples are block & randomized correctly | Pattern hint: {integer}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -380,8 +404,8 @@ var DATA = [
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "required",
-        "description": "Prefilled",
-        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
+        "description": "",
+        "guidance": "Do not edit this these values. A template will be provided by NMDC in which these vales have been pre-filled. | Pattern hint: {text}",
         "examples": "1191234",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -401,8 +425,8 @@ var DATA = [
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "required",
-        "description": "Prefilled",
-        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
+        "description": "",
+        "guidance": "Do not edit this these values. A template will be provided by NMDC in which these vales have been pre-filled. | Pattern hint: {text}",
         "examples": "JGI Pond metagenomics",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -422,8 +446,8 @@ var DATA = [
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "required",
-        "description": "Prefilled",
-        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
+        "description": "",
+        "guidance": "Do not edit this these values. A template will be provided by NMDC in which these vales have been pre-filled. | Pattern hint: {text}",
         "examples": "187654",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -443,8 +467,8 @@ var DATA = [
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "required",
-        "description": "Give the DNA sample a name that is meaningful to you. Sample names must be unique across all JGI projects and contain ASCII characters only.",
-        "guidance": "pattern generalization: {text}",
+        "description": "Give the DNA sample a name that is meaningful to you. Sample names must be unique across all JGI projects and contain a-z, A-Z, 0-9, - and _ only.",
+        "guidance": "Pattern hint: {text}",
         "examples": "JGI_pond_041618",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -455,7 +479,7 @@ var DATA = [
         }
       },
       {
-        "fieldName": "DNA Concentration",
+        "fieldName": "DNA Concentration in ng/uL",
         "capitalize": "",
         "ontology_id": "jgi_gen:dna_concentration",
         "datatype": "xs:decimal",
@@ -464,8 +488,8 @@ var DATA = [
         "xs:minInclusive": "0.0",
         "xs:maxInclusive": "2000.0",
         "requirement": "required",
-        "description": "Must be calculated using a fluorometric method; value >0 and <2000.",
-        "guidance": "Units should be in ng/uL | pattern generalization: {float}",
+        "description": "",
+        "guidance": "Units must be in ng/uL. Enter the numerical part only. Must be calculated using a fluorometric method. Acceptable values are 0-2000. | Pattern hint: {float}",
         "examples": "100",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -476,7 +500,7 @@ var DATA = [
         }
       },
       {
-        "fieldName": "DNA Volume",
+        "fieldName": "DNA Volume in uL",
         "capitalize": "",
         "ontology_id": "jgi_gen:dna_volume",
         "datatype": "xs:decimal",
@@ -485,8 +509,8 @@ var DATA = [
         "xs:minInclusive": "0.0",
         "xs:maxInclusive": "1000.0",
         "requirement": "required",
-        "description": "Value must be >0 and <1000 (values <25 by special permission only).",
-        "guidance": "Units should be in uL | pattern generalization: {float}",
+        "description": "",
+        "guidance": "Units must be in uL. Enter the numerical part only. Value must 0-1000. Values <25 by special permission only. | Pattern hint: {float}",
         "examples": "25",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -506,8 +530,8 @@ var DATA = [
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "required",
-        "description": "260/280 measurement of sample purity",
-        "guidance": "Recommended value is between 1 and 3. | pattern generalization: {float}",
+        "description": "260/280 measurement of DNA sample purity",
+        "guidance": "Recommended value is between 1 and 3. | Pattern hint: {float}",
         "examples": "2.02",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -527,8 +551,8 @@ var DATA = [
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "required",
-        "description": "260/230 measurement of sample purity",
-        "guidance": "Recommended value is between 1 and 3. | pattern generalization: {float}",
+        "description": "260/230 measurement of DNA sample purity",
+        "guidance": "Recommended value is between 1 and 3. | Pattern hint: {float}",
         "examples": "2.02",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -548,8 +572,8 @@ var DATA = [
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "required",
-        "description": "Must be unique across all tubes and plates, and <20 characters. All samples in a plate should have the same plate label.",
-        "guidance": "pattern generalization: {text}",
+        "description": "",
+        "guidance": "Must be unique across all tubes and plates, and <20 characters. All samples in a plate should have the same plate label. | Pattern hint: {text}",
         "examples": "Pond_MT_041618",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -569,8 +593,8 @@ var DATA = [
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "required",
-        "description": "tube or plate (96-well)",
-        "guidance": "pattern generalization: enumeration",
+        "description": "Tube or plate (96-well)",
+        "guidance": "Pattern hint: enumeration",
         "examples": "plate",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -594,8 +618,8 @@ var DATA = [
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "required",
-        "description": "Corner wells must be blank. For partial plates, fill by columns. Leave blank if the sample will be shipped in a tube.",
-        "guidance": "Required when 'plate' is selected for container type | pattern generalization: {text}",
+        "description": "",
+        "guidance": "Required when 'plate' is selected for container type. Corner wells must be blank. For partial plates, fill by columns. Leave blank if the sample will be shipped in a tube. | Pattern hint: {text}",
         "examples": "B2",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -615,8 +639,8 @@ var DATA = [
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "required",
-        "description": "Choose from the following: Pellet, RNAStable, DNAStable, Ethanol, MDA reaction buffer, PBS, TE, Water, Low EDTA TE, 10 mM Tris-HCl",
-        "guidance": "Identify what the DNA sample is suspended in | pattern generalization: enumeration",
+        "description": "Solution in which the DNA sample has been suspended",
+        "guidance": "Pattern hint: enumeration",
         "examples": "Water",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -648,9 +672,9 @@ var DATA = [
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "required",
-        "description": "Y/N. Note DNAse treatment is required for all RNA samples.",
-        "guidance": "pattern generalization: enumeration",
-        "examples": "No",
+        "description": "",
+        "guidance": "Note DNAse treatment is required for all RNA samples. | Pattern hint: enumeration",
+        "examples": "no",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -674,7 +698,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "List any organisms known or suspected to grow in co-culture, as well as estimated % of the organism in that culture.",
-        "guidance": "pattern generalization: {text}",
+        "guidance": "Pattern hint: {text}",
         "examples": "expected to contain microbes (59%) fungi (30%), viruses (10%), tadpoles (1%)",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -695,7 +719,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "Provide information on the site your DNA sample was collected from",
-        "guidance": "pattern generalization: {text}",
+        "guidance": "Pattern hint: {text}",
         "examples": "untreated pond water",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -716,7 +740,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "Describe the method/protocol/kit used to extract DNA/RNA.",
-        "guidance": "pattern generalization: {text}",
+        "guidance": "Pattern hint: {text}",
         "examples": "phenol/chloroform extraction",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -736,8 +760,8 @@ var DATA = [
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "required",
-        "description": "Prefilled",
-        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
+        "description": "",
+        "guidance": "Do not edit this these values. A template will be provided by NMDC in which these vales have been pre-filled. | Pattern hint: {text}",
         "examples": "Jane Johnson",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -757,8 +781,8 @@ var DATA = [
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "required",
-        "description": "Prefilled",
-        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
+        "description": "",
+        "guidance": "Do not edit this these values. A template will be provided by NMDC in which these vales have been pre-filled. | Pattern hint: {text}",
         "examples": "John Jones",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -778,8 +802,8 @@ var DATA = [
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "required",
-        "description": "Prefilled",
-        "guidance": "Do not edit this term, term will be provided by NMDC and can be uploaded | pattern generalization: {text}",
+        "description": "",
+        "guidance": "Do not edit this these values. A template will be provided by NMDC in which these vales have been pre-filled. | Pattern hint: {text}",
         "examples": "504000",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -805,7 +829,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "Type of facility/location where the sample was harvested; controlled vocabulary: growth chamber, open top chamber, glasshouse, experimental garden, field.",
-        "guidance": "pattern generalization: enumeration",
+        "guidance": "Pattern hint: enumeration",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -837,7 +861,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "Explain how the soil sample is stored (fresh/frozen/other).",
-        "guidance": "pattern generalization: enumeration",
+        "guidance": "Pattern hint: enumeration",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -863,9 +887,10 @@ var DATA = [
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "required",
-        "description": "The date of sampling, either as an instance (single point) or interval. ",
-        "guidance": "Date should be formatted as YYYY-MM-DD | pattern generalization: YYYY-MM-DD",
-        "examples": "",
+        "description": "The date of sampling",
+        "guidance": "Date should be formatted as YYYY(-MM(-DD)) | Pattern hint: {date, arbitrary precision}",
+        "examples": "2021-04-15, 2021-04 and 2021 ar all acceptable.",
+        "pattern": "^[12]\\d{3}(?:(?:-(?:0[1-9]|1[0-2]))(?:-(?:0[1-9]|[12]\\d|3[01]))?)?$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -890,7 +915,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "Report the major environmental system the sample or specimen came from. The system(s) identified should have a coarse spatial grain, to provide the general environmental context of where the sampling was done (e.g. in the desert or a rainforest). We recommend using subclasses of EnvO\u2019s biome class:  http://purl.obolibrary.org/obo/ENVO_00000428. EnvO documentation about how to use the field: https://github.com/EnvironmentOntology/envo/wiki/Using-ENVO-with-MIxS",
-        "guidance": "pattern generalization: {termLabel} {[termID]}",
+        "guidance": "Pattern hint: {termLabel} {[termID]}",
         "examples": "oceanic epipelagic zone biome [ENVO:01000033] for annotating a water sample from the photic zone in middle of the Atlantic Ocean",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1026,44 +1051,412 @@ var DATA = [
         "fieldName": "local environmental context",
         "capitalize": "",
         "ontology_id": "MIXS:0000013",
-        "datatype": "xs:token",
+        "datatype": "select",
         "source": "",
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "Report the entity or entities which are in the sample or specimen\u2019s local vicinity and which you believe have significant causal influences on your sample or specimen. We recommend using EnvO terms which are of smaller spatial grain than your entry for env_broad_scale. Terms, such as anatomical sites, from other OBO Library ontologies which interoperate with EnvO (e.g. UBERON) are accepted in this field. EnvO documentation about how to use the field: https://github.com/EnvironmentOntology/envo/wiki/Using-ENVO-with-MIxS.",
-        "guidance": "pattern generalization: {termLabel} {[termID]}",
+        "guidance": "Pattern hint: {termLabel} {[termID]}",
         "examples": "litter layer [ENVO:01000338]; Annotating a pooled sample taken from various vegetation layers in a forest consider: canopy [ENVO:00000047]|herb and fern layer [ENVO:01000337]|litter layer [ENVO:01000338]|understory [01000335]|shrub layer [ENVO:01000336].",
-        "pattern": ".* \\[ENVO:\\d+\\]",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
               "field": "env_local_scale"
             }
           ]
+        },
+        "schema:ItemList": {
+          "active geological fault [ENVO:01000669]": {
+            "ontology_id": "ENVO:01000669"
+          },
+          "agricultural field [ENVO:00000114]": {
+            "ontology_id": "ENVO:00000114"
+          },
+          "beach [ENVO:00000091]": {
+            "ontology_id": "ENVO:00000091"
+          },
+          "cave [ENVO:00000067]": {
+            "ontology_id": "ENVO:00000067"
+          },
+          "channel [ENVO:03000117]": {
+            "ontology_id": "ENVO:03000117"
+          },
+          "__tunnel [ENVO:00000068]": {
+            "ontology_id": "ENVO:00000068"
+          },
+          "coast [ENVO:01000687]": {
+            "ontology_id": "ENVO:01000687"
+          },
+          "dry lake [ENVO:00000277]": {
+            "ontology_id": "ENVO:00000277"
+          },
+          "dry river [ENVO:01000995]": {
+            "ontology_id": "ENVO:01000995"
+          },
+          "garden [ENVO:00000011]": {
+            "ontology_id": "ENVO:00000011"
+          },
+          "hill [ENVO:00000083]": {
+            "ontology_id": "ENVO:00000083"
+          },
+          "__dune [ENVO:00000170]": {
+            "ontology_id": "ENVO:00000170"
+          },
+          "hummock [ENVO:00000516]": {
+            "ontology_id": "ENVO:00000516"
+          },
+          "impact crater [ENVO:01001071]": {
+            "ontology_id": "ENVO:01001071"
+          },
+          "isthmus [ENVO:00000174]": {
+            "ontology_id": "ENVO:00000174"
+          },
+          "karst [ENVO:00000175]": {
+            "ontology_id": "ENVO:00000175"
+          },
+          "lake shore [ENVO:00000382]": {
+            "ontology_id": "ENVO:00000382"
+          },
+          "lava field [ENVO:01000437]": {
+            "ontology_id": "ENVO:01000437"
+          },
+          "mesa [ENVO:00000179]": {
+            "ontology_id": "ENVO:00000179"
+          },
+          "mountain [ENVO:00000081]": {
+            "ontology_id": "ENVO:00000081"
+          },
+          "peninsula [ENVO:00000305]": {
+            "ontology_id": "ENVO:00000305"
+          },
+          "plain [ENVO:00000086]": {
+            "ontology_id": "ENVO:00000086"
+          },
+          "plateau [ENVO:00000182]": {
+            "ontology_id": "ENVO:00000182"
+          },
+          "ridge [ENVO:00000283]": {
+            "ontology_id": "ENVO:00000283"
+          },
+          "slope [ENVO:00002000]": {
+            "ontology_id": "ENVO:00002000"
+          },
+          "__cliff [ENVO:00000087]": {
+            "ontology_id": "ENVO:00000087"
+          },
+          "__hillside [ENVO:01000333]": {
+            "ontology_id": "ENVO:01000333"
+          },
+          "snow field [ENVO:00000146]": {
+            "ontology_id": "ENVO:00000146"
+          },
+          "tombolo [ENVO:00000420]": {
+            "ontology_id": "ENVO:00000420"
+          },
+          "tuff cone [ENVO:01000664]": {
+            "ontology_id": "ENVO:01000664"
+          },
+          "valley [ENVO:00000100]": {
+            "ontology_id": "ENVO:00000100"
+          },
+          "__canyon [ENVO:00000169]": {
+            "ontology_id": "ENVO:00000169"
+          },
+          "__dry valley [ENVO:00000128]": {
+            "ontology_id": "ENVO:00000128"
+          },
+          "__glacial valley [ENVO:00000248]": {
+            "ontology_id": "ENVO:00000248"
+          },
+          "vein [ENVO:01000670]": {
+            "ontology_id": "ENVO:01000670"
+          },
+          "volcano [ENVO:00000247]": {
+            "ontology_id": "ENVO:00000247"
+          },
+          "woodland clearing [ENVO:00000444]": {
+            "ontology_id": "ENVO:00000444"
+          }
         }
       },
       {
         "fieldName": "environmental medium",
         "capitalize": "",
         "ontology_id": "MIXS:0000014",
-        "datatype": "xs:token",
+        "datatype": "select",
         "source": "",
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "Report the environmental material(s) immediately surrounding the sample or specimen at the time of sampling. We recommend using subclasses of 'environmental material' (http://purl.obolibrary.org/obo/ENVO_00010483). EnvO documentation about how to use the field: https://github.com/EnvironmentOntology/envo/wiki/Using-ENVO-with-MIxS . Terms from other OBO ontologies are permissible as long as they reference mass/volume nouns (e.g. air, water, blood) and not discrete, countable entities (e.g. a tree, a leaf, a table top).",
-        "guidance": "pattern generalization: {termLabel} {[termID]}",
+        "guidance": "Pattern hint: {termLabel} {[termID]}",
         "examples": "soil [ENVO:00001998]; Annotating a fish swimming in the upper 100 m of the Atlantic Ocean, consider: ocean water [ENVO:00002151]. Example: Annotating a duck on a pond consider: pond water [ENVO:00002228]|air [ENVO_00002005]",
-        "pattern": ".* \\[ENVO:\\d+\\]",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
               "field": "env_medium"
             }
           ]
+        },
+        "schema:ItemList": {
+          "agricultural soil [ENVO:00002259]": {
+            "ontology_id": "ENVO:00002259"
+          },
+          "__bluegrass field soil [ENVO:00005789]": {
+            "ontology_id": "ENVO:00005789"
+          },
+          "__paddy field soil [ENVO:00005740]": {
+            "ontology_id": "ENVO:00005740"
+          },
+          "____peaty paddy field soil [ENVO:00005776]": {
+            "ontology_id": "ENVO:00005776"
+          },
+          "__rubber plantation soil [ENVO:00005788]": {
+            "ontology_id": "ENVO:00005788"
+          },
+          "albeluvisol [ENVO:00002233]": {
+            "ontology_id": "ENVO:00002233"
+          },
+          "alisol [ENVO:00002231]": {
+            "ontology_id": "ENVO:00002231"
+          },
+          "alluvial soil [ENVO:00002871]": {
+            "ontology_id": "ENVO:00002871"
+          },
+          "__alluvial swamp soil [ENVO:00005758]": {
+            "ontology_id": "ENVO:00005758"
+          },
+          "alpine soil [ENVO:00005741]": {
+            "ontology_id": "ENVO:00005741"
+          },
+          "andosol [ENVO:00002232]": {
+            "ontology_id": "ENVO:00002232"
+          },
+          "__volcanic soil [ENVO:01001841]": {
+            "ontology_id": "ENVO:01001841"
+          },
+          "anthrosol [ENVO:00002230]": {
+            "ontology_id": "ENVO:00002230"
+          },
+          "arenosol [ENVO:00002229]": {
+            "ontology_id": "ENVO:00002229"
+          },
+          "bare soil [ENVO:01001616]": {
+            "ontology_id": "ENVO:01001616"
+          },
+          "burned soil [ENVO:00005760]": {
+            "ontology_id": "ENVO:00005760"
+          },
+          "calcisol [ENVO:00002239]": {
+            "ontology_id": "ENVO:00002239"
+          },
+          "cambisol [ENVO:00002235]": {
+            "ontology_id": "ENVO:00002235"
+          },
+          "carbon nanotube enriched soil [ENVO:01000427]": {
+            "ontology_id": "ENVO:01000427"
+          },
+          "chernozem [ENVO:00002237]": {
+            "ontology_id": "ENVO:00002237"
+          },
+          "compost soil [ENVO:00005747]": {
+            "ontology_id": "ENVO:00005747"
+          },
+          "__frozen compost soil [ENVO:00005765]": {
+            "ontology_id": "ENVO:00005765"
+          },
+          "contaminated soil [ENVO:00002116]": {
+            "ontology_id": "ENVO:00002116"
+          },
+          "__xylene contaminated soil [ENVO:00002146]": {
+            "ontology_id": "ENVO:00002146"
+          },
+          "dune soil [ENVO:00002260]": {
+            "ontology_id": "ENVO:00002260"
+          },
+          "durisol [ENVO:00002238]": {
+            "ontology_id": "ENVO:00002238"
+          },
+          "ferralsol [ENVO:00002246]": {
+            "ontology_id": "ENVO:00002246"
+          },
+          "fluvisol [ENVO:00002273]": {
+            "ontology_id": "ENVO:00002273"
+          },
+          "forest soil [ENVO:00002261]": {
+            "ontology_id": "ENVO:00002261"
+          },
+          "__beech forest soil [ENVO:00005770]": {
+            "ontology_id": "ENVO:00005770"
+          },
+          "__eucalyptus forest soil [ENVO:00005787]": {
+            "ontology_id": "ENVO:00005787"
+          },
+          "__mountain forest soil [ENVO:00005769]": {
+            "ontology_id": "ENVO:00005769"
+          },
+          "frost-susceptible soil [ENVO:01001638]": {
+            "ontology_id": "ENVO:01001638"
+          },
+          "frozen soil [ENVO:01001526]": {
+            "ontology_id": "ENVO:01001526"
+          },
+          "__cryosol [ENVO:00002236]": {
+            "ontology_id": "ENVO:00002236"
+          },
+          "__friable-frozen soil [ENVO:01001528]": {
+            "ontology_id": "ENVO:01001528"
+          },
+          "__plastic-frozen soil [ENVO:01001527]": {
+            "ontology_id": "ENVO:01001527"
+          },
+          "gleysol [ENVO:00002244]": {
+            "ontology_id": "ENVO:00002244"
+          },
+          "grassland soil [ENVO:00005750]": {
+            "ontology_id": "ENVO:00005750"
+          },
+          "__savanna soil [ENVO:00005746]": {
+            "ontology_id": "ENVO:00005746"
+          },
+          "__steppe soil [ENVO:00005777]": {
+            "ontology_id": "ENVO:00005777"
+          },
+          "greenhouse soil [ENVO:00005780]": {
+            "ontology_id": "ENVO:00005780"
+          },
+          "gypsisol [ENVO:00002245]": {
+            "ontology_id": "ENVO:00002245"
+          },
+          "histosol [ENVO:00002243]": {
+            "ontology_id": "ENVO:00002243"
+          },
+          "humus-rich acidic ash soil [ENVO:00005763]": {
+            "ontology_id": "ENVO:00005763"
+          },
+          "jungle soil [ENVO:00005751]": {
+            "ontology_id": "ENVO:00005751"
+          },
+          "kastanozem [ENVO:00002240]": {
+            "ontology_id": "ENVO:00002240"
+          },
+          "leptosol [ENVO:00002241]": {
+            "ontology_id": "ENVO:00002241"
+          },
+          "limed soil [ENVO:00005766]": {
+            "ontology_id": "ENVO:00005766"
+          },
+          "lixisol [ENVO:00002242]": {
+            "ontology_id": "ENVO:00002242"
+          },
+          "loam [ENVO:00002258]": {
+            "ontology_id": "ENVO:00002258"
+          },
+          "luvisol [ENVO:00002248]": {
+            "ontology_id": "ENVO:00002248"
+          },
+          "manured soil [ENVO:00005767]": {
+            "ontology_id": "ENVO:00005767"
+          },
+          "meadow soil [ENVO:00005761]": {
+            "ontology_id": "ENVO:00005761"
+          },
+          "muddy soil [ENVO:00005771]": {
+            "ontology_id": "ENVO:00005771"
+          },
+          "nitisol [ENVO:00002247]": {
+            "ontology_id": "ENVO:00002247"
+          },
+          "orchard soil [ENVO:00005772]": {
+            "ontology_id": "ENVO:00005772"
+          },
+          "ornithogenic soil [ENVO:00005782]": {
+            "ontology_id": "ENVO:00005782"
+          },
+          "pantothenate enriched soil [ENVO:00003088]": {
+            "ontology_id": "ENVO:00003088"
+          },
+          "pasture soil [ENVO:00005773]": {
+            "ontology_id": "ENVO:00005773"
+          },
+          "peat soil [ENVO:00005774]": {
+            "ontology_id": "ENVO:00005774"
+          },
+          "phaeozem [ENVO:00002249]": {
+            "ontology_id": "ENVO:00002249"
+          },
+          "planosol [ENVO:00002251]": {
+            "ontology_id": "ENVO:00002251"
+          },
+          "plinthosol [ENVO:00002250]": {
+            "ontology_id": "ENVO:00002250"
+          },
+          "podzol [ENVO:00002257]": {
+            "ontology_id": "ENVO:00002257"
+          },
+          "poly-beta-hydroxybutyrate enriched soil [ENVO:00003093]": {
+            "ontology_id": "ENVO:00003093"
+          },
+          "pond soil [ENVO:00005764]": {
+            "ontology_id": "ENVO:00005764"
+          },
+          "quinate enriched soil [ENVO:00003095]": {
+            "ontology_id": "ENVO:00003095"
+          },
+          "regosol [ENVO:00002256]": {
+            "ontology_id": "ENVO:00002256"
+          },
+          "sarcosine enriched soil [ENVO:00003083]": {
+            "ontology_id": "ENVO:00003083"
+          },
+          "skatole enriched soil [ENVO:00003085]": {
+            "ontology_id": "ENVO:00003085"
+          },
+          "solonchak [ENVO:00002252]": {
+            "ontology_id": "ENVO:00002252"
+          },
+          "solonetz [ENVO:00002255]": {
+            "ontology_id": "ENVO:00002255"
+          },
+          "stagnosol [ENVO:00002274]": {
+            "ontology_id": "ENVO:00002274"
+          },
+          "surface soil [ENVO:02000059]": {
+            "ontology_id": "ENVO:02000059"
+          },
+          "technosol [ENVO:00002275]": {
+            "ontology_id": "ENVO:00002275"
+          },
+          "threonine enriched soil [ENVO:00003091]": {
+            "ontology_id": "ENVO:00003091"
+          },
+          "trimethylamine enriched soil [ENVO:00003084]": {
+            "ontology_id": "ENVO:00003084"
+          },
+          "tropical soil [ENVO:00005778]": {
+            "ontology_id": "ENVO:00005778"
+          },
+          "ultisol [ENVO:01001397]": {
+            "ontology_id": "ENVO:01001397"
+          },
+          "__acrisol [ENVO:00002234]": {
+            "ontology_id": "ENVO:00002234"
+          },
+          "umbrisol [ENVO:00002253]": {
+            "ontology_id": "ENVO:00002253"
+          },
+          "upland soil [ENVO:00005786]": {
+            "ontology_id": "ENVO:00005786"
+          },
+          "urea enriched soil [ENVO:00005753]": {
+            "ontology_id": "ENVO:00005753"
+          },
+          "vertisol [ENVO:00002254]": {
+            "ontology_id": "ENVO:00002254"
+          }
         }
       },
       {
@@ -1077,7 +1470,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "The geographical origin of the sample as defined by the country or sea name followed by specific region name. Country or sea names should be chosen from the INSDC country list (http://insdc.org/country.html), or the GAZ ontology (http://purl.bioontology.org/ontology/GAZ)",
-        "guidance": "pattern generalization: {term}: {term}, {text}",
+        "guidance": "Pattern hint: {term}: {term}, {text}",
         "examples": "USA: Maryland, Bethesda",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1098,8 +1491,9 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "The geographical origin of the sample as defined by latitude and longitude. The values should be reported in decimal degrees and in WGS84 system",
-        "guidance": "pattern generalization: {float} {float}",
+        "guidance": "Pattern hint: {float} {float}",
         "examples": "50.586825 6.408977",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? [-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -1121,7 +1515,7 @@ var DATA = [
         "description": "Elevation of the sampling site is its height above a fixed reference point, most commonly the mean sea level. Elevation is mainly used when referring to points on the earth's surface, while altitude is used for points above the surface, such as an aircraft in flight or a spacecraft in orbit.",
         "guidance": "",
         "examples": "100 meter",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -1143,7 +1537,7 @@ var DATA = [
         "description": "Temperature at which sample was stored, e.g. -80 degree Celsius",
         "guidance": "",
         "examples": "-80 degree Celsius",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -1158,7 +1552,7 @@ var DATA = [
     "fieldName": "Metadata- MIxS Modified Required Where Applicable",
     "children": [
       {
-        "fieldName": "collection time",
+        "fieldName": "collection time, GMT",
         "capitalize": "",
         "ontology_id": "mixs_modified:collection_time",
         "datatype": "xs:token",
@@ -1168,8 +1562,9 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "recommended",
         "description": "The time of sampling, either as an instance (single point) or interval.",
-        "guidance": "Time should be formatted as HH:MM:SS | pattern generalization: HH:MM:SS",
-        "examples": "Time should be reported in GMT (LINK)",
+        "guidance": "Time should be entered as HH:MM(:SS) in GMT. See here for a converter: https://www.worldtimebuddy.com/pst-to-gmt-converter | Pattern hint: {time, seconds optional}",
+        "examples": "13:33 or 13:33:55",
+        "pattern": "^([01]?\\d|2[0-3]|24(?=:00?:00?$)):([0-5]\\d)(:([0-5]\\d))?$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -1182,15 +1577,16 @@ var DATA = [
         "fieldName": "Incubation Collection Date",
         "capitalize": "",
         "ontology_id": "mixs_modified:collection_date_inc",
-        "datatype": "xs:date",
+        "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "recommended",
         "description": "Date the incubation was harvested/collected/ended. Only relevant for incubation samples.",
-        "guidance": "date should be represented as YYYY-MM-DD. See here for a converter: https://www.worldtimebuddy.com/pst-to-gmt-converter | pattern generalization: {timestamp}",
-        "examples": "",
+        "guidance": "Date should be formatted as YYYY(-MM(-DD)). Ie, 2021-04-15, 2021-04 and 2021 ar all acceptable. | Pattern hint: {date, arbitrary precision}",
+        "examples": "2021-04-15, 2021-04 and 2021 ar all acceptable.",
+        "pattern": "^[12]\\d{3}(?:(?:-(?:0[1-9]|1[0-2]))(?:-(?:0[1-9]|[12]\\d|3[01]))?)?$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -1200,18 +1596,19 @@ var DATA = [
         }
       },
       {
-        "fieldName": "Incubation Collection Time",
+        "fieldName": "Incubation Collection Time, GMT",
         "capitalize": "",
         "ontology_id": "mixs_modified:collection_time_inc",
-        "datatype": "xs:date",
+        "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "recommended",
         "description": "Time the incubation was harvested/collected/ended. Only relevant for incubation samples.",
-        "guidance": "Time should be represented as HH:MM:SS in GMT. See here for a converter: https://www.worldtimebuddy.com/pst-to-gmt-converter | pattern generalization: {timestamp}",
-        "examples": "",
+        "guidance": "Time should be entered as HH:MM(:SS) in GMT. See here for a converter: https://www.worldtimebuddy.com/pst-to-gmt-converter | Pattern hint: {time, seconds optional}",
+        "examples": "13:33 or 13:33:55",
+        "pattern": "^([01]?\\d|2[0-3]|24(?=:00?:00?$)):([0-5]\\d)(:([0-5]\\d))?$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -1224,15 +1621,16 @@ var DATA = [
         "fieldName": "Incubation Start Date",
         "capitalize": "",
         "ontology_id": "mixs_modified:start_date_inc",
-        "datatype": "xs:date",
+        "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "recommended",
         "description": "Date the incubation was started. Only relevant for incubation samples.",
-        "guidance": "date should be represented as YYYY-MM-DD | pattern generalization: {timestamp}",
-        "examples": "",
+        "guidance": "Date should be formatted as YYYY(-MM(-DD)). Ie, 2021-04-15, 2021-04 and 2021 ar all acceptable. | Pattern hint: {date, arbitrary precision}",
+        "examples": "2021-04-15, 2021-04 and 2021 ar all acceptable.",
+        "pattern": "^[12]\\d{3}(?:(?:-(?:0[1-9]|1[0-2]))(?:-(?:0[1-9]|[12]\\d|3[01]))?)?$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -1242,18 +1640,19 @@ var DATA = [
         }
       },
       {
-        "fieldName": "Incubation Start Time",
+        "fieldName": "Incubation Start Time, GMT",
         "capitalize": "",
         "ontology_id": "mixs_modified:start_time_inc",
-        "datatype": "xs:date",
+        "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "recommended",
         "description": "Time the incubation was started. Only relevant for incubation samples.",
-        "guidance": "Time should be represented as HH:MM:SS GMT | pattern generalization: {timestamp}",
-        "examples": "",
+        "guidance": "Time should be entered as HH:MM(:SS) in GMT. See here for a converter: https://www.worldtimebuddy.com/pst-to-gmt-converter | Pattern hint: {time, seconds optional}",
+        "examples": "13:33 or 13:33:55",
+        "pattern": "^([01]?\\d|2[0-3]|24(?=:00?:00?$)):([0-5]\\d)(:([0-5]\\d))?$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -1263,7 +1662,7 @@ var DATA = [
         }
       },
       {
-        "fieldName": "depth",
+        "fieldName": "depth, meters",
         "capitalize": "",
         "ontology_id": "mixs_modified:depth",
         "datatype": "xs:token",
@@ -1273,7 +1672,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "recommended",
         "description": "The vertical distance below local surface, e.g. For sediment or soil samples depth is measured from sediment or soil surface, respectively. Depth can be reported as an interval for subsurface samples.",
-        "guidance": "All depths should be reported in meters | pattern generalization: {float}| {float}-{float}",
+        "guidance": "All depths must be reported in meters. Provide the numerical portion only. | Pattern hint: {float}| {float}-{float}",
         "examples": "0-0.1 OR 1",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1294,7 +1693,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "recommended",
         "description": "A brief description of any processing applied to the sample during or after retrieving the sample from environment, or a link to the relevant protocol(s) performed.",
-        "guidance": "pattern generalization: {text}",
+        "guidance": "Pattern hint: {text}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1315,7 +1714,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "recommended",
         "description": "The device used to collect an environmental sample. This field accepts terms listed under environmental sampling device (http://purl.obolibrary.org/obo/ENVO). This field also accepts terms listed under specimen collection device (http://purl.obolibrary.org/obo/GENEPIO_0002094).",
-        "guidance": "Report dimensions and details when applicable | pattern generalization: {termLabel} {[termID]}|{text}",
+        "guidance": "Report dimensions and details when applicable | Pattern hint: {termLabel} {[termID]}|{text}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1336,7 +1735,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "recommended",
         "description": "The method employed for collecting the sample.",
-        "guidance": "This can be a citation or description | pattern generalization: {PMID}|{DOI}|{URL}|{text}",
+        "guidance": "This can be a citation or description | Pattern hint: {PMID}|{DOI}|{URL}|{text}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1356,8 +1755,8 @@ var DATA = [
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "recommended",
-        "description": "Type of filter used or how the sample was filteres",
-        "guidance": "pattern generalization: {text}",
+        "description": "Type of filter used or how the sample was filtered",
+        "guidance": "Pattern hint: {text}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1378,9 +1777,9 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "recommended",
         "description": "The total amount or size (volume (ml), mass (g) or area (m2) ) of sample collected.",
-        "guidance": "This referes to the TOTAL amount of sample collected from the experiment. NOT the amount sent to each institution or collected for a specific analysis. | pattern generalization: {float} {unit}",
+        "guidance": "This refers to the TOTAL amount of sample collected from the experiment. NOT the amount sent to each institution or collected for a specific analysis. | Pattern hint: {float} {unit}",
         "examples": "5 grams; 10 mL",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -1400,7 +1799,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "recommended",
         "description": "Other details about your sample that you feel can't be accurately represented in the available columns.",
-        "guidance": "pattern generalization: {text}",
+        "guidance": "Pattern hint: {text}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1421,7 +1820,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "recommended",
         "description": "Other treatments applied to your samples that are not applicable to the provided fields",
-        "guidance": "pattern generalization: {text}",
+        "guidance": "Pattern hint: {text}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1442,8 +1841,9 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "recommended",
         "description": "List isotope exposure or addition applied to your sample.",
-        "guidance": "pattern generalization: {termLabel} {[termID]}; {timestamp}",
+        "guidance": "Pattern hint: {termLabel} {[termID]}; {timestamp}",
         "examples": "",
+        "pattern": "^\\S+.*\\S+ \\[ENVO:\\d+\\]; ([\\+-]?\\d{4}(?!\\d{2}\\b))((-?)((0[1-9]|1[0-2])(\\3([12]\\d|0[1-9]|3[01]))?|W([0-4]\\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\\d|[12]\\d{2}|3([0-5]\\d|6[1-6])))([T\\s]((([01]\\d|2[0-3])((:?)[0-5]\\d)?|24\\:?00)([\\.,]\\d+(?!:))?)?(\\17[0-5]\\d([\\.,]\\d+)?)?([zZ]|([\\+-])([01]\\d|2[0-3]):?([0-5]\\d)?)?)?)?$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -1462,8 +1862,8 @@ var DATA = [
         "xs:minInclusive": "0.0",
         "xs:maxInclusive": "14.0",
         "requirement": "recommended",
-        "description": "Ph measurement of the sample, or liquid portion of sample, or aqueous phase of the fluid",
-        "guidance": "Expected value: measurement value | pattern generalization: {float}",
+        "description": "pH measurement of the sample, or liquid portion of sample, or aqueous phase of the fluid",
+        "guidance": "Pattern hint: {float}",
         "examples": "7.2",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1489,7 +1889,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Collection design of pooled samples and/or sieve size and amount of sample sieved",
-        "guidance": "pattern generalization: {{text}|{float} {unit}};{float} {unit}",
+        "guidance": "Pattern hint: {{text}|{float} {unit}};{float} {unit}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1512,7 +1912,7 @@ var DATA = [
         "description": "Refers to the mesh/pore size used to pre-filter/pre-sort the sample. Materials larger than the size threshold are excluded from the sample",
         "guidance": "",
         "examples": "0.2 micrometer",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -1534,7 +1934,7 @@ var DATA = [
         "description": "Refers to the mesh/pore size used to retain the sample. Materials smaller than the size threshold are excluded from the sample",
         "guidance": "",
         "examples": "20 micrometer",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -1554,7 +1954,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Information about treatment(s) involving use of biotic factors, such as bacteria, viruses or fungi.",
-        "guidance": "pattern generalization: {text}",
+        "guidance": "Pattern hint: {text}",
         "examples": "sample inoculated with Rhizobium spp. Culture",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1575,7 +1975,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Information about treatment involving an exposure to varying temperatures; should include the temperature, treatment regimen including how many times the treatment was repeated, how long each treatment lasted, and the start and end time of the entire treatment; can include different temperature regimens",
-        "guidance": "pattern generalization: {float} {unit};{Rn/start_time/end_time/duration}",
+        "guidance": "Pattern hint: {float} {unit};{Rn/start_time/end_time/duration}",
         "examples": "25 degree Celsius;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1596,7 +1996,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "List of chemical compounds administered to the host or site where sampling occurred, and when (e.g. Antibiotics, n fertilizer, air filter); can include multiple compounds. For chemical entities of biological interest ontology (chebi) (v 163), http://purl.bioontology.org/ontology/chebi",
-        "guidance": "pattern generalization: {termLabel} {[termID]};{timestamp}",
+        "guidance": "Pattern hint: {termLabel} {[termID]};{timestamp}",
         "examples": "agar [CHEBI:2509];2018-05-11T20:00Z",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1617,7 +2017,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Treatment involving an exposure to a particular climate; treatment regimen including how many times the treatment was repeated, how long each treatment lasted, and the start and end time of the entire treatment; can include multiple climates",
-        "guidance": "pattern generalization: {text};{Rn/start_time/end_time/duration}",
+        "guidance": "Pattern hint: {text};{Rn/start_time/end_time/duration}",
         "examples": "tropical climate;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1638,7 +2038,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Use of conditions with differing gaseous environments; should include the name of gaseous compound, amount administered, treatment duration, interval and total experimental duration; can include multiple gaseous environment regimens",
-        "guidance": "pattern generalization: {text};{float} {unit};{Rn/start_time/end_time/duration}",
+        "guidance": "Pattern hint: {text};{float} {unit};{Rn/start_time/end_time/duration}",
         "examples": "nitric oxide;0.5 micromole per liter;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1659,7 +2059,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Information about treatment involving an exposure to varying degree of humidity; information about treatment involving use of growth hormones; should include amount of humidity administered, treatment regimen including how many times the treatment was repeated, how long each treatment lasted, and the start and end time of the entire treatment; can include multiple regimens",
-        "guidance": "pattern generalization: {float} {unit};{Rn/start_time/end_time/duration}",
+        "guidance": "Pattern hint: {float} {unit};{Rn/start_time/end_time/duration}",
         "examples": "25 gram per cubic meter;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1680,7 +2080,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Information about treatment(s) involving exposure to light, including both light intensity and quality.",
-        "guidance": "pattern generalization: {text};{float} {unit};{float} {unit}",
+        "guidance": "Pattern hint: {text};{float} {unit};{float} {unit}",
         "examples": "incandescant light;10 lux;450 nanometer",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1701,7 +2101,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Information about treatment involving an exposure to watering frequencies, treatment regimen including how many times the treatment was repeated, how long each treatment lasted, and the start and end time of the entire treatment; can include multiple regimens",
-        "guidance": "pattern generalization: {float} {unit};{Rn/start_time/end_time/duration}",
+        "guidance": "Pattern hint: {float} {unit};{Rn/start_time/end_time/duration}",
         "examples": "1 liter;R2/2018-05-11T14:30/2018-05-11T19:30/P1H30M",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1724,7 +2124,7 @@ var DATA = [
         "description": "Altitude is a term used to identify heights of objects such as airplanes, space shuttles, rockets, atmospheric balloons and heights of places such as atmospheric layers and clouds. It is used to measure the height of an object which is above the earth's surface. In this context, the altitude measurement is the vertical distance between the earth's surface above sea level and the sampled position in the air",
         "guidance": "",
         "examples": "100 meter",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -1749,7 +2149,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Description of relationship(s) between the subject organism and other organism(s) it is associated with. E.g., parasite on species X; mutualist with species Y. The target organism is the subject of the relationship, and the other organism(s) is the object",
-        "guidance": "pattern generalization: enumeration",
+        "guidance": "Pattern hint: enumeration",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1777,7 +2177,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Is this organism an aerobe, anaerobe? Please note that aerobic and anaerobic are valid descriptors for microbial environments",
-        "guidance": "pattern generalization: enumeration",
+        "guidance": "Pattern hint: enumeration",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1807,9 +2207,9 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Amount of biomass; should include the name for the part of biomass measured, e.g.insect, plant, total. Can include multiple measurements separated by ;",
-        "guidance": "pattern generalization: {text};{float} {unit}",
+        "guidance": "Pattern hint: {text};{float} {unit}",
         "examples": "",
-        "pattern": "\\S*;[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^\\S*;[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -1829,7 +2229,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Reference or method used in determining biomass",
-        "guidance": "required if \"non-microbial biomass\" is provided | pattern generalization: {PMID}|{DOI}|{URL}",
+        "guidance": "required if \"non-microbial biomass\" is provided | Pattern hint: {PMID}|{DOI}|{URL}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1850,9 +2250,9 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "The part of the organic matter in the soil that constitutes living microorganisms smaller than 5-10 micrometer. If you keep this, you would need to have correction factors used for conversion to the final units",
-        "guidance": "pattern generalization: {float} {unit}",
+        "guidance": "Pattern hint: {float} {unit}",
         "examples": "",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -1872,7 +2272,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Reference or method used in determining microbial biomass",
-        "guidance": "required if \"microbial_biomass_C\" is provided | pattern generalization: {PMID}|{DOI}|{URL}",
+        "guidance": "required if \"microbial_biomass_C\" is provided | Pattern hint: {PMID}|{DOI}|{URL}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1893,9 +2293,9 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "The part of the organic matter in the soil that constitutes living microorganisms smaller than 5-10 micrometer. If you keep this, you would need to have correction factors used for conversion to the final units",
-        "guidance": "pattern generalization: {float} {unit}",
+        "guidance": "Pattern hint: {float} {unit}",
         "examples": "",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -1915,7 +2315,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Reference or method used in determining microbial biomass nitrogen",
-        "guidance": "required if \"microbial_biomass_N\" is provided | pattern generalization: {PMID}|{DOI}|{URL}",
+        "guidance": "required if \"microbial_biomass_N\" is provided | Pattern hint: {PMID}|{DOI}|{URL}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1936,8 +2336,8 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Method used for obtaining organic nitrogen",
-        "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
-        "examples": "required if \"org_nitro_ is provided",
+        "guidance": "required if \"org_nitro\" is provided | Pattern hint: {PMID}|{DOI}|{URL}",
+        "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -1964,7 +2364,7 @@ var DATA = [
         "description": "The direction a slope faces. While looking down a slope use a compass to record the direction you are facing (direction or degrees); e.g., nw or 315 degrees. This measure provides an indication of sun and wind exposure that will influence soil temperature and evapotranspiration.",
         "guidance": "",
         "examples": "",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -1984,8 +2384,9 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Addition of fertilizers, pesticides, etc. - amount and time of applications",
-        "guidance": "pattern generalization: {text};{float} {unit};{timestamp}",
+        "guidance": "Pattern hint: {text};{float} {unit};{timestamp}",
         "examples": "roundup;5 milligram per liter;2018-06-21",
+        "pattern": "^\\S+.*\\S+;[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+;([\\+-]?\\d{4}(?!\\d{2}\\b))((-?)((0[1-9]|1[0-2])(\\3([12]\\d|0[1-9]|3[01]))?|W([0-4]\\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\\d|[12]\\d{2}|3([0-5]\\d|6[1-6])))([T\\s]((([01]\\d|2[0-3])((:?)[0-5]\\d)?|24\\:?00)([\\.,]\\d+(?!:))?)?(\\17[0-5]\\d([\\.,]\\d+)?)?([zZ]|([\\+-])([01]\\d|2[0-3]):?([0-5]\\d)?)?)?)?$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -2007,7 +2408,7 @@ var DATA = [
         "description": "Aluminum saturation (esp. For tropical soils)",
         "guidance": "",
         "examples": "",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -2027,7 +2428,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Reference or method used in determining Al saturation",
-        "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
+        "guidance": "Pattern hint: {PMID}|{DOI}|{URL}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -2050,7 +2451,7 @@ var DATA = [
         "description": "The average of all annual precipitation values known, or an estimated equivalent value derived by such methods as regional indexes or Isohyetal maps.",
         "guidance": "",
         "examples": "",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -2072,7 +2473,7 @@ var DATA = [
         "description": "Mean annual temperature",
         "guidance": "",
         "examples": "12.5 degree Celsius",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -2092,7 +2493,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Whether or not crop is rotated, and if yes, rotation schedule",
-        "guidance": "pattern generalization: {boolean};{Rn/start_time/end_time/duration}",
+        "guidance": "Pattern hint: {boolean};{Rn/start_time/end_time/duration}",
         "examples": "yes;R2/2017-01-01/2018-12-31/P6M",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -2171,7 +2572,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Vegetation classification from one or more standard classification systems, or agricultural crop",
-        "guidance": "pattern generalization: {text}",
+        "guidance": "Pattern hint: {text}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -2192,7 +2593,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Reference or method used in vegetation classification",
-        "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
+        "guidance": "Pattern hint: {PMID}|{DOI}|{URL}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -2242,7 +2643,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Experimental factors are essentially the variable aspects of an experiment design which can be used to describe an experiment, or set of experiments, in an increasingly detailed manner. This field accepts ontology terms from Experimental Factor Ontology (EFO) and/or Ontology for Biomedical Investigations (OBI). For a browser of EFO (v 2.95) terms, please see http://purl.bioontology.org/ontology/EFO; for a browser of OBI (v 2018-02-12) terms please see http://purl.bioontology.org/ontology/OBI",
-        "guidance": "pattern generalization: {termLabel} {[termID]}|{text}",
+        "guidance": "Pattern hint: {termLabel} {[termID]}|{text}",
         "examples": "time series design [EFO:EFO_0001779]",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -2375,9 +2776,9 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Heavy metals present in the sequenced sample and their concentrations. For multiple heavy metals and concentrations, add multiple copies of this field.",
-        "guidance": "pattern generalization: {text};{float} {unit}",
+        "guidance": "Pattern hint: {text};{float} {unit}",
         "examples": "mercury;0.09 micrograms per gram",
-        "pattern": "\\S*;[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^\\S*;[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -2397,7 +2798,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Reference or method used in determining heavy metals",
-        "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
+        "guidance": "Pattern hint: {PMID}|{DOI}|{URL}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -2418,7 +2819,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Reference or method used in determining the horizon",
-        "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
+        "guidance": "Pattern hint: {PMID}|{DOI}|{URL}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -2439,7 +2840,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Link to digitized soil maps or other soil classification information",
-        "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
+        "guidance": "Pattern hint: {PMID}|{DOI}|{URL}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -2460,7 +2861,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Link to climate resource",
-        "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
+        "guidance": "Pattern hint: {PMID}|{DOI}|{URL}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -2481,7 +2882,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Soil classification based on local soil classification system",
-        "guidance": "pattern generalization: {text}",
+        "guidance": "Pattern hint: {text}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -2502,7 +2903,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Reference or method used in determining the local soil classification",
-        "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
+        "guidance": "Pattern hint: {PMID}|{DOI}|{URL}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -2523,9 +2924,9 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Any other measurement performed or parameter collected, that is not listed here",
-        "guidance": "pattern generalization: {text};{float} {unit}",
+        "guidance": "Pattern hint: {text};{float} {unit}",
         "examples": "Bicarbonate ion concentration;2075 micromole per kilogram",
-        "pattern": "\\S*;[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^\\S*;[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -2571,7 +2972,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Reference or method used in determining previous land use and dates",
-        "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
+        "guidance": "Pattern hint: {PMID}|{DOI}|{URL}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -2592,8 +2993,9 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Previous land use and dates",
-        "guidance": "pattern generalization: {text};{timestamp}",
+        "guidance": "Pattern hint: {text};{timestamp}",
         "examples": "",
+        "pattern": "^\\S+.*\\S+;([\\+-]?\\d{4}(?!\\d{2}\\b))((-?)((0[1-9]|1[0-2])(\\3([12]\\d|0[1-9]|3[01]))?|W([0-4]\\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\\d|[12]\\d{2}|3([0-5]\\d|6[1-6])))([T\\s]((([01]\\d|2[0-3])((:?)[0-5]\\d)?|24\\:?00)([\\.,]\\d+(?!:))?)?(\\17[0-5]\\d([\\.,]\\d+)?)?([zZ]|([\\+-])([01]\\d|2[0-3]):?([0-5]\\d)?)?)?)?$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -2643,7 +3045,7 @@ var DATA = [
         "description": "The average of all seasonal precipitation values known, or an estimated equivalent value derived by such methods as regional indexes or Isohyetal maps.",
         "guidance": "",
         "examples": "",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -2665,7 +3067,7 @@ var DATA = [
         "description": "Mean seasonal temperature",
         "guidance": "",
         "examples": "18 degree Celsius",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -2687,7 +3089,7 @@ var DATA = [
         "description": "Commonly called 'slope'. The angle between ground surface and a horizontal line (in percent). This is the direction that overland water would flow. This measure is usually taken with a hand level meter or clinometer",
         "guidance": "",
         "examples": "",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -2739,7 +3141,7 @@ var DATA = [
         "description": "The relative proportion of different grain sizes of mineral particles in a soil, as described using a standard system; express as % sand (50 um to 2 mm), silt (2 um to 50 um), and clay (<2 um) with textural name (e.g., silty clay loam) optional.",
         "guidance": "",
         "examples": "",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -2759,7 +3161,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Reference or method used in determining soil texture",
-        "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
+        "guidance": "Pattern hint: {PMID}|{DOI}|{URL}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -2780,9 +3182,9 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Description of the soil type or classification. This field accepts terms under soil (http://purl.obolibrary.org/obo/ENVO_00001998).  Multiple terms can be separated by pipes.",
-        "guidance": "pattern generalization: {termLabel} {[termID]}",
+        "guidance": "Pattern hint: {termLabel} {[termID]}",
         "examples": "plinthosol [ENVO:00002250]",
-        "pattern": ".* \\[ENVO:\\d+\\]",
+        "pattern": "^\\S+.*\\S+ \\[ENVO:\\d+\\]$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -2802,7 +3204,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Reference or method used in determining soil series name or other lower-level classification",
-        "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
+        "guidance": "Pattern hint: {PMID}|{DOI}|{URL}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -2825,7 +3227,7 @@ var DATA = [
         "description": "Temperature of the sample at the time of sampling.",
         "guidance": "",
         "examples": "25 degree Celsius",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -2879,7 +3281,7 @@ var DATA = [
         "description": "Water content measurement",
         "guidance": "",
         "examples": "",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -2899,7 +3301,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Reference or method used in determining the water content of soil",
-        "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
+        "guidance": "Pattern hint: {PMID}|{DOI}|{URL}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -2920,7 +3322,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Reference or method used in determining ph",
-        "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
+        "guidance": "Pattern hint: {PMID}|{DOI}|{URL}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -2943,7 +3345,7 @@ var DATA = [
         "description": "The part of the organic matter in the soil that constitutes living microorganisms smaller than 5-10 micrometer. If you keep this, you would need to have correction factors used for conversion to the final units",
         "guidance": "",
         "examples": "",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -2963,7 +3365,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Reference or method used in determining microbial biomass",
-        "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
+        "guidance": "Pattern hint: {PMID}|{DOI}|{URL}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -2986,7 +3388,7 @@ var DATA = [
         "description": "Ratio of amount or concentrations of carbon to nitrogen",
         "guidance": "",
         "examples": "0.417361111",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -3008,7 +3410,7 @@ var DATA = [
         "description": "Concentration of organic matter",
         "guidance": "",
         "examples": "1.75 milligram per cubic meter",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -3030,7 +3432,7 @@ var DATA = [
         "description": "Concentration of organic nitrogen",
         "guidance": "",
         "examples": "4 micromole per liter",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -3052,7 +3454,7 @@ var DATA = [
         "description": "Total carbon content",
         "guidance": "",
         "examples": "",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -3074,7 +3476,7 @@ var DATA = [
         "description": "Total nitrogen content of the sample",
         "guidance": "",
         "examples": "",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -3094,7 +3496,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Reference or method used in determining the total nitrogen",
-        "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
+        "guidance": "Pattern hint: {PMID}|{DOI}|{URL}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -3117,7 +3519,7 @@ var DATA = [
         "description": "Definition for soil: total organic carbon content of the soil, definition otherwise: total organic carbon content",
         "guidance": "",
         "examples": "",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -3137,7 +3539,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Reference or method used in determining total organic carbon",
-        "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
+        "guidance": "Pattern hint: {PMID}|{DOI}|{URL}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -3160,7 +3562,7 @@ var DATA = [
         "description": "Total phosphorus concentration in the sample, calculated by: total phosphorus = total dissolved phosphorus + particulate phosphorus",
         "guidance": "",
         "examples": "0.03 milligram per liter",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -3182,7 +3584,7 @@ var DATA = [
         "description": "Concentration of phosphate",
         "guidance": "",
         "examples": "0.7 micromole per liter",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -3204,7 +3606,7 @@ var DATA = [
         "description": "The total concentration of all dissolved salts in a liquid or solid sample. While salinity can be measured by a complete chemical analysis, this method is difficult and time consuming. More often, it is instead derived from the conductivity measurement. This is known as practical salinity. These derivations compare the specific conductance of the sample to a salinity standard such as seawater.",
         "guidance": "",
         "examples": "25 practical salinity unit",
-        "pattern": "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -3224,7 +3626,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Reference or method used in determining salinity",
-        "guidance": "pattern generalization: {PMID}|{DOI}|{URL}",
+        "guidance": "Pattern hint: {PMID}|{DOI}|{URL}",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
