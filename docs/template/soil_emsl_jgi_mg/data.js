@@ -439,7 +439,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "",
-        "guidance": "Do not edit this these values. A template will be provided by NMDC in which these vales have been pre-filled. | Pattern hint: {text}",
+        "guidance": "Do not edit these values. A template will be provided by NMDC in which these vales have been pre-filled. | Pattern hint: {text}",
         "examples": "1191234",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -460,7 +460,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "",
-        "guidance": "Do not edit this these values. A template will be provided by NMDC in which these vales have been pre-filled. | Pattern hint: {text}",
+        "guidance": "Do not edit these values. A template will be provided by NMDC in which these vales have been pre-filled. | Pattern hint: {text}",
         "examples": "JGI Pond metagenomics",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -481,7 +481,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "",
-        "guidance": "Do not edit this these values. A template will be provided by NMDC in which these vales have been pre-filled. | Pattern hint: {text}",
+        "guidance": "Do not edit these values. A template will be provided by NMDC in which these vales have been pre-filled. | Pattern hint: {text}",
         "examples": "187654",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -795,7 +795,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "",
-        "guidance": "Do not edit this these values. A template will be provided by NMDC in which these vales have been pre-filled. | Pattern hint: {text}",
+        "guidance": "Do not edit these values. A template will be provided by NMDC in which these vales have been pre-filled. | Pattern hint: {text}",
         "examples": "Jane Johnson",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -816,7 +816,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "",
-        "guidance": "Do not edit this these values. A template will be provided by NMDC in which these vales have been pre-filled. | Pattern hint: {text}",
+        "guidance": "Do not edit these values. A template will be provided by NMDC in which these vales have been pre-filled. | Pattern hint: {text}",
         "examples": "John Jones",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -837,7 +837,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "",
-        "guidance": "Do not edit this these values. A template will be provided by NMDC in which these vales have been pre-filled. | Pattern hint: {text}",
+        "guidance": "Do not edit these values. A template will be provided by NMDC in which these vales have been pre-filled. | Pattern hint: {text}",
         "examples": "504000",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -923,7 +923,7 @@ var DATA = [
         "requirement": "required",
         "description": "The date of sampling",
         "guidance": "Date should be formatted as YYYY(-MM(-DD)) | Pattern hint: {date, arbitrary precision}",
-        "examples": "2021-04-15, 2021-04 and 2021 ar all acceptable.",
+        "examples": "2021-04-15, 2021-04 and 2021 are all acceptable.",
         "pattern": "^[12]\\d{3}(?:(?:-(?:0[1-9]|1[0-2]))(?:-(?:0[1-9]|[12]\\d|3[01]))?)?$",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1618,8 +1618,8 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "recommended",
         "description": "Date the incubation was harvested/collected/ended. Only relevant for incubation samples.",
-        "guidance": "Date should be formatted as YYYY(-MM(-DD)). Ie, 2021-04-15, 2021-04 and 2021 ar all acceptable. | Pattern hint: {date, arbitrary precision}",
-        "examples": "2021-04-15, 2021-04 and 2021 ar all acceptable.",
+        "guidance": "Date should be formatted as YYYY(-MM(-DD)). Ie, 2021-04-15, 2021-04 and 2021 are all acceptable. | Pattern hint: {date, arbitrary precision}",
+        "examples": "2021-04-15, 2021-04 and 2021 are all acceptable.",
         "pattern": "^[12]\\d{3}(?:(?:-(?:0[1-9]|1[0-2]))(?:-(?:0[1-9]|[12]\\d|3[01]))?)?$",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1662,8 +1662,8 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "recommended",
         "description": "Date the incubation was started. Only relevant for incubation samples.",
-        "guidance": "Date should be formatted as YYYY(-MM(-DD)). Ie, 2021-04-15, 2021-04 and 2021 ar all acceptable. | Pattern hint: {date, arbitrary precision}",
-        "examples": "2021-04-15, 2021-04 and 2021 ar all acceptable.",
+        "guidance": "Date should be formatted as YYYY(-MM(-DD)). Ie, 2021-04-15, 2021-04 and 2021 are all acceptable. | Pattern hint: {date, arbitrary precision}",
+        "examples": "2021-04-15, 2021-04 and 2021 are all acceptable.",
         "pattern": "^[12]\\d{3}(?:(?:-(?:0[1-9]|1[0-2]))(?:-(?:0[1-9]|[12]\\d|3[01]))?)?$",
         "exportField": {
           "soil_emsl_jgi_mg": [
