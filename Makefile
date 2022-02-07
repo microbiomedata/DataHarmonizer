@@ -124,6 +124,20 @@ target/soil_ebs_terms.txt: target/soil_curated_terms.tsv
 	cut -f2 target/temp.txt > $@
 	rm target/temp.txt
 
+
+target/soil_els_terms.txt: target/soil_curated_terms.tsv
+	# do this in python
+	grep 'env_local_scale' $< > target/temp.txt
+	cut -f2 target/temp.txt > $@
+	rm target/temp.txt
+
+
+target/soil_em_terms.txt: target/soil_curated_terms.tsv
+	# do this in python
+	grep 'env_medium' $< > target/temp.txt
+	cut -f2 target/temp.txt > $@
+	rm target/temp.txt
+
 # need a method for generating the envo*tsv files
 # include hident sparql files
 # how to access?
@@ -139,10 +153,38 @@ target/soil_ebs_terms_indented.tsv: target/soil_ebs_terms.txt
 		--parent_term 'broad-scale environmental context' \
 		--indented_tsv $@
 
-target/data_promoted.tsv: target/data.tsv target/soil_ebs_terms_indented.tsv
+target/soil_els_terms_indented.tsv: target/soil_els_terms.txt
+	poetry run hident \
+		--sco_tab_file_name artifacts/envo_sco.tsv \
+		--lab_tab_file_name artifacts/envo_labs.tsv \
+		--curie_file_name $< \
+		--pad_char _ \
+		--pad_count 2 \
+		--parent_term 'local environmental context' \
+		--indented_tsv $@
+
+
+target/soil_em_terms_indented.tsv: target/soil_em_terms.txt
+	poetry run hident \
+		--sco_tab_file_name artifacts/envo_sco.tsv \
+		--lab_tab_file_name artifacts/envo_labs.tsv \
+		--curie_file_name $< \
+		--pad_char _ \
+		--pad_count 2 \
+		--parent_term 'environmental medium' \
+		--indented_tsv $@
+
+target/data_promoted.tsv: target/data.tsv \
+target/soil_ebs_terms_indented.tsv \
+target/soil_els_terms_indented.tsv \
+target/soil_em_terms_indented.tsv
 	poetry run promote_to_select \
 		--promote 'broad-scale environmental context' \
 		--extra_row_files target/soil_ebs_terms_indented.tsv \
+		--promote 'local environmental context' \
+		--extra_row_files target/soil_els_terms_indented.tsv \
+		--promote 'environmental medium' \
+		--extra_row_files target/soil_em_terms_indented.tsv \
 		--data_tsv_out $@
 
 # this converts data.tsv to a data harmonizer main.html + main.js etc.
