@@ -219,31 +219,39 @@ var DATA = [
         "schema:ItemList": {
           "Biocrust": {},
           "Biofilm": {},
+          "Bulk soil": {},
           "Clay": {},
-          "Desert": {},
-          "Forest": {},
-          "Garden": {},
-          "Gravesite": {},
-          "Meadow": {},
-          "Pature": {},
+          "Floodplain": {},
+          "Fossil": {},
+          "Glacier": {},
+          "Loam": {},
+          "Mineral horizon": {},
+          "Nature reserve": {},
+          "Organic layer": {},
+          "Paddy field/soil": {},
+          "Pasture": {},
+          "Peat": {},
           "Ranch": {},
           "Sand": {},
           "Silt": {},
-          "Tundra": {}
+          "Soil crust": {},
+          "Unclassified": {},
+          "Watershed": {},
+          "Wetlands": {}
         }
       },
       {
         "fieldName": "specific_ecosystem",
         "capitalize": "",
-        "ontology_id": "",
-        "datatype": "xs:token",
+        "ontology_id": "samp_id:specific_ecosystem",
+        "datatype": "select",
         "source": "",
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "",
-        "description": "Specific ecosystems represent specific features of the environment like aphotic zone in an ocean or gastric mucosa within a host digestive system. Specific ecosystem is in position 5/5 in a GOLD path.",
-        "guidance": "Specific ecosystems help to define samples based on very specific characteristics of an environment under the five-level classification system.",
+        "description": "Specific ecosystems represent specific features of the environment like aphotic zone in an ocean or gastric mucosa within a host digestive system. Specific ecosystem is in position 5/5 in a GOLD path.\n",
+        "guidance": "Specific ecosystems help to define samples based on very specific characteristics of an environment under the five-level classification system.\n | Pattern hint: enumeration",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -251,6 +259,32 @@ var DATA = [
               "field": "specific_ecosystem"
             }
           ]
+        },
+        "schema:ItemList": {
+          "Agricultural": {},
+          "Agricultural land": {},
+          "Agricultural soil": {},
+          "Alpine": {},
+          "Bog": {},
+          "Boreal forest": {},
+          "Contaminated": {},
+          "Desert": {},
+          "Farm": {},
+          "Forest Soil": {},
+          "Forest soil": {},
+          "Grasslands": {},
+          "Meadow": {},
+          "Mine": {},
+          "Mine drainage": {},
+          "Oil-contaminated": {},
+          "Orchard soil": {},
+          "Permafrost": {},
+          "Riparian soil": {},
+          "River": {},
+          "Shrubland": {},
+          "Tropical rainforest": {},
+          "Unclassified": {},
+          "Uranium contaminated": {}
         }
       }
     ]
