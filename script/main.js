@@ -1883,7 +1883,7 @@ const setupMessageInterface = () => {
           changeColVisibility(`show-${event.data.value}-cols-dropdown-item`, DATA, HOT);
           break;
         case 'exportJson':
-          const value = getTrimmedData(HOT)
+          const value = [...getFlatHeaders(DATA), ...getTrimmedData(HOT)];
           window.parent.postMessage({ type: 'exportJson', value }, "*");
           break;
         case 'loadData':
