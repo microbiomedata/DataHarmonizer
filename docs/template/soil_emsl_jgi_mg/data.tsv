@@ -139,7 +139,9 @@ samp_id:ecosystem	ecosystem	NMDC fields esp. GOLD paths	An ecosystem is a combin
 samp_id:ecosystem_category	ecosystem_category	NMDC fields esp. GOLD paths	Ecosystem categories represent divisions within the ecosystem based on specific characteristics of the environment from where an organism or sample is isolated. Ecosystem category is in position 2/5 in a GOLD path.	The Environmental ecosystem (for example) is divided into Air, Aquatic and Terrestrial. Ecosystem categories for Host-associated samples can be individual hosts or phyla and for engineered samples it may be manipulated environments like bioreactors, solid waste etc. | Pattern hint: enumeration	select									ecosystem_category				7.0
 samp_id:ecosystem_subtype	ecosystem_subtype	NMDC fields esp. GOLD paths	Ecosystem subtypes represent further subdivision of Ecosystem types into more distinct subtypes. Ecosystem subtype is in position 4/5 in a GOLD path.	Ecosystem Type Marine (Environmental -> Aquatic -> Marine) is further divided (for example) into Intertidal zone, Coastal, Pelagic, Intertidal zone etc. in the Ecosystem subtype category. | Pattern hint: enumeration	select									ecosystem_subtype				8.0
 samp_id:ecosystem_type	ecosystem_type	NMDC fields esp. GOLD paths	Ecosystem types represent things having common characteristics within the Ecosystem Category. These common characteristics based grouping is still broad but specific to the characteristics of a given environment. Ecosystem type is in position 3/5 in a GOLD path.	The Aquatic ecosystem category (for example) may have ecosystem types like Marine or Thermal springs etc. Ecosystem category Air may have Indoor air or Outdoor air as different Ecosystem Types. In the case of Host-associated samples, ecosystem type can represent Respiratory system, Digestive system, Roots etc. | Pattern hint: enumeration	select									ecosystem_type				9.0
-	specific_ecosystem	NMDC fields esp. GOLD paths	Specific ecosystems represent specific features of the environment like aphotic zone in an ocean or gastric mucosa within a host digestive system. Specific ecosystem is in position 5/5 in a GOLD path.	Specific ecosystems help to define samples based on very specific characteristics of an environment under the five-level classification system.	xs:token									specific_ecosystem				10.0
+samp_id:specific_ecosystem	specific_ecosystem	NMDC fields esp. GOLD paths	"Specific ecosystems represent specific features of the environment like aphotic zone in an ocean or gastric mucosa within a host digestive system. Specific ecosystem is in position 5/5 in a GOLD path.
+"	"Specific ecosystems help to define samples based on very specific characteristics of an environment under the five-level classification system.
+ | Pattern hint: enumeration"	select									specific_ecosystem				10.0
 samp_id:unique_ID	Globally Unique ID	Sample ID	A globally unique identifier assigned to the biological sample.	Identifiers must me prefixed. IGSNs (http://www.geosamples.org/getigsn) are unique and FAIR. UUIDs (https://www.uuidgenerator.net/) are globally unique but not FAIR. These IDs enable linking to derrived analytes and subsamples. | Pattern hint: {text}:{text}	xs:unique	[^\:\n\r]+\:[^\:\n\r]+	required	IGSN:AU1243						unique_ID				1.0
 samp_id:sample_name	sample name	Sample ID	A local identifier or name that for the material sample collected. Refers to the original material collected or to any derived sub-samples.	It can have any format, but we suggest that you make it concise, unique and consistent within your lab, and as informative as possible. | Pattern hint: {text}	xs:token		required	Rock core CB1178(5-6) from NSW						sample_name				2.0
 samp_id:env_package	environmental package	Sample ID	Select the MIxS enviromental package that best describes the environemtn from which you sample was collected.	Pattern hint: enumeration	select		required	soil						env_package				3.0
@@ -210,17 +212,25 @@ samp_id:sample_link	sample linkage	Sample ID	A unique identifier to assign paren
 	Soil	ecosystem_subtype																
 	Biocrust	ecosystem_type																
 	Biofilm	ecosystem_type																
+	Bulk soil	ecosystem_type																
 	Clay	ecosystem_type																
-	Desert	ecosystem_type																
-	Forest	ecosystem_type																
-	Garden	ecosystem_type																
-	Gravesite	ecosystem_type																
-	Meadow	ecosystem_type																
-	Pature	ecosystem_type																
+	Floodplain	ecosystem_type																
+	Fossil	ecosystem_type																
+	Glacier	ecosystem_type																
+	Loam	ecosystem_type																
+	Mineral horizon	ecosystem_type																
+	Nature reserve	ecosystem_type																
+	Organic layer	ecosystem_type																
+	Paddy field/soil	ecosystem_type																
+	Pasture	ecosystem_type																
+	Peat	ecosystem_type																
 	Ranch	ecosystem_type																
 	Sand	ecosystem_type																
 	Silt	ecosystem_type																
-	Tundra	ecosystem_type																
+	Soil crust	ecosystem_type																
+	Unclassified	ecosystem_type																
+	Watershed	ecosystem_type																
+	Wetlands	ecosystem_type																
 	soil	environmental package																
 	Acrisols	soil_taxonomic/FAO classification																
 	Andosols	soil_taxonomic/FAO classification																
@@ -286,6 +296,30 @@ samp_id:sample_link	sample linkage	Sample ID	A unique identifier to assign paren
 	O horizon	soil horizon																
 	Permafrost	soil horizon																
 	R layer	soil horizon																
+	Agricultural	specific_ecosystem																
+	Agricultural land	specific_ecosystem																
+	Agricultural soil	specific_ecosystem																
+	Alpine	specific_ecosystem																
+	Bog	specific_ecosystem																
+	Boreal forest	specific_ecosystem																
+	Contaminated	specific_ecosystem																
+	Desert	specific_ecosystem																
+	Farm	specific_ecosystem																
+	Forest Soil	specific_ecosystem																
+	Forest soil	specific_ecosystem																
+	Grasslands	specific_ecosystem																
+	Meadow	specific_ecosystem																
+	Mine	specific_ecosystem																
+	Mine drainage	specific_ecosystem																
+	Oil-contaminated	specific_ecosystem																
+	Orchard soil	specific_ecosystem																
+	Permafrost	specific_ecosystem																
+	Riparian soil	specific_ecosystem																
+	River	specific_ecosystem																
+	Shrubland	specific_ecosystem																
+	Tropical rainforest	specific_ecosystem																
+	Unclassified	specific_ecosystem																
+	Uranium contaminated	specific_ecosystem																
 	fresh	storage conditions																
 	frozen	storage conditions																
 	lyophilized	storage conditions																
