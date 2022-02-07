@@ -5,8 +5,8 @@ description = ""
 authors = ["Mark Andrew Miller <MAM@lbl.gov>"]
 
 [tool.poetry.dependencies]
-deepdiff = "*"
-glom = "*"
+#deepdiff = "*"
+#glom = "*"
 linkml = "^1.1.13"
 linkml-model = "^1.0.6"
 # nmdc-schema = ""
@@ -23,7 +23,7 @@ git-root = "^0.1"
 # black = "*"
 click-log = "*"
 pytest = "*"
-jupyter = "*"
+#jupyter = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

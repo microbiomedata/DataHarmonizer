@@ -1,12 +1,12 @@
 from __future__ import annotations
-import re
-import logging
 
+import logging
+import re
 from typing import Any, Dict, List
 
 import pandas as pd
-
 from linkml_runtime.utils.schemaview import SchemaView
+
 from sheet2dataharmonizer.converters.sheet2linkml import Sheet2LinkML
 
 logger = logging.getLogger(__name__)
@@ -28,6 +28,9 @@ class ValidationConverter:
         sc_frame = raw[selected_cols]
         vc_lod = sc_frame.to_dict(orient="records")
         self.vc_dod = {i["from_val"]: i for i in vc_lod}
+
+
+vc_inst = ValidationConverter()
 
 
 class LinkML2DataHarmonizer:
@@ -63,32 +66,6 @@ class LinkML2DataHarmonizer:
             "min value",
             "EXPORT_soil_emsl_jgi_mg",
         ]
-
-    def range_data_types(self) -> Dict[str, str]:
-        return {
-            "date": "xs:date",
-            "double": "xs:decimal",
-            "string": "xs:token",
-            "timestamp value": "date",
-        }
-
-    def str_ser_data_types(self) -> Dict[str, str]:
-        return {
-            "{float}": "xs:decimal",
-            "{integer}": "xs:nonNegativeInteger",
-            "{timestamp}": "xs:date",
-        }
-
-    def range_regexes(self) -> Dict[str, str]:
-        return {"quantity value": r"[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+"}
-
-    def str_ser_regexes(self) -> Dict[str, str]:
-        return {
-            "{float} {unit}": r"[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+",
-            "{text};{float} {unit}": r"\S*;[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? \S+",
-            "{termLabel} {[termID]}": r".* \[ENVO:\d+\]",
-            "{text}:{text}": r"[^\:\n\r]+\:[^\:\n\r]+",
-        }
 
     def log_tally(self, tally: List[str], message: str) -> None:
         logger.info(message)
@@ -270,13 +247,13 @@ class LinkML2DataHarmonizer:
                     and current_row["guidance"] != ""
                 ):
                     current_row["guidance"] = (
-                        current_row["guidance"]
-                        + " | pattern generalization: "
-                        + current_sd.string_serialization
+                            current_row["guidance"]
+                            + " | Pattern hint: "
+                            + current_sd.string_serialization
                     )
                 else:
                     current_row["guidance"] = (
-                        "pattern generalization: " + current_sd.string_serialization
+                            "Pattern hint: " + current_sd.string_serialization
                     )
                 # if current_sd.string_serialization == '{float}':
                 #     current_row["datatype"] = "xs:decimal"
@@ -303,6 +280,20 @@ class LinkML2DataHarmonizer:
 
             if current_sd.maximum_value is not None and current_sd.maximum_value != "":
                 current_row["max value"] = current_sd.maximum_value
+
+            if current_sd.range in vc_inst.vc_dod:
+                temp = vc_inst.vc_dod[current_sd.range]['to_val']
+                if vc_inst.vc_dod[current_sd.range]['to_type'] == 'DH datatype':
+                    current_row["datatype"] = temp
+                if vc_inst.vc_dod[current_sd.range]['to_type'] == 'DH pattern regex':
+                    current_row["pattern"] = temp
+
+            if current_sd.string_serialization in vc_inst.vc_dod:
+                temp = vc_inst.vc_dod[current_sd.string_serialization]['to_val']
+                if vc_inst.vc_dod[current_sd.string_serialization]['to_type'] == 'DH datatype':
+                    current_row["datatype"] = temp
+                if vc_inst.vc_dod[current_sd.string_serialization]['to_type'] == 'DH pattern regex':
+                    current_row["pattern"] = temp
 
             if current_sd.range in model_enum_names:
                 # anything else to clear?
@@ -349,25 +340,6 @@ class LinkML2DataHarmonizer:
             current_row["min value"] = current_sd.minimum_value
             # old issue... export menu saves a file but not with the briefer LinkML names (as opposed to titles)
             current_row["EXPORT_soil_emsl_jgi_mg"] = current_sd.name
-
-            range_data_types = self.range_data_types()
-            str_ser_data_types = self.str_ser_data_types()
-            range_regexes = self.range_regexes()
-            str_ser_regexes = self.str_ser_regexes()
-
-            if current_sd.range in range_data_types:
-                current_row["datatype"] = range_data_types[current_sd.range]
-            elif current_sd.string_serialization in str_ser_data_types:
-                current_row["datatype"] = str_ser_data_types[
-                    current_sd.string_serialization
-                ]
-
-            if current_sd.range in range_regexes:
-                current_row["pattern"] = range_regexes[current_sd.range]
-            elif current_sd.string_serialization in str_ser_regexes:
-                current_row["pattern"] = str_ser_regexes[
-                    current_sd.string_serialization
-                ]
 
             if current_sd.identifier:
                 current_row["datatype"] = "xs:unique"

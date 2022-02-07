@@ -13,7 +13,7 @@ var exportGeneric = (baseName, hot, data, xlsx, fileType) => {
 };
 // A list of the above functions keyed by the Export menu name they should appear as:
 var EXPORT_FORMATS = {
-    "EXPORT_dev": {
+    "EXPORT_soil_emsl_jgi_mg": {
         'method': exportGeneric,
         'fileType': 'tsv',
         'status': 'published'
