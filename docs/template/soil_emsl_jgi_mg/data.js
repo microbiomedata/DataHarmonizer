@@ -173,30 +173,6 @@ var DATA = [
         }
       },
       {
-        "fieldName": "ecosystem_subtype",
-        "capitalize": "",
-        "ontology_id": "samp_id:ecosystem_subtype",
-        "datatype": "select",
-        "source": "",
-        "dataStatus": null,
-        "xs:minInclusive": "",
-        "xs:maxInclusive": "",
-        "requirement": "",
-        "description": "Ecosystem subtypes represent further subdivision of Ecosystem types into more distinct subtypes. Ecosystem subtype is in position 4/5 in a GOLD path.",
-        "guidance": "Ecosystem Type Marine (Environmental -> Aquatic -> Marine) is further divided (for example) into Intertidal zone, Coastal, Pelagic, Intertidal zone etc. in the Ecosystem subtype category. | Pattern hint: enumeration",
-        "examples": "",
-        "exportField": {
-          "soil_emsl_jgi_mg": [
-            {
-              "field": "ecosystem_subtype"
-            }
-          ]
-        },
-        "schema:ItemList": {
-          "Soil": {}
-        }
-      },
-      {
         "fieldName": "ecosystem_type",
         "capitalize": "",
         "ontology_id": "samp_id:ecosystem_type",
@@ -213,6 +189,30 @@ var DATA = [
           "soil_emsl_jgi_mg": [
             {
               "field": "ecosystem_type"
+            }
+          ]
+        },
+        "schema:ItemList": {
+          "Soil": {}
+        }
+      },
+      {
+        "fieldName": "ecosystem_subtype",
+        "capitalize": "",
+        "ontology_id": "samp_id:ecosystem_subtype",
+        "datatype": "select",
+        "source": "",
+        "dataStatus": null,
+        "xs:minInclusive": "",
+        "xs:maxInclusive": "",
+        "requirement": "",
+        "description": "Ecosystem subtypes represent further subdivision of Ecosystem types into more distinct subtypes. Ecosystem subtype is in position 4/5 in a GOLD path.",
+        "guidance": "Ecosystem Type Marine (Environmental -> Aquatic -> Marine) is further divided (for example) into Intertidal zone, Coastal, Pelagic, Intertidal zone etc. in the Ecosystem subtype category. | Pattern hint: enumeration",
+        "examples": "",
+        "exportField": {
+          "soil_emsl_jgi_mg": [
+            {
+              "field": "ecosystem_subtype"
             }
           ]
         },
