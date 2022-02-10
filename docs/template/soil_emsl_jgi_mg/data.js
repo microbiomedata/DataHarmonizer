@@ -55,7 +55,7 @@ var DATA = [
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "required",
-        "description": "Select the MIxS enviromental package that best describes the environemtn from which you sample was collected.",
+        "description": "Select the MIxS enviromental package that best describes the environment from which your sample was collected.",
         "guidance": "Pattern hint: enumeration",
         "examples": "soil",
         "exportField": {
@@ -439,7 +439,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "",
-        "guidance": "Do not edit these values. A template will be provided by NMDC in which these vales have been pre-filled. | Pattern hint: {text}",
+        "guidance": "Do not edit these values. A template will be provided by NMDC in which these values have been pre-filled. | Pattern hint: {text}",
         "examples": "1191234",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -460,7 +460,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "",
-        "guidance": "Do not edit these values. A template will be provided by NMDC in which these vales have been pre-filled. | Pattern hint: {text}",
+        "guidance": "Do not edit these values. A template will be provided by NMDC in which these values have been pre-filled. | Pattern hint: {text}",
         "examples": "JGI Pond metagenomics",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -481,7 +481,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "",
-        "guidance": "Do not edit these values. A template will be provided by NMDC in which these vales have been pre-filled. | Pattern hint: {text}",
+        "guidance": "Do not edit these values. A template will be provided by NMDC in which these values have been pre-filled. | Pattern hint: {text}",
         "examples": "187654",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -584,7 +584,7 @@ var DATA = [
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
-        "requirement": "required",
+        "requirement": "recommended",
         "description": "260/230 measurement of DNA sample purity",
         "guidance": "Recommended value is between 1 and 3. | Pattern hint: {float}",
         "examples": "2.02",
@@ -607,8 +607,9 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "",
-        "guidance": "Must be unique across all tubes and plates, and <20 characters. All samples in a plate should have the same plate label. | Pattern hint: {text}",
+        "guidance": "Must be unique across all tubes and plates, and <20 characters. All samples in a plate should have the same plate label. | Pattern hint: {text < 20 characters}",
         "examples": "Pond_MT_041618",
+        "pattern": "^.{1,20}$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -653,8 +654,9 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "",
-        "guidance": "Required when 'plate' is selected for container type. Corner wells must be blank. For partial plates, fill by columns. Leave blank if the sample will be shipped in a tube. | Pattern hint: {text}",
+        "guidance": "Required when 'plate' is selected for container type. Corner wells must be blank. For partial plates, fill by columns. Leave blank if the sample will be shipped in a tube. | Pattern hint: {96 well plate pos}",
         "examples": "B2",
+        "pattern": "^[A-H](0?[1-9]$)|(^1[0-2])$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -730,7 +732,7 @@ var DATA = [
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
-        "requirement": "required",
+        "requirement": "recommended",
         "description": "List any organisms known or suspected to grow in co-culture, as well as estimated % of the organism in that culture.",
         "guidance": "Pattern hint: {text}",
         "examples": "expected to contain microbes (59%) fungi (30%), viruses (10%), tadpoles (1%)",
@@ -795,7 +797,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "",
-        "guidance": "Do not edit these values. A template will be provided by NMDC in which these vales have been pre-filled. | Pattern hint: {text}",
+        "guidance": "Do not edit these values. A template will be provided by NMDC in which these values have been pre-filled. | Pattern hint: {text}",
         "examples": "Jane Johnson",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -816,7 +818,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "",
-        "guidance": "Do not edit these values. A template will be provided by NMDC in which these vales have been pre-filled. | Pattern hint: {text}",
+        "guidance": "Do not edit these values. A template will be provided by NMDC in which these values have been pre-filled. | Pattern hint: {text}",
         "examples": "John Jones",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -837,7 +839,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "",
-        "guidance": "Do not edit these values. A template will be provided by NMDC in which these vales have been pre-filled. | Pattern hint: {text}",
+        "guidance": "Do not edit these values. A template will be provided by NMDC in which these values have been pre-filled. | Pattern hint: {text}",
         "examples": "504000",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1704,7 +1706,7 @@ var DATA = [
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
-        "requirement": "recommended",
+        "requirement": "required",
         "description": "The vertical distance below local surface, e.g. For sediment or soil samples depth is measured from sediment or soil surface, respectively. Depth can be reported as an interval for subsurface samples.",
         "guidance": "All depths must be reported in meters. Provide the numerical portion only. | Pattern hint: {float}| {float}-{float}",
         "examples": "0-0.1 OR 1",
