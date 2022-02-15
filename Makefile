@@ -1,4 +1,4 @@
-.PHONY: all setup clean post_clone_submodule_steps test
+.PHONY: all setup clean post_clone_submodule_steps test crosstraining
 
 all: docs/template/soil_emsl_jgi_mg/data.tsv target/mixs_package_classes.tsv target/soil_biosample_regex_insight.tsv
 
@@ -174,8 +174,11 @@ target/soil_em_terms_indented.tsv: target/soil_em_terms.txt
 		--parent_term 'environmental medium' \
 		--indented_tsv $@
 
-target/data_promoted.tsv: target/data.tsv \
-target/soil_ebs_terms_indented.tsv \
+##dt_path = target/data.tsv
+#dt_path = ../../sheets_and_friends/target/data.tsv
+
+# target/data.tsv
+target/data_promoted.tsv: target/soil_ebs_terms_indented.tsv \
 target/soil_els_terms_indented.tsv \
 target/soil_em_terms_indented.tsv
 	poetry run promote_to_select \
@@ -186,6 +189,10 @@ target/soil_em_terms_indented.tsv
 		--promote 'environmental medium' \
 		--extra_row_files target/soil_em_terms_indented.tsv \
 		--data_tsv_out $@
+
+crosstraining:
+	rm -f target/data_promoted.tsv docs/template/soil_emsl_jgi_mg/data.tsv
+	cp ../../sheets_and_friends/target/data.tsv target/data.tsv
 
 # this converts data.tsv to a data harmonizer main.html + main.js etc.
 #  and then stages it in the docs folder which will be exposed via GH pages

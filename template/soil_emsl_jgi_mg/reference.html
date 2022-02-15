@@ -35,7 +35,7 @@
 						</tr>
 						
 						<tr class="section">
-							<td colspan="5"><h3>NMDC fields esp. GOLD paths</h3></td>
+							<td colspan="5"><h3>GOLD ecosystem path</h3></td>
 						</tr>
 						
 						<tr class="section">
@@ -82,8 +82,8 @@
 						<tr>
 							<td class="label">sample type</td>
 							<td>Type of sample being submitted</td>
-							<td>This can vary from 'environmental package' if the sample is an extraction. | Pattern hint: enumeration</td>
-							<td>water extracted soil</td>
+							<td>This can vary from 'environmental package' if the sample is an extraction.</td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
@@ -101,7 +101,7 @@
 							<td class="label">EMSL Sample Storage Temperature, deg. C</td>
 							<td>Temperature at which the sample sent to EMSL should be stored</td>
 							<td>Enter a temperature in celsius. Numeric portion only. | Pattern hint: {float}</td>
-							<td>-80</td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
@@ -125,10 +125,55 @@
 
 						
 						<tr>
+							<td class="label">ecosystem</td>
+							<td>An ecosystem is a combination of a physical environment (abiotic factors) and all the organisms (biotic factors) that interact with this environment. Ecosystem is in position 1/5 in a GOLD path.</td>
+							<td>The abiotic factors play a profound role on the type and composition of organisms in a given environment. The GOLD Ecosystem at the top of the five-level classification system is aimed at capturing the broader environment from which an organism or environmental sample is collected. The three broad groups under Ecosystem are Environmental, Host-associated, and Engineered. They represent samples collected from a natural environment or from another organism or from engineered environments like bioreactors respectively.</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">ecosystem_category</td>
+							<td>Ecosystem categories represent divisions within the ecosystem based on specific characteristics of the environment from where an organism or sample is isolated. Ecosystem category is in position 2/5 in a GOLD path.</td>
+							<td>The Environmental ecosystem (for example) is divided into Air, Aquatic and Terrestrial. Ecosystem categories for Host-associated samples can be individual hosts or phyla and for engineered samples it may be manipulated environments like bioreactors, solid waste etc.</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">ecosystem_type</td>
+							<td>Ecosystem types represent things having common characteristics within the Ecosystem Category. These common characteristics based grouping is still broad but specific to the characteristics of a given environment. Ecosystem type is in position 3/5 in a GOLD path.</td>
+							<td>The Aquatic ecosystem category (for example) may have ecosystem types like Marine or Thermal springs etc. Ecosystem category Air may have Indoor air or Outdoor air as different Ecosystem Types. In the case of Host-associated samples, ecosystem type can represent Respiratory system, Digestive system, Roots etc.</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">ecosystem_subtype</td>
+							<td>Ecosystem subtypes represent further subdivision of Ecosystem types into more distinct subtypes. Ecosystem subtype is in position 4/5 in a GOLD path.</td>
+							<td>Ecosystem Type Marine (Environmental -> Aquatic -> Marine) is further divided (for example) into Intertidal zone, Coastal, Pelagic, Intertidal zone etc. in the Ecosystem subtype category.</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
+							<td class="label">specific_ecosystem</td>
+							<td>Specific ecosystems represent specific features of the environment like aphotic zone in an ocean or gastric mucosa within a host digestive system. Specific ecosystem is in position 5/5 in a GOLD path.</td>
+							<td>Specific ecosystems help to define samples based on very specific characteristics of an environment under the five-level classification system.</td>
+							<td></td>
+							<td>None</td>
+						</tr>
+
+						
+						<tr>
 							<td class="label">DNA Seq Project ID</td>
 							<td></td>
 							<td>Do not edit these values. A template will be provided by NMDC in which these values have been pre-filled. | Pattern hint: {text}</td>
-							<td>1191234</td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
@@ -137,7 +182,7 @@
 							<td class="label">DNA Seq Project Name</td>
 							<td></td>
 							<td>Do not edit these values. A template will be provided by NMDC in which these values have been pre-filled. | Pattern hint: {text}</td>
-							<td>JGI Pond metagenomics</td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
@@ -146,7 +191,7 @@
 							<td class="label">DNA Sample ID</td>
 							<td></td>
 							<td>Do not edit these values. A template will be provided by NMDC in which these values have been pre-filled. | Pattern hint: {text}</td>
-							<td>187654</td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
@@ -155,7 +200,7 @@
 							<td class="label">DNA Sample Name</td>
 							<td>Give the DNA sample a name that is meaningful to you. Sample names must be unique across all JGI projects and contain a-z, A-Z, 0-9, - and _ only.</td>
 							<td>Pattern hint: {text}</td>
-							<td>JGI_pond_041618</td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
@@ -164,7 +209,7 @@
 							<td class="label">DNA Concentration in ng/uL</td>
 							<td></td>
 							<td>Units must be in ng/uL. Enter the numerical part only. Must be calculated using a fluorometric method. Acceptable values are 0-2000. | Pattern hint: {float}</td>
-							<td>100</td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
@@ -173,7 +218,7 @@
 							<td class="label">DNA Volume in uL</td>
 							<td></td>
 							<td>Units must be in uL. Enter the numerical part only. Value must 0-1000. Values <25 by special permission only. | Pattern hint: {float}</td>
-							<td>25</td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
@@ -182,7 +227,7 @@
 							<td class="label">DNA Absorbance 260/280</td>
 							<td>260/280 measurement of DNA sample purity</td>
 							<td>Recommended value is between 1 and 3. | Pattern hint: {float}</td>
-							<td>2.02</td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
@@ -191,7 +236,7 @@
 							<td class="label">DNA Absorbance 260/230</td>
 							<td>260/230 measurement of DNA sample purity</td>
 							<td>Recommended value is between 1 and 3. | Pattern hint: {float}</td>
-							<td>2.02</td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
@@ -200,7 +245,7 @@
 							<td class="label">DNA Container Label</td>
 							<td></td>
 							<td>Must be unique across all tubes and plates, and <20 characters. All samples in a plate should have the same plate label. | Pattern hint: {text < 20 characters}</td>
-							<td>Pond_MT_041618</td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
@@ -208,8 +253,8 @@
 						<tr>
 							<td class="label">DNA Container Type</td>
 							<td>Tube or plate (96-well)</td>
-							<td>Pattern hint: enumeration</td>
-							<td>plate</td>
+							<td></td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
@@ -218,7 +263,7 @@
 							<td class="label">DNA Well Number</td>
 							<td></td>
 							<td>Required when 'plate' is selected for container type. Corner wells must be blank. For partial plates, fill by columns. Leave blank if the sample will be shipped in a tube. | Pattern hint: {96 well plate pos}</td>
-							<td>B2</td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
@@ -226,8 +271,8 @@
 						<tr>
 							<td class="label">DNA Sample Format</td>
 							<td>Solution in which the DNA sample has been suspended</td>
-							<td>Pattern hint: enumeration</td>
-							<td>Water</td>
+							<td></td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
@@ -235,8 +280,8 @@
 						<tr>
 							<td class="label">DNAse Treatment DNA</td>
 							<td></td>
-							<td>Note DNAse treatment is required for all RNA samples. | Pattern hint: enumeration</td>
-							<td>no</td>
+							<td>Note DNAse treatment is required for all RNA samples.</td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
@@ -245,7 +290,7 @@
 							<td class="label">DNA Expected Organisms</td>
 							<td>List any organisms known or suspected to grow in co-culture, as well as estimated % of the organism in that culture.</td>
 							<td>Pattern hint: {text}</td>
-							<td>expected to contain microbes (59%) fungi (30%), viruses (10%), tadpoles (1%)</td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
@@ -254,7 +299,7 @@
 							<td class="label">DNA Collection Site</td>
 							<td>Provide information on the site your DNA sample was collected from</td>
 							<td>Pattern hint: {text}</td>
-							<td>untreated pond water</td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
@@ -263,7 +308,7 @@
 							<td class="label">DNA Isolation Method</td>
 							<td>Describe the method/protocol/kit used to extract DNA/RNA.</td>
 							<td>Pattern hint: {text}</td>
-							<td>phenol/chloroform extraction</td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
@@ -272,7 +317,7 @@
 							<td class="label">DNA Seq Project PI</td>
 							<td></td>
 							<td>Do not edit these values. A template will be provided by NMDC in which these values have been pre-filled. | Pattern hint: {text}</td>
-							<td>Jane Johnson</td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
@@ -281,7 +326,7 @@
 							<td class="label">DNA Seq Project Contact</td>
 							<td></td>
 							<td>Do not edit these values. A template will be provided by NMDC in which these values have been pre-filled. | Pattern hint: {text}</td>
-							<td>John Jones</td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
@@ -290,7 +335,7 @@
 							<td class="label">DNA Proposal ID</td>
 							<td></td>
 							<td>Do not edit these values. A template will be provided by NMDC in which these values have been pre-filled. | Pattern hint: {text}</td>
-							<td>504000</td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
@@ -298,8 +343,8 @@
 						<tr>
 							<td class="label">observed biotic relationship</td>
 							<td>Description of relationship(s) between the subject organism and other organism(s) it is associated with. E.g., parasite on species X; mutualist with species Y. The target organism is the subject of the relationship, and the other organism(s) is the object</td>
-							<td>Pattern hint: enumeration</td>
 							<td></td>
+							<td>free living</td>
 							<td>None</td>
 						</tr>
 
@@ -307,8 +352,8 @@
 						<tr>
 							<td class="label">relationship to oxygen</td>
 							<td>Is this organism an aerobe, anaerobe? Please note that aerobic and anaerobic are valid descriptors for microbial environments</td>
-							<td>Pattern hint: enumeration</td>
 							<td></td>
+							<td>aerobe</td>
 							<td>None</td>
 						</tr>
 
@@ -379,8 +424,8 @@
 						<tr>
 							<td class="label">growth facility</td>
 							<td>Type of facility/location where the sample was harvested; controlled vocabulary: growth chamber, open top chamber, glasshouse, experimental garden, field.</td>
-							<td>Pattern hint: enumeration</td>
-							<td></td>
+							<td>Pattern hint: {text}|{termLabel} {[termID]}</td>
+							<td>Growth chamber [CO_715:0000189]</td>
 							<td>None</td>
 						</tr>
 
@@ -388,8 +433,8 @@
 						<tr>
 							<td class="label">storage conditions</td>
 							<td>Explain how the soil sample is stored (fresh/frozen/other).</td>
-							<td>Pattern hint: enumeration</td>
-							<td></td>
+							<td>Pattern hint: {text};{duration}</td>
+							<td>-20 degree Celsius freezer;P2Y10D</td>
 							<td>None</td>
 						</tr>
 
@@ -397,7 +442,7 @@
 						<tr>
 							<td class="label">Collection Date</td>
 							<td>The date of sampling</td>
-							<td>Date should be formatted as YYYY(-MM(-DD)) | Pattern hint: {date, arbitrary precision}</td>
+							<td>2021-04-15, 2021-04 and 2021 are all acceptable. | Pattern hint: {date, arbitrary precision}</td>
 							<td>2021-04-15, 2021-04 and 2021 are all acceptable.</td>
 							<td>None</td>
 						</tr>
@@ -407,7 +452,7 @@
 							<td class="label">collection time, GMT</td>
 							<td>The time of sampling, either as an instance (single point) or interval.</td>
 							<td>Time should be entered as HH:MM(:SS) in GMT. See here for a converter: https://www.worldtimebuddy.com/pst-to-gmt-converter | Pattern hint: {time, seconds optional}</td>
-							<td>13:33 or 13:33:55</td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
@@ -416,7 +461,7 @@
 							<td class="label">Incubation Collection Date</td>
 							<td>Date the incubation was harvested/collected/ended. Only relevant for incubation samples.</td>
 							<td>Date should be formatted as YYYY(-MM(-DD)). Ie, 2021-04-15, 2021-04 and 2021 are all acceptable. | Pattern hint: {date, arbitrary precision}</td>
-							<td>2021-04-15, 2021-04 and 2021 are all acceptable.</td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
@@ -425,7 +470,7 @@
 							<td class="label">Incubation Collection Time, GMT</td>
 							<td>Time the incubation was harvested/collected/ended. Only relevant for incubation samples.</td>
 							<td>Time should be entered as HH:MM(:SS) in GMT. See here for a converter: https://www.worldtimebuddy.com/pst-to-gmt-converter | Pattern hint: {time, seconds optional}</td>
-							<td>13:33 or 13:33:55</td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
@@ -434,7 +479,7 @@
 							<td class="label">Incubation Start Date</td>
 							<td>Date the incubation was started. Only relevant for incubation samples.</td>
 							<td>Date should be formatted as YYYY(-MM(-DD)). Ie, 2021-04-15, 2021-04 and 2021 are all acceptable. | Pattern hint: {date, arbitrary precision}</td>
-							<td>2021-04-15, 2021-04 and 2021 are all acceptable.</td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
@@ -443,7 +488,7 @@
 							<td class="label">Incubation Start Time, GMT</td>
 							<td>Time the incubation was started. Only relevant for incubation samples.</td>
 							<td>Time should be entered as HH:MM(:SS) in GMT. See here for a converter: https://www.worldtimebuddy.com/pst-to-gmt-converter | Pattern hint: {time, seconds optional}</td>
-							<td>13:33 or 13:33:55</td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
@@ -451,7 +496,7 @@
 						<tr>
 							<td class="label">depth, meters</td>
 							<td>The vertical distance below local surface, e.g. For sediment or soil samples depth is measured from sediment or soil surface, respectively. Depth can be reported as an interval for subsurface samples.</td>
-							<td>All depths must be reported in meters. Provide the numerical portion only. | Pattern hint: {float}| {float}-{float}</td>
+							<td>All depths must be reported in meters. Provide the numerical portion only. | Pattern hint: {float}|{float}-{float}</td>
 							<td>0-0.1 OR 1</td>
 							<td>None</td>
 						</tr>
@@ -461,7 +506,7 @@
 							<td class="label">sample material processing</td>
 							<td>A brief description of any processing applied to the sample during or after retrieving the sample from environment, or a link to the relevant protocol(s) performed.</td>
 							<td>Pattern hint: {text}</td>
-							<td></td>
+							<td>filtering of seawater, storing samples in ethanol</td>
 							<td>None</td>
 						</tr>
 
@@ -470,7 +515,7 @@
 							<td class="label">sample collection device</td>
 							<td>The device used to collect an environmental sample. This field accepts terms listed under environmental sampling device (http://purl.obolibrary.org/obo/ENVO). This field also accepts terms listed under specimen collection device (http://purl.obolibrary.org/obo/GENEPIO_0002094).</td>
 							<td>Report dimensions and details when applicable | Pattern hint: {termLabel} {[termID]}|{text}</td>
-							<td></td>
+							<td>swab, biopsy, niskin bottle, push core, drag swab [GENEPIO:0002713]</td>
 							<td>None</td>
 						</tr>
 
@@ -479,7 +524,7 @@
 							<td class="label">sample collection method</td>
 							<td>The method employed for collecting the sample.</td>
 							<td>This can be a citation or description | Pattern hint: {PMID}|{DOI}|{URL}|{text}</td>
-							<td></td>
+							<td>swabbing</td>
 							<td>None</td>
 						</tr>
 
@@ -1072,7 +1117,7 @@
 						<tr>
 							<td class="label">geographic location (latitude and longitude)</td>
 							<td>The geographical origin of the sample as defined by latitude and longitude. The values should be reported in decimal degrees and in WGS84 system</td>
-							<td>Pattern hint: {float} {float}</td>
+							<td>Pattern hint: (lat lon}</td>
 							<td>50.586825 6.408977</td>
 							<td>None</td>
 						</tr>
@@ -1205,56 +1250,9 @@
 
 						
 						<tr>
-							<td class="label">ecosystem</td>
-							<td>An ecosystem is a combination of a physical environment (abiotic factors) and all the organisms (biotic factors) that interact with this environment. Ecosystem is in position 1/5 in a GOLD path.</td>
-							<td>The abiotic factors play a profound role on the type and composition of organisms in a given environment. The GOLD Ecosystem at the top of the five-level classification system is aimed at capturing the broader environment from which an organism or environmental sample is collected. The three broad groups under Ecosystem are Environmental, Host-associated, and Engineered. They represent samples collected from a natural environment or from another organism or from engineered environments like bioreactors respectively. | Pattern hint: enumeration</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">ecosystem_category</td>
-							<td>Ecosystem categories represent divisions within the ecosystem based on specific characteristics of the environment from where an organism or sample is isolated. Ecosystem category is in position 2/5 in a GOLD path.</td>
-							<td>The Environmental ecosystem (for example) is divided into Air, Aquatic and Terrestrial. Ecosystem categories for Host-associated samples can be individual hosts or phyla and for engineered samples it may be manipulated environments like bioreactors, solid waste etc. | Pattern hint: enumeration</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">ecosystem_type</td>
-							<td>Ecosystem types represent things having common characteristics within the Ecosystem Category. These common characteristics based grouping is still broad but specific to the characteristics of a given environment. Ecosystem type is in position 3/5 in a GOLD path.</td>
-							<td>The Aquatic ecosystem category (for example) may have ecosystem types like Marine or Thermal springs etc. Ecosystem category Air may have Indoor air or Outdoor air as different Ecosystem Types. In the case of Host-associated samples, ecosystem type can represent Respiratory system, Digestive system, Roots etc. | Pattern hint: enumeration</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">ecosystem_subtype</td>
-							<td>Ecosystem subtypes represent further subdivision of Ecosystem types into more distinct subtypes. Ecosystem subtype is in position 4/5 in a GOLD path.</td>
-							<td>Ecosystem Type Marine (Environmental -> Aquatic -> Marine) is further divided (for example) into Intertidal zone, Coastal, Pelagic, Intertidal zone etc. in the Ecosystem subtype category. | Pattern hint: enumeration</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
-							<td class="label">specific_ecosystem</td>
-							<td>Specific ecosystems represent specific features of the environment like aphotic zone in an ocean or gastric mucosa within a host digestive system. Specific ecosystem is in position 5/5 in a GOLD path.
-</td>
-							<td>Specific ecosystems help to define samples based on very specific characteristics of an environment under the five-level classification system.
- | Pattern hint: enumeration</td>
-							<td></td>
-							<td>None</td>
-						</tr>
-
-						
-						<tr>
 							<td class="label">Globally Unique ID</td>
 							<td>A globally unique identifier assigned to the biological sample.</td>
-							<td>Identifiers must me prefixed. IGSNs (http://www.geosamples.org/getigsn) are unique and FAIR. UUIDs (https://www.uuidgenerator.net/) are globally unique but not FAIR. These IDs enable linking to derrived analytes and subsamples. | Pattern hint: {text}:{text}</td>
+							<td>Identifiers must be prefixed. IGSNs (http://www.geosamples.org/getigsn) are unique and FAIR. UUIDs (https://www.uuidgenerator.net/) are globally unique but not FAIR. These IDs enable linking to derrived analytes and subsamples. | Pattern hint: {text}:{text}</td>
 							<td>IGSN:AU1243</td>
 							<td>None</td>
 						</tr>
@@ -1272,8 +1270,8 @@
 						<tr>
 							<td class="label">environmental package</td>
 							<td>Select the MIxS enviromental package that best describes the environment from which your sample was collected.</td>
-							<td>Pattern hint: enumeration</td>
-							<td>soil</td>
+							<td></td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
@@ -1281,17 +1279,17 @@
 						<tr>
 							<td class="label">Analysis/Data Type</td>
 							<td>Select all the data types associated or available for this biosample</td>
-							<td>Pattern hint: enumeration</td>
-							<td>metagenomics; metabolomics; proteomics</td>
+							<td></td>
+							<td></td>
 							<td>None</td>
 						</tr>
 
 						
 						<tr>
 							<td class="label">sample linkage</td>
-							<td>A unique identifier to assign parent-child, subsample, or sibling samples. This is relevant when a sample or other material was used to generate the new sample. </td>
+							<td>A unique identifier to assign parent-child, subsample, or sibling samples. This is relevant when a sample or other material was used to generate the new sample.</td>
 							<td>This field allows multiple entries separated by ; (Examples: Soil collected from the field will link with the soil used in an incubation. The soil a plant was grown in links to the plant sample. An original culture sample was transferred to a new vial and generated a new sample) | Pattern hint: {text}:{text}</td>
-							<td>IGSN:DSJ0284</td>
+							<td></td>
 							<td>None</td>
 						</tr>
 

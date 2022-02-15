@@ -5,7 +5,7 @@ var DATA = [
       {
         "fieldName": "Globally Unique ID",
         "capitalize": "",
-        "ontology_id": "samp_id:unique_ID",
+        "ontology_id": "MIXS:0000026",
         "datatype": "xs:unique",
         "source": "",
         "dataStatus": null,
@@ -13,13 +13,13 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "A globally unique identifier assigned to the biological sample.",
-        "guidance": "Identifiers must me prefixed. IGSNs (http://www.geosamples.org/getigsn) are unique and FAIR. UUIDs (https://www.uuidgenerator.net/) are globally unique but not FAIR. These IDs enable linking to derrived analytes and subsamples. | Pattern hint: {text}:{text}",
+        "guidance": "Identifiers must be prefixed. IGSNs (http://www.geosamples.org/getigsn) are unique and FAIR. UUIDs (https://www.uuidgenerator.net/) are globally unique but not FAIR. These IDs enable linking to derrived analytes and subsamples. | Pattern hint: {text}:{text}",
         "examples": "IGSN:AU1243",
         "pattern": "[^\\:\\n\\r]+\\:[^\\:\\n\\r]+",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
-              "field": "unique_ID"
+              "field": "source_mat_id"
             }
           ]
         }
@@ -27,7 +27,7 @@ var DATA = [
       {
         "fieldName": "sample name",
         "capitalize": "",
-        "ontology_id": "samp_id:sample_name",
+        "ontology_id": "MIXS:0001107",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -40,7 +40,7 @@ var DATA = [
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
-              "field": "sample_name"
+              "field": "samp_name"
             }
           ]
         }
@@ -48,7 +48,7 @@ var DATA = [
       {
         "fieldName": "environmental package",
         "capitalize": "",
-        "ontology_id": "samp_id:env_package",
+        "ontology_id": "",
         "datatype": "select",
         "source": "",
         "dataStatus": null,
@@ -56,8 +56,8 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "Select the MIxS enviromental package that best describes the environment from which your sample was collected.",
-        "guidance": "Pattern hint: enumeration",
-        "examples": "soil",
+        "guidance": "",
+        "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -72,7 +72,7 @@ var DATA = [
       {
         "fieldName": "Analysis/Data Type",
         "capitalize": "",
-        "ontology_id": "samp_id:analysis_type",
+        "ontology_id": "",
         "datatype": "multiple",
         "source": "",
         "dataStatus": null,
@@ -80,8 +80,8 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "Select all the data types associated or available for this biosample",
-        "guidance": "Pattern hint: enumeration",
-        "examples": "metagenomics; metabolomics; proteomics",
+        "guidance": "",
+        "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -100,16 +100,16 @@ var DATA = [
       {
         "fieldName": "sample linkage",
         "capitalize": "",
-        "ontology_id": "samp_id:sample_link",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "recommended",
-        "description": "A unique identifier to assign parent-child, subsample, or sibling samples. This is relevant when a sample or other material was used to generate the new sample. ",
+        "description": "A unique identifier to assign parent-child, subsample, or sibling samples. This is relevant when a sample or other material was used to generate the new sample.",
         "guidance": "This field allows multiple entries separated by ; (Examples: Soil collected from the field will link with the soil used in an incubation. The soil a plant was grown in links to the plant sample. An original culture sample was transferred to a new vial and generated a new sample) | Pattern hint: {text}:{text}",
-        "examples": "IGSN:DSJ0284",
+        "examples": "",
         "pattern": "[^\\:\\n\\r]+\\:[^\\:\\n\\r]+",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -122,12 +122,12 @@ var DATA = [
     ]
   },
   {
-    "fieldName": "NMDC fields esp. GOLD paths",
+    "fieldName": "GOLD ecosystem path",
     "children": [
       {
         "fieldName": "ecosystem",
         "capitalize": "",
-        "ontology_id": "samp_id:ecosystem",
+        "ontology_id": "",
         "datatype": "select",
         "source": "",
         "dataStatus": null,
@@ -135,7 +135,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "An ecosystem is a combination of a physical environment (abiotic factors) and all the organisms (biotic factors) that interact with this environment. Ecosystem is in position 1/5 in a GOLD path.",
-        "guidance": "The abiotic factors play a profound role on the type and composition of organisms in a given environment. The GOLD Ecosystem at the top of the five-level classification system is aimed at capturing the broader environment from which an organism or environmental sample is collected. The three broad groups under Ecosystem are Environmental, Host-associated, and Engineered. They represent samples collected from a natural environment or from another organism or from engineered environments like bioreactors respectively. | Pattern hint: enumeration",
+        "guidance": "The abiotic factors play a profound role on the type and composition of organisms in a given environment. The GOLD Ecosystem at the top of the five-level classification system is aimed at capturing the broader environment from which an organism or environmental sample is collected. The three broad groups under Ecosystem are Environmental, Host-associated, and Engineered. They represent samples collected from a natural environment or from another organism or from engineered environments like bioreactors respectively.",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -151,7 +151,7 @@ var DATA = [
       {
         "fieldName": "ecosystem_category",
         "capitalize": "",
-        "ontology_id": "samp_id:ecosystem_category",
+        "ontology_id": "",
         "datatype": "select",
         "source": "",
         "dataStatus": null,
@@ -159,7 +159,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Ecosystem categories represent divisions within the ecosystem based on specific characteristics of the environment from where an organism or sample is isolated. Ecosystem category is in position 2/5 in a GOLD path.",
-        "guidance": "The Environmental ecosystem (for example) is divided into Air, Aquatic and Terrestrial. Ecosystem categories for Host-associated samples can be individual hosts or phyla and for engineered samples it may be manipulated environments like bioreactors, solid waste etc. | Pattern hint: enumeration",
+        "guidance": "The Environmental ecosystem (for example) is divided into Air, Aquatic and Terrestrial. Ecosystem categories for Host-associated samples can be individual hosts or phyla and for engineered samples it may be manipulated environments like bioreactors, solid waste etc.",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -175,7 +175,7 @@ var DATA = [
       {
         "fieldName": "ecosystem_type",
         "capitalize": "",
-        "ontology_id": "samp_id:ecosystem_type",
+        "ontology_id": "",
         "datatype": "select",
         "source": "",
         "dataStatus": null,
@@ -183,7 +183,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Ecosystem types represent things having common characteristics within the Ecosystem Category. These common characteristics based grouping is still broad but specific to the characteristics of a given environment. Ecosystem type is in position 3/5 in a GOLD path.",
-        "guidance": "The Aquatic ecosystem category (for example) may have ecosystem types like Marine or Thermal springs etc. Ecosystem category Air may have Indoor air or Outdoor air as different Ecosystem Types. In the case of Host-associated samples, ecosystem type can represent Respiratory system, Digestive system, Roots etc. | Pattern hint: enumeration",
+        "guidance": "The Aquatic ecosystem category (for example) may have ecosystem types like Marine or Thermal springs etc. Ecosystem category Air may have Indoor air or Outdoor air as different Ecosystem Types. In the case of Host-associated samples, ecosystem type can represent Respiratory system, Digestive system, Roots etc.",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -199,7 +199,7 @@ var DATA = [
       {
         "fieldName": "ecosystem_subtype",
         "capitalize": "",
-        "ontology_id": "samp_id:ecosystem_subtype",
+        "ontology_id": "",
         "datatype": "select",
         "source": "",
         "dataStatus": null,
@@ -207,7 +207,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "",
         "description": "Ecosystem subtypes represent further subdivision of Ecosystem types into more distinct subtypes. Ecosystem subtype is in position 4/5 in a GOLD path.",
-        "guidance": "Ecosystem Type Marine (Environmental -> Aquatic -> Marine) is further divided (for example) into Intertidal zone, Coastal, Pelagic, Intertidal zone etc. in the Ecosystem subtype category. | Pattern hint: enumeration",
+        "guidance": "Ecosystem Type Marine (Environmental -> Aquatic -> Marine) is further divided (for example) into Intertidal zone, Coastal, Pelagic, Intertidal zone etc. in the Ecosystem subtype category.",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -243,15 +243,15 @@ var DATA = [
       {
         "fieldName": "specific_ecosystem",
         "capitalize": "",
-        "ontology_id": "samp_id:specific_ecosystem",
+        "ontology_id": "",
         "datatype": "select",
         "source": "",
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
         "requirement": "",
-        "description": "Specific ecosystems represent specific features of the environment like aphotic zone in an ocean or gastric mucosa within a host digestive system. Specific ecosystem is in position 5/5 in a GOLD path.\n",
-        "guidance": "Specific ecosystems help to define samples based on very specific characteristics of an environment under the five-level classification system.\n | Pattern hint: enumeration",
+        "description": "Specific ecosystems represent specific features of the environment like aphotic zone in an ocean or gastric mucosa within a host digestive system. Specific ecosystem is in position 5/5 in a GOLD path.",
+        "guidance": "Specific ecosystems help to define samples based on very specific characteristics of an environment under the five-level classification system.",
         "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -295,7 +295,7 @@ var DATA = [
       {
         "fieldName": "Project ID",
         "capitalize": "",
-        "ontology_id": "emsl:project_ID",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -316,7 +316,7 @@ var DATA = [
       {
         "fieldName": "sample type",
         "capitalize": "",
-        "ontology_id": "emsl:sample_type",
+        "ontology_id": "",
         "datatype": "select",
         "source": "",
         "dataStatus": null,
@@ -324,8 +324,8 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "Type of sample being submitted",
-        "guidance": "This can vary from 'environmental package' if the sample is an extraction. | Pattern hint: enumeration",
-        "examples": "water extracted soil",
+        "guidance": "This can vary from 'environmental package' if the sample is an extraction.",
+        "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -341,7 +341,7 @@ var DATA = [
       {
         "fieldName": "sample shipped amount",
         "capitalize": "",
-        "ontology_id": "emsl:sample_shipped",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -363,7 +363,7 @@ var DATA = [
       {
         "fieldName": "EMSL Sample Storage Temperature, deg. C",
         "capitalize": "",
-        "ontology_id": "emsl:EMSL_store_temp",
+        "ontology_id": "",
         "datatype": "xs:decimal",
         "source": "",
         "dataStatus": null,
@@ -372,7 +372,7 @@ var DATA = [
         "requirement": "required",
         "description": "Temperature at which the sample sent to EMSL should be stored",
         "guidance": "Enter a temperature in celsius. Numeric portion only. | Pattern hint: {float}",
-        "examples": "-80",
+        "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -384,7 +384,7 @@ var DATA = [
       {
         "fieldName": "Number Technical Replicate",
         "capitalize": "",
-        "ontology_id": "emsl:technical_reps",
+        "ontology_id": "",
         "datatype": "xs:nonNegativeInteger",
         "source": "",
         "dataStatus": null,
@@ -405,7 +405,7 @@ var DATA = [
       {
         "fieldName": "Replicate Number",
         "capitalize": "",
-        "ontology_id": "emsl:replicate_number",
+        "ontology_id": "",
         "datatype": "xs:nonNegativeInteger",
         "source": "",
         "dataStatus": null,
@@ -431,7 +431,7 @@ var DATA = [
       {
         "fieldName": "DNA Seq Project ID",
         "capitalize": "",
-        "ontology_id": "jgi_gen:dna_seq_project",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -440,7 +440,7 @@ var DATA = [
         "requirement": "required",
         "description": "",
         "guidance": "Do not edit these values. A template will be provided by NMDC in which these values have been pre-filled. | Pattern hint: {text}",
-        "examples": "1191234",
+        "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -452,7 +452,7 @@ var DATA = [
       {
         "fieldName": "DNA Seq Project Name",
         "capitalize": "",
-        "ontology_id": "jgi_gen:dna_seq_project_name",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -461,7 +461,7 @@ var DATA = [
         "requirement": "required",
         "description": "",
         "guidance": "Do not edit these values. A template will be provided by NMDC in which these values have been pre-filled. | Pattern hint: {text}",
-        "examples": "JGI Pond metagenomics",
+        "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -473,7 +473,7 @@ var DATA = [
       {
         "fieldName": "DNA Sample ID",
         "capitalize": "",
-        "ontology_id": "jgi_gen:dna_samp_ID",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -482,7 +482,7 @@ var DATA = [
         "requirement": "required",
         "description": "",
         "guidance": "Do not edit these values. A template will be provided by NMDC in which these values have been pre-filled. | Pattern hint: {text}",
-        "examples": "187654",
+        "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -494,7 +494,7 @@ var DATA = [
       {
         "fieldName": "DNA Sample Name",
         "capitalize": "",
-        "ontology_id": "jgi_gen:dna_sample_name",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -503,7 +503,7 @@ var DATA = [
         "requirement": "required",
         "description": "Give the DNA sample a name that is meaningful to you. Sample names must be unique across all JGI projects and contain a-z, A-Z, 0-9, - and _ only.",
         "guidance": "Pattern hint: {text}",
-        "examples": "JGI_pond_041618",
+        "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -515,7 +515,7 @@ var DATA = [
       {
         "fieldName": "DNA Concentration in ng/uL",
         "capitalize": "",
-        "ontology_id": "jgi_gen:dna_concentration",
+        "ontology_id": "",
         "datatype": "xs:decimal",
         "source": "",
         "dataStatus": null,
@@ -524,7 +524,7 @@ var DATA = [
         "requirement": "required",
         "description": "",
         "guidance": "Units must be in ng/uL. Enter the numerical part only. Must be calculated using a fluorometric method. Acceptable values are 0-2000. | Pattern hint: {float}",
-        "examples": "100",
+        "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -536,7 +536,7 @@ var DATA = [
       {
         "fieldName": "DNA Volume in uL",
         "capitalize": "",
-        "ontology_id": "jgi_gen:dna_volume",
+        "ontology_id": "",
         "datatype": "xs:decimal",
         "source": "",
         "dataStatus": null,
@@ -545,7 +545,7 @@ var DATA = [
         "requirement": "required",
         "description": "",
         "guidance": "Units must be in uL. Enter the numerical part only. Value must 0-1000. Values <25 by special permission only. | Pattern hint: {float}",
-        "examples": "25",
+        "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -557,7 +557,7 @@ var DATA = [
       {
         "fieldName": "DNA Absorbance 260/280",
         "capitalize": "",
-        "ontology_id": "jgi_gen:dna_absorb1",
+        "ontology_id": "",
         "datatype": "xs:decimal",
         "source": "",
         "dataStatus": null,
@@ -566,7 +566,7 @@ var DATA = [
         "requirement": "required",
         "description": "260/280 measurement of DNA sample purity",
         "guidance": "Recommended value is between 1 and 3. | Pattern hint: {float}",
-        "examples": "2.02",
+        "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -578,7 +578,7 @@ var DATA = [
       {
         "fieldName": "DNA Absorbance 260/230",
         "capitalize": "",
-        "ontology_id": "jgi_gen:dna_absorb2",
+        "ontology_id": "",
         "datatype": "xs:decimal",
         "source": "",
         "dataStatus": null,
@@ -587,7 +587,7 @@ var DATA = [
         "requirement": "recommended",
         "description": "260/230 measurement of DNA sample purity",
         "guidance": "Recommended value is between 1 and 3. | Pattern hint: {float}",
-        "examples": "2.02",
+        "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -599,7 +599,7 @@ var DATA = [
       {
         "fieldName": "DNA Container Label",
         "capitalize": "",
-        "ontology_id": "jgi_gen:dna_container_ID",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -608,7 +608,7 @@ var DATA = [
         "requirement": "required",
         "description": "",
         "guidance": "Must be unique across all tubes and plates, and <20 characters. All samples in a plate should have the same plate label. | Pattern hint: {text < 20 characters}",
-        "examples": "Pond_MT_041618",
+        "examples": "",
         "pattern": "^.{1,20}$",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -621,7 +621,7 @@ var DATA = [
       {
         "fieldName": "DNA Container Type",
         "capitalize": "",
-        "ontology_id": "jgi_gen:dna_cont_type",
+        "ontology_id": "",
         "datatype": "select",
         "source": "",
         "dataStatus": null,
@@ -629,8 +629,8 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "Tube or plate (96-well)",
-        "guidance": "Pattern hint: enumeration",
-        "examples": "plate",
+        "guidance": "",
+        "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -646,7 +646,7 @@ var DATA = [
       {
         "fieldName": "DNA Well Number",
         "capitalize": "",
-        "ontology_id": "jgi_gen:dna_cont_well",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -655,7 +655,7 @@ var DATA = [
         "requirement": "required",
         "description": "",
         "guidance": "Required when 'plate' is selected for container type. Corner wells must be blank. For partial plates, fill by columns. Leave blank if the sample will be shipped in a tube. | Pattern hint: {96 well plate pos}",
-        "examples": "B2",
+        "examples": "",
         "pattern": "^[A-H](0?[1-9]$)|(^1[0-2])$",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -668,7 +668,7 @@ var DATA = [
       {
         "fieldName": "DNA Sample Format",
         "capitalize": "",
-        "ontology_id": "jgi_gen:dna_sample_format",
+        "ontology_id": "",
         "datatype": "select",
         "source": "",
         "dataStatus": null,
@@ -676,8 +676,8 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "Solution in which the DNA sample has been suspended",
-        "guidance": "Pattern hint: enumeration",
-        "examples": "Water",
+        "guidance": "",
+        "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -701,7 +701,7 @@ var DATA = [
       {
         "fieldName": "DNAse Treatment DNA",
         "capitalize": "",
-        "ontology_id": "jgi_gen:dna_dnase",
+        "ontology_id": "",
         "datatype": "select",
         "source": "",
         "dataStatus": null,
@@ -709,8 +709,8 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "",
-        "guidance": "Note DNAse treatment is required for all RNA samples. | Pattern hint: enumeration",
-        "examples": "no",
+        "guidance": "Note DNAse treatment is required for all RNA samples.",
+        "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -726,7 +726,7 @@ var DATA = [
       {
         "fieldName": "DNA Expected Organisms",
         "capitalize": "",
-        "ontology_id": "jgi_gen:dna_organisms",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -735,7 +735,7 @@ var DATA = [
         "requirement": "recommended",
         "description": "List any organisms known or suspected to grow in co-culture, as well as estimated % of the organism in that culture.",
         "guidance": "Pattern hint: {text}",
-        "examples": "expected to contain microbes (59%) fungi (30%), viruses (10%), tadpoles (1%)",
+        "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -747,7 +747,7 @@ var DATA = [
       {
         "fieldName": "DNA Collection Site",
         "capitalize": "",
-        "ontology_id": "jgi_gen:dna_collect_site",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -756,7 +756,7 @@ var DATA = [
         "requirement": "required",
         "description": "Provide information on the site your DNA sample was collected from",
         "guidance": "Pattern hint: {text}",
-        "examples": "untreated pond water",
+        "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -768,7 +768,7 @@ var DATA = [
       {
         "fieldName": "DNA Isolation Method",
         "capitalize": "",
-        "ontology_id": "jgi_gen:dna_isolate_meth",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -777,7 +777,7 @@ var DATA = [
         "requirement": "required",
         "description": "Describe the method/protocol/kit used to extract DNA/RNA.",
         "guidance": "Pattern hint: {text}",
-        "examples": "phenol/chloroform extraction",
+        "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -789,7 +789,7 @@ var DATA = [
       {
         "fieldName": "DNA Seq Project PI",
         "capitalize": "",
-        "ontology_id": "jgi_gen:dna_seq_project_PI",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -798,7 +798,7 @@ var DATA = [
         "requirement": "required",
         "description": "",
         "guidance": "Do not edit these values. A template will be provided by NMDC in which these values have been pre-filled. | Pattern hint: {text}",
-        "examples": "Jane Johnson",
+        "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -810,7 +810,7 @@ var DATA = [
       {
         "fieldName": "DNA Seq Project Contact",
         "capitalize": "",
-        "ontology_id": "jgi_gen:dna_project_contact",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -819,7 +819,7 @@ var DATA = [
         "requirement": "required",
         "description": "",
         "guidance": "Do not edit these values. A template will be provided by NMDC in which these values have been pre-filled. | Pattern hint: {text}",
-        "examples": "John Jones",
+        "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -831,7 +831,7 @@ var DATA = [
       {
         "fieldName": "DNA Proposal ID",
         "capitalize": "",
-        "ontology_id": "jgi_gen:proposal_dna",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -840,7 +840,7 @@ var DATA = [
         "requirement": "required",
         "description": "",
         "guidance": "Do not edit these values. A template will be provided by NMDC in which these values have been pre-filled. | Pattern hint: {text}",
-        "examples": "504000",
+        "examples": "",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -857,7 +857,7 @@ var DATA = [
       {
         "fieldName": "growth facility",
         "capitalize": "",
-        "ontology_id": "mixs_modified:growth_facility",
+        "ontology_id": "MIXS:0001043",
         "datatype": "select",
         "source": "",
         "dataStatus": null,
@@ -865,12 +865,12 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "Type of facility/location where the sample was harvested; controlled vocabulary: growth chamber, open top chamber, glasshouse, experimental garden, field.",
-        "guidance": "Pattern hint: enumeration",
-        "examples": "",
+        "guidance": "Pattern hint: {text}|{termLabel} {[termID]}",
+        "examples": "Growth chamber [CO_715:0000189]",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
-              "field": "growth_facility"
+              "field": "growth_facil"
             }
           ]
         },
@@ -889,7 +889,7 @@ var DATA = [
       {
         "fieldName": "storage conditions",
         "capitalize": "",
-        "ontology_id": "mixs_modified:storage_condt",
+        "ontology_id": "MIXS:0000327",
         "datatype": "select",
         "source": "",
         "dataStatus": null,
@@ -897,12 +897,12 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "Explain how the soil sample is stored (fresh/frozen/other).",
-        "guidance": "Pattern hint: enumeration",
-        "examples": "",
+        "guidance": "Pattern hint: {text};{duration}",
+        "examples": "-20 degree Celsius freezer;P2Y10D",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
-              "field": "storage_condt"
+              "field": "store_cond"
             }
           ]
         },
@@ -916,7 +916,7 @@ var DATA = [
       {
         "fieldName": "Collection Date",
         "capitalize": "",
-        "ontology_id": "mixs_modified:collection_date",
+        "ontology_id": "MIXS:0000011",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -924,7 +924,7 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "The date of sampling",
-        "guidance": "Date should be formatted as YYYY(-MM(-DD)) | Pattern hint: {date, arbitrary precision}",
+        "guidance": "2021-04-15, 2021-04 and 2021 are all acceptable. | Pattern hint: {date, arbitrary precision}",
         "examples": "2021-04-15, 2021-04 and 2021 are all acceptable.",
         "pattern": "^[12]\\d{3}(?:(?:-(?:0[1-9]|1[0-2]))(?:-(?:0[1-9]|[12]\\d|3[01]))?)?$",
         "exportField": {
@@ -1504,7 +1504,7 @@ var DATA = [
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
-        "requirement": "",
+        "requirement": "required",
         "description": "The geographical origin of the sample as defined by the country or sea name followed by specific region name. Country or sea names should be chosen from the INSDC country list (http://insdc.org/country.html), or the GAZ ontology (http://purl.bioontology.org/ontology/GAZ)",
         "guidance": "Pattern hint: {term}: {term}, {text}",
         "examples": "USA: Maryland, Bethesda",
@@ -1525,11 +1525,11 @@ var DATA = [
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
-        "requirement": "",
+        "requirement": "required",
         "description": "The geographical origin of the sample as defined by latitude and longitude. The values should be reported in decimal degrees and in WGS84 system",
-        "guidance": "Pattern hint: {float} {float}",
+        "guidance": "Pattern hint: (lat lon}",
         "examples": "50.586825 6.408977",
-        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? [-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$",
+        "pattern": "^[-+]?([1-8]?\\d(\\.\\d+)?|90(\\.0+)?)\\s[-+]?(180(\\.0+)?|((1[0-7]\\d)|([1-9]?\\d))(\\.\\d+)?)$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -1569,7 +1569,7 @@ var DATA = [
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
-        "requirement": "",
+        "requirement": "required",
         "description": "Temperature at which sample was stored, e.g. -80 degree Celsius",
         "guidance": "",
         "examples": "-80 degree Celsius",
@@ -1590,7 +1590,7 @@ var DATA = [
       {
         "fieldName": "collection time, GMT",
         "capitalize": "",
-        "ontology_id": "mixs_modified:collection_time",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -1599,7 +1599,7 @@ var DATA = [
         "requirement": "recommended",
         "description": "The time of sampling, either as an instance (single point) or interval.",
         "guidance": "Time should be entered as HH:MM(:SS) in GMT. See here for a converter: https://www.worldtimebuddy.com/pst-to-gmt-converter | Pattern hint: {time, seconds optional}",
-        "examples": "13:33 or 13:33:55",
+        "examples": "",
         "pattern": "^([01]?\\d|2[0-3]|24(?=:00?:00?$)):([0-5]\\d)(:([0-5]\\d))?$",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1612,7 +1612,7 @@ var DATA = [
       {
         "fieldName": "Incubation Collection Date",
         "capitalize": "",
-        "ontology_id": "mixs_modified:collection_date_inc",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -1621,7 +1621,7 @@ var DATA = [
         "requirement": "recommended",
         "description": "Date the incubation was harvested/collected/ended. Only relevant for incubation samples.",
         "guidance": "Date should be formatted as YYYY(-MM(-DD)). Ie, 2021-04-15, 2021-04 and 2021 are all acceptable. | Pattern hint: {date, arbitrary precision}",
-        "examples": "2021-04-15, 2021-04 and 2021 are all acceptable.",
+        "examples": "",
         "pattern": "^[12]\\d{3}(?:(?:-(?:0[1-9]|1[0-2]))(?:-(?:0[1-9]|[12]\\d|3[01]))?)?$",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1634,7 +1634,7 @@ var DATA = [
       {
         "fieldName": "Incubation Collection Time, GMT",
         "capitalize": "",
-        "ontology_id": "mixs_modified:collection_time_inc",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -1643,7 +1643,7 @@ var DATA = [
         "requirement": "recommended",
         "description": "Time the incubation was harvested/collected/ended. Only relevant for incubation samples.",
         "guidance": "Time should be entered as HH:MM(:SS) in GMT. See here for a converter: https://www.worldtimebuddy.com/pst-to-gmt-converter | Pattern hint: {time, seconds optional}",
-        "examples": "13:33 or 13:33:55",
+        "examples": "",
         "pattern": "^([01]?\\d|2[0-3]|24(?=:00?:00?$)):([0-5]\\d)(:([0-5]\\d))?$",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1656,7 +1656,7 @@ var DATA = [
       {
         "fieldName": "Incubation Start Date",
         "capitalize": "",
-        "ontology_id": "mixs_modified:start_date_inc",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -1665,7 +1665,7 @@ var DATA = [
         "requirement": "recommended",
         "description": "Date the incubation was started. Only relevant for incubation samples.",
         "guidance": "Date should be formatted as YYYY(-MM(-DD)). Ie, 2021-04-15, 2021-04 and 2021 are all acceptable. | Pattern hint: {date, arbitrary precision}",
-        "examples": "2021-04-15, 2021-04 and 2021 are all acceptable.",
+        "examples": "",
         "pattern": "^[12]\\d{3}(?:(?:-(?:0[1-9]|1[0-2]))(?:-(?:0[1-9]|[12]\\d|3[01]))?)?$",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1678,7 +1678,7 @@ var DATA = [
       {
         "fieldName": "Incubation Start Time, GMT",
         "capitalize": "",
-        "ontology_id": "mixs_modified:start_time_inc",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -1687,7 +1687,7 @@ var DATA = [
         "requirement": "recommended",
         "description": "Time the incubation was started. Only relevant for incubation samples.",
         "guidance": "Time should be entered as HH:MM(:SS) in GMT. See here for a converter: https://www.worldtimebuddy.com/pst-to-gmt-converter | Pattern hint: {time, seconds optional}",
-        "examples": "13:33 or 13:33:55",
+        "examples": "",
         "pattern": "^([01]?\\d|2[0-3]|24(?=:00?:00?$)):([0-5]\\d)(:([0-5]\\d))?$",
         "exportField": {
           "soil_emsl_jgi_mg": [
@@ -1700,7 +1700,7 @@ var DATA = [
       {
         "fieldName": "depth, meters",
         "capitalize": "",
-        "ontology_id": "mixs_modified:depth",
+        "ontology_id": "MIXS:0000018",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -1708,8 +1708,9 @@ var DATA = [
         "xs:maxInclusive": "",
         "requirement": "required",
         "description": "The vertical distance below local surface, e.g. For sediment or soil samples depth is measured from sediment or soil surface, respectively. Depth can be reported as an interval for subsurface samples.",
-        "guidance": "All depths must be reported in meters. Provide the numerical portion only. | Pattern hint: {float}| {float}-{float}",
+        "guidance": "All depths must be reported in meters. Provide the numerical portion only. | Pattern hint: {float}|{float}-{float}",
         "examples": "0-0.1 OR 1",
+        "pattern": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$|^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?-[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -1721,7 +1722,7 @@ var DATA = [
       {
         "fieldName": "sample material processing",
         "capitalize": "",
-        "ontology_id": "mixs_modified:sample_processing",
+        "ontology_id": "MIXS:0000016",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -1730,11 +1731,11 @@ var DATA = [
         "requirement": "recommended",
         "description": "A brief description of any processing applied to the sample during or after retrieving the sample from environment, or a link to the relevant protocol(s) performed.",
         "guidance": "Pattern hint: {text}",
-        "examples": "",
+        "examples": "filtering of seawater, storing samples in ethanol",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
-              "field": "sample_processing"
+              "field": "samp_mat_process"
             }
           ]
         }
@@ -1742,7 +1743,7 @@ var DATA = [
       {
         "fieldName": "sample collection device",
         "capitalize": "",
-        "ontology_id": "mixs_modified:sample_collection_dev",
+        "ontology_id": "MIXS:0000002",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -1751,11 +1752,11 @@ var DATA = [
         "requirement": "recommended",
         "description": "The device used to collect an environmental sample. This field accepts terms listed under environmental sampling device (http://purl.obolibrary.org/obo/ENVO). This field also accepts terms listed under specimen collection device (http://purl.obolibrary.org/obo/GENEPIO_0002094).",
         "guidance": "Report dimensions and details when applicable | Pattern hint: {termLabel} {[termID]}|{text}",
-        "examples": "",
+        "examples": "swab, biopsy, niskin bottle, push core, drag swab [GENEPIO:0002713]",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
-              "field": "sample_collection_dev"
+              "field": "samp_collec_device"
             }
           ]
         }
@@ -1763,7 +1764,7 @@ var DATA = [
       {
         "fieldName": "sample collection method",
         "capitalize": "",
-        "ontology_id": "mixs_modified:sample_collection_method",
+        "ontology_id": "MIXS:0001225",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -1772,11 +1773,11 @@ var DATA = [
         "requirement": "recommended",
         "description": "The method employed for collecting the sample.",
         "guidance": "This can be a citation or description | Pattern hint: {PMID}|{DOI}|{URL}|{text}",
-        "examples": "",
+        "examples": "swabbing",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
-              "field": "sample_collection_method"
+              "field": "samp_collec_method"
             }
           ]
         }
@@ -1784,7 +1785,7 @@ var DATA = [
       {
         "fieldName": "Filter Method",
         "capitalize": "",
-        "ontology_id": "mixs_modified:filter_method",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -1805,7 +1806,7 @@ var DATA = [
       {
         "fieldName": "amount or size of sample collected",
         "capitalize": "",
-        "ontology_id": "mixs_modified:sample_collected",
+        "ontology_id": "MIXS:0000001",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -1819,7 +1820,7 @@ var DATA = [
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
-              "field": "sample_collected"
+              "field": "samp_size"
             }
           ]
         }
@@ -1827,7 +1828,7 @@ var DATA = [
       {
         "fieldName": "experimental factor- other",
         "capitalize": "",
-        "ontology_id": "mixs_modified:experimental_factor_other",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -1848,7 +1849,7 @@ var DATA = [
       {
         "fieldName": "other treatments",
         "capitalize": "",
-        "ontology_id": "mixs_modified:other_treatment",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -1869,7 +1870,7 @@ var DATA = [
       {
         "fieldName": "isotope exposure/addition",
         "capitalize": "",
-        "ontology_id": "mixs_modified:isotope_exposure",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -1891,7 +1892,7 @@ var DATA = [
       {
         "fieldName": "pH",
         "capitalize": "",
-        "ontology_id": "mixs_modified:pH",
+        "ontology_id": "MIXS:0001001",
         "datatype": "xs:decimal",
         "source": "",
         "dataStatus": null,
@@ -1904,7 +1905,7 @@ var DATA = [
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
-              "field": "pH"
+              "field": "ph"
             }
           ]
         }
@@ -2118,6 +2119,7 @@ var DATA = [
         "description": "Information about treatment(s) involving exposure to light, including both light intensity and quality.",
         "guidance": "Pattern hint: {text};{float} {unit};{float} {unit}",
         "examples": "incandescant light;10 lux;450 nanometer",
+        "pattern": "^\\S+.*\\S+;[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+;[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)? \\S+$",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
@@ -2177,20 +2179,20 @@ var DATA = [
       {
         "fieldName": "observed biotic relationship",
         "capitalize": "",
-        "ontology_id": "mixs_modified:samp_biotic_relationship",
+        "ontology_id": "MIXS:0000028",
         "datatype": "select",
         "source": "",
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
-        "requirement": "",
+        "requirement": "recommended",
         "description": "Description of relationship(s) between the subject organism and other organism(s) it is associated with. E.g., parasite on species X; mutualist with species Y. The target organism is the subject of the relationship, and the other organism(s) is the object",
-        "guidance": "Pattern hint: enumeration",
-        "examples": "",
+        "guidance": "",
+        "examples": "free living",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
-              "field": "samp_biotic_relationship"
+              "field": "biotic_relationship"
             }
           ]
         },
@@ -2205,20 +2207,20 @@ var DATA = [
       {
         "fieldName": "relationship to oxygen",
         "capitalize": "",
-        "ontology_id": "mixs_modified:oxygen_relationship",
+        "ontology_id": "MIXS:0000015",
         "datatype": "select",
         "source": "",
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
-        "requirement": "",
+        "requirement": "recommended",
         "description": "Is this organism an aerobe, anaerobe? Please note that aerobic and anaerobic are valid descriptors for microbial environments",
-        "guidance": "Pattern hint: enumeration",
-        "examples": "",
+        "guidance": "",
+        "examples": "aerobe",
         "exportField": {
           "soil_emsl_jgi_mg": [
             {
-              "field": "oxygen_relationship"
+              "field": "rel_to_oxygen"
             }
           ]
         },
@@ -2235,7 +2237,7 @@ var DATA = [
       {
         "fieldName": "non-microbial biomass",
         "capitalize": "",
-        "ontology_id": "mixs_modified:non_microb_biomass",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -2257,7 +2259,7 @@ var DATA = [
       {
         "fieldName": "non-microbial biomass method",
         "capitalize": "",
-        "ontology_id": "mixs_modified:non_microb_biomass_method",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -2278,7 +2280,7 @@ var DATA = [
       {
         "fieldName": "microbial biomass carbon",
         "capitalize": "",
-        "ontology_id": "mixs_modified:microbial_biomass_C",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -2300,13 +2302,13 @@ var DATA = [
       {
         "fieldName": "microbial biomass carbon method",
         "capitalize": "",
-        "ontology_id": "mixs_modified:micro_biomass_C_meth",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
-        "requirement": "",
+        "requirement": "recommended",
         "description": "Reference or method used in determining microbial biomass",
         "guidance": "required if \"microbial_biomass_C\" is provided | Pattern hint: {PMID}|{DOI}|{URL}",
         "examples": "",
@@ -2321,7 +2323,7 @@ var DATA = [
       {
         "fieldName": "microbial biomass nitrogen",
         "capitalize": "",
-        "ontology_id": "mixs_modified:microbial_biomass_N",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -2343,7 +2345,7 @@ var DATA = [
       {
         "fieldName": "microbial biomass nitrogen method",
         "capitalize": "",
-        "ontology_id": "mixs_modified:micro_biomass_N_meth",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -2364,7 +2366,7 @@ var DATA = [
       {
         "fieldName": "organic nitrogen method",
         "capitalize": "",
-        "ontology_id": "mixs_modified:org_nitro_method",
+        "ontology_id": "",
         "datatype": "xs:token",
         "source": "",
         "dataStatus": null,
@@ -2677,7 +2679,7 @@ var DATA = [
         "dataStatus": null,
         "xs:minInclusive": "",
         "xs:maxInclusive": "",
-        "requirement": "",
+        "requirement": "recommended",
         "description": "Experimental factors are essentially the variable aspects of an experiment design which can be used to describe an experiment, or set of experiments, in an increasingly detailed manner. This field accepts ontology terms from Experimental Factor Ontology (EFO) and/or Ontology for Biomedical Investigations (OBI). For a browser of EFO (v 2.95) terms, please see http://purl.bioontology.org/ontology/EFO; for a browser of OBI (v 2018-02-12) terms please see http://purl.bioontology.org/ontology/OBI",
         "guidance": "Pattern hint: {termLabel} {[termID]}|{text}",
         "examples": "time series design [EFO:EFO_0001779]",
