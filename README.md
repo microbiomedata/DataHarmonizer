@@ -1,3 +1,13 @@
+# ⚠️ DEPRECATED ⚠️
+
+This fork has been deprecated.
+
+* For issues regarding DataHarmonizer itself see: https://github.com/cidgoh/DataHarmonizer
+* For issues regarding the integration of DataHarmonizer into the NMDC Submission Portal see: https://github.com/microbiomedata/nmdc-server
+* For issues regarding the schema used by DataHarmonizer in the NMDC Submission Portal see: https://github.com/microbiomedata/submission-schema
+
+---
+
 This repo is a combination of
 - cidgoh/DataHarmonizer
 - the MIxS and NMDC schemas (as submodules)
