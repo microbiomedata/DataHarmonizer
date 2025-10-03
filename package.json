@@ -1,8 +1,8 @@
 {
-  "name": "data-harmonizer",
+  "name": "@microbiomedata/data-harmonizer",
   "version": "1.6.5",
   "description": "A standardized spreadsheet editor and validator that can be run offline and locally",
-  "repository": "git@github.com:cidgoh/DataHarmonizer.git",
+  "repository": "git@github.com:microbiomedata/DataHarmonizer.git",
   "license": "MIT",
   "files": [
     "./lib/dist"
@@ -90,5 +90,6 @@
         "rollup-jest"
       ]
     }
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
