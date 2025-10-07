@@ -1,6 +1,6 @@
 {
   "name": "@microbiomedata/data-harmonizer",
-  "version": "1.6.5",
+  "version": "1.7.0",
   "description": "A standardized spreadsheet editor and validator that can be run offline and locally",
   "repository": "git@github.com:microbiomedata/DataHarmonizer.git",
   "license": "MIT",
